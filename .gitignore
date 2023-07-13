@@ -81,3 +81,7 @@ Excalibur/Logs
 Excalibur/UserSettings
 Excalibur/.vsconfig
 Excalibur/Temp
+Library
+Logs
+obj
+UserSettings
