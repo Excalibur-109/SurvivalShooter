@@ -11,6 +11,7 @@ namespace Excalibur
         {
             if (!string.IsNullOrEmpty(path) && KMP.Search(path, "Assets") >= 0)
             {
+                path = IOAssistant.ConvertToUnityRelativePath(path);
                 path = path.Replace("Assets/", "");
             }
             return path;
@@ -54,6 +55,36 @@ namespace Excalibur
                 path = IOAssistant.ConvertToUnityRelativePath(path);
             }
             return path;
+        }
+
+        public static string TailorFirst (string path, char pattern1 = '/', char pattern2 = '\\')
+        {
+            string ret = string.Empty;
+            for (int i = 0; i < path.Length; ++i)
+            {
+                char value = path[i];
+                if (value == pattern1 || value == pattern2)
+                {
+                    ret = path.Substring(0, i);
+                    break;
+                }
+            }
+            return ret;
+        }
+
+        public static string TailorLast (string path, char pattern1 = '/', char pattern2 = '\\')
+        {
+            string ret = string.Empty;
+            for (int i = path.Length - 1; i >= 0; --i)
+            {
+                char value = path[i];
+                if (value == pattern1 || value == pattern2)
+                {
+                    ret = path.Substring(i + 1);
+                    break;
+                }
+            }
+            return ret;
         }
     }
 }

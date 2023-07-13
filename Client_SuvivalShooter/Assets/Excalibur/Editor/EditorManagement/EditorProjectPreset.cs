@@ -19,7 +19,7 @@ namespace Excalibur
         public const string EDITOR_GAME_ASSETS_FILE = "editorOptions.op";
         public const string EDITOR_GAME_ASSETS = "GameAssets";
 
-        private readonly Dictionary<EditorPreset, IWindowDrawer> presets = new Dictionary<EditorPreset, IWindowDrawer>();
+        private readonly Dictionary<EditorPreset, IWindowDrawer> r_Presets = new Dictionary<EditorPreset, IWindowDrawer>();
 
         private static string _gameAssetsPath;
         private static string _gameOptionFilePath;
@@ -63,24 +63,24 @@ namespace Excalibur
 
         public void Save(IDataWriter writer)
         {
-            writer.Write(presets.Count);
-            foreach (EditorPreset option in presets.Keys)
+            writer.Write(r_Presets.Count);
+            foreach (EditorPreset option in r_Presets.Keys)
             {
                 writer.Write((int)option);
-                presets[option].Save(writer);
+                r_Presets[option].Save(writer);
             }
         }
 
         public void Load(IDataReader reader)
         {
-            presets.Clear();
+            r_Presets.Clear();
             int count = reader.ReadInt();
             for (int i = 0; i < count; ++i)
             {
                 EditorPreset option = (EditorPreset)reader.ReadInt();
                 IWindowDrawer preset = _CreatePreset(option);
                 preset.Load(reader);
-                presets.Add(option, preset);
+                r_Presets.Add(option, preset);
             }
         }
 
@@ -114,13 +114,18 @@ namespace Excalibur
 
         public IWindowDrawer GetPreset(EditorPreset option)
         {
-            presets.TryGetValue(option, out IWindowDrawer preset);
+            r_Presets.TryGetValue(option, out IWindowDrawer preset);
             if (preset == default) 
             {
                 preset = _CreatePreset(option);
-                presets.Add(option, preset);
+                r_Presets.Add(option, preset);
             }
             return preset;
+        }
+
+        public void ClearCaches ()
+        {
+            r_Presets.Clear();
         }
     }
 }

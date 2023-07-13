@@ -14,7 +14,7 @@ namespace Excalibur
 {
     public class AssetBundleBuildPreset : IWindowDrawer
     {
-        public string assetsPath = "BundleResources";
+        public string assetsPath;
         public string scenesPath;
         public string shadersPath;
         public string outPath;
@@ -180,12 +180,22 @@ namespace Excalibur
             }
             if (clsHandler != null)
             {
-                EditorUtility.DisplayCancelableProgressBar("Generating classes", "generate" + clsHandler.processInfo, clsHandler.process);
-                if (clsHandler.process >= 1f)
+                try
+                {
+                    EditorUtility.DisplayProgressBar("Generating classes", "generate" + clsHandler.processInfo, clsHandler.process);
+                    if (clsHandler.process >= 1f)
+                    {
+                        clsHandler = null;
+                        EditorUtility.ClearProgressBar();
+                        AssetDatabase.Refresh();
+                    }
+                }
+                catch (ArgumentNullException e)
                 {
                     clsHandler = null;
                     EditorUtility.ClearProgressBar();
                     AssetDatabase.Refresh();
+                    throw e;
                 }
             }
             if (GUILayout.Button("生成配置"))
@@ -198,12 +208,22 @@ namespace Excalibur
             }
             if (xmlHandler != null)
             {
-                EditorUtility.DisplayCancelableProgressBar("Generating configs", "generate" + xmlHandler.processInfo, xmlHandler.process);
-                if (xmlHandler.process >= 1f)
+                try
+                {
+                    EditorUtility.DisplayProgressBar("Generating configs", "generate" + xmlHandler.processInfo, xmlHandler.process);
+                    if (xmlHandler.process >= 1f)
+                    {
+                        xmlHandler = null;
+                        EditorUtility.ClearProgressBar();
+                        AssetDatabase.Refresh();
+                    }
+                }
+                catch (ArgumentNullException e)
                 {
                     xmlHandler = null;
                     EditorUtility.ClearProgressBar();
                     AssetDatabase.Refresh();
+                    throw e;
                 }
             }
             EditorGUILayout.EndHorizontal();
@@ -260,7 +280,7 @@ namespace Excalibur
             if (!string.IsNullOrEmpty(destinationPath))
             {
                 ProjectSettings settings = Resources.Load<ProjectSettings>(CP.ProjectSettings);
-                if (settings.configurationPath != destinationPath)
+                if (settings != null && settings.configurationPath != destinationPath)
                 {
                     settings.configurationPath = destinationPath;
                 }

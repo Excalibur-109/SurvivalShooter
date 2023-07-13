@@ -4,10 +4,9 @@ using UnityEditor;
 using UnityEditor.U2D;
 using UnityEngine.U2D;
 using System.IO;
-using UnityEngine.UIElements;
 using System.Linq;
 using Object = UnityEngine.Object;
-using UnityEditorInternal;
+using System;
 
 namespace Excalibur
 {
@@ -20,12 +19,14 @@ namespace Excalibur
         private BuildTarget _buildTarget = BuildTarget.StandaloneWindows;
 
         private GenSpriteAtlasItem _overrallSettings = new GenSpriteAtlasItem();
+        private List<GenSpriteAtlasItem> _genSpriteAtlasItemsCache = new List<GenSpriteAtlasItem>();
         private List<GenSpriteAtlasItem> _genSpriteAtlasItems = new List<GenSpriteAtlasItem>();
 
         private TextureImporterPlatformSettings _platformSettings = new TextureImporterPlatformSettings();
 
-        private TextureImporterFormat _textureImporterFormat;
-        private TextureImporterCompression _textureImporterCompression;
+        private string outputPath => _outputPath;
+        private BuildTarget buildTarget => _buildTarget;
+        private TextureImporterPlatformSettings platformSettings => _platformSettings;
 
         private static string[] Max_Tex_Size_Arr = new string[]
         {
@@ -38,7 +39,7 @@ namespace Excalibur
 
         Vector2 scrollPos;
         BuildTarget currentPlatform;
-        bool showPlatformSettings;
+        bool showPlatformSettings = true;
         int selectedMaxSizeIndex;
         TextureImporterFormat importerFormat;
         TextureImporterCompression compression;
@@ -54,18 +55,24 @@ namespace Excalibur
         public void OnEditorGUI()
         {
             GUILayout.Space(5f);
+            scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+            EditorGUILayout.BeginVertical();
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("AtlasTex 源文件夹", GUILayout.Width(120f));
             EditorGUILayout.TextField(_spritesPath);
             if (GUILayout.Button("选择", GUILayout.Width(100f)))
             {
                 EditorUtil.ChooseAssetsDirectory(ref _spritesPath, "选择AtlasTexture源目录",
-                    () => _UpdateItems());
+                    () => 
+                    {
+                        _genSpriteAtlasItems.Clear();
+                        _UpdateItems();
+                    });
             }
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("AtlasTex 输出文件夹", GUILayout.Width(120f));
-            EditorGUILayout.TextField(_spritesPath);
+            EditorGUILayout.TextField(_outputPath);
             if (GUILayout.Button("选择", GUILayout.Width(100f)))
             {
                 EditorUtil.ChooseAssetsDirectory(ref _outputPath, "选择AtlasTexture输出文件夹",() => 
@@ -75,66 +82,72 @@ namespace Excalibur
                 });
             }
             EditorGUILayout.EndHorizontal();
-            EditorGUILayout.BeginHorizontal();
             currentPlatform = (BuildTarget)EditorGUILayout.EnumPopup("Platform", _buildTarget);
             if (currentPlatform != _buildTarget)
             {
                 _buildTarget = currentPlatform;
-                _genSpriteAtlasItems.ForEach(e => e.buildTarget = _buildTarget);
             }
-            EditorGUILayout.EndHorizontal();
+            Color origin = GUI.backgroundColor;
+            GUI.backgroundColor = Color.green;
+            if (GUILayout.Button("Generate All"))
+            {
+                for (int i = 0; i < _genSpriteAtlasItems.Count; ++i)
+                {
+                    _genSpriteAtlasItems[i].GenerateSpriteAtlas();
+                }
+            }
+            GUI.backgroundColor = origin;
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(RETRACT);
             _overrallSettings.LayoutIncludeInBuild();
+            EditorGUILayout.EndHorizontal();
             _overrallSettings.LayoutSpriteAtlasPackingSettings();
             _overrallSettings.LayoutSpriteAtlasTextureSettings();
             LayoutTextureImporterPlatformSettings();
-            scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
-            for (int i = 0; i < _genSpriteAtlasItems.Count; ++i)
+            if (GUILayout.Button("Apply Settings to All"))
             {
-                _genSpriteAtlasItems[i].LayoutGUI();
+                _genSpriteAtlasItems.ForEach(e => e.ApplayOverrallSettings());
+                Debug.Log("已将全集图集设置应用到全部图集预设");
             }
+            GUILayout.Space(RETRACT);
+            for (int i = 0; i < _genSpriteAtlasItemsCache.Count; ++i)
+            {
+                _genSpriteAtlasItemsCache[i].LayoutGUI();
+            }
+            GUILayout.Space(20);
+            EditorGUILayout.EndVertical();
             EditorGUILayout.EndScrollView();
         }
 
         private void LayoutTextureImporterPlatformSettings()
         {
-            EditorGUILayout.BeginVertical();
             showPlatformSettings = EditorGUILayout.BeginFoldoutHeaderGroup(showPlatformSettings, "Platform Settings");
             if (showPlatformSettings)
             {
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Space(RETRACT);
+                EditorGUILayout.BeginVertical();
                 _platformSettings.overridden = EditorGUILayout.Toggle("Overriden", _platformSettings.overridden, GUILayout.Width(140f));
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Space(RETRACT);
                 int paddingIndex = EditorGUILayout.Popup("Padding", selectedMaxSizeIndex, Max_Tex_Size_Arr);
                 if (paddingIndex != selectedMaxSizeIndex)
                 {
                     _platformSettings.maxTextureSize = int.Parse(Max_Tex_Size_Arr[paddingIndex]);
                     selectedMaxSizeIndex = paddingIndex;
                 }
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Space(RETRACT);
                 importerFormat = (TextureImporterFormat)EditorGUILayout.EnumPopup("Format", _platformSettings.format);
                 if (importerFormat != _platformSettings.format)
                 {
                     _platformSettings.format = importerFormat;
-                    _genSpriteAtlasItems.ForEach(e => e.platformSettings.format = importerFormat);
                 }
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Space(RETRACT);
                 compression = (TextureImporterCompression)EditorGUILayout.EnumPopup("Compression", _platformSettings.textureCompression);
                 if (compression != _platformSettings.textureCompression)
                 {
                     _platformSettings.textureCompression = compression;
-                    _genSpriteAtlasItems.ForEach(e => e.platformSettings.textureCompression = compression);
                 }
+                EditorGUILayout.EndVertical();
                 EditorGUILayout.EndHorizontal();
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
-            EditorGUILayout.EndVertical();
         }
 
         public void OpenWindow()
@@ -147,19 +160,30 @@ namespace Excalibur
             string[] directories = IOAssistant.GetDirectories(IOAssistant.CombinePath(Application.dataPath, _spritesPath), string.Empty, SearchOption.TopDirectoryOnly);
             for (int i = 0; i < directories.Length; ++i)
             {
-                GenSpriteAtlasItem item = _genSpriteAtlasItems.Where(e => e.directory == EditorUtil.GetPathNameInAssets(directories[i])).FirstOrDefault();
+                string dir = EditorUtil.GetPathNameInAssets(directories[i]);
+                GenSpriteAtlasItem item = null;
+                for (int j = 0; j < _genSpriteAtlasItems.Count; ++j)
+                {
+                    if (_genSpriteAtlasItems[j].directory == dir)
+                    {
+                        item = _genSpriteAtlasItems[j];
+                        break;
+                    }
+                }
                 if (item == null)
                 {
                     item = new GenSpriteAtlasItem();
                     item.overrallOutput = _outputPath;
                     _genSpriteAtlasItems.Add(item);
                 }
-                item.SetDirectoryAndPlatformSetting(directories[i], this);
+                _genSpriteAtlasItemsCache.Add(item);
+                item.SetItemInfo(directories[i], this);
             }
         }
 
         public void Terminate()
         {
+            _genSpriteAtlasItemsCache.Clear();
         }
 
         public void Load(IDataReader reader)
@@ -209,43 +233,62 @@ namespace Excalibur
 
         private void _GenerateSpriteAtlases ()
         {
+
         }
 
-        public static void GenerateSpriteAtlas(string inputPath, string outputpath, bool includeInBuild, BuildTarget buildTarget, TextureImporterPlatformSettings platformSettings, SpriteAtlasTextureSettings texSettings, SpriteAtlasPackingSettings packSettings)
+        public static void GenerateSpriteAtlas(string inputPath, string outputpath, bool holeDir, bool includeInBuild, BuildTarget buildTarget, SpriteAtlasTextureSettings texSettings, SpriteAtlasPackingSettings packSettings, TextureImporterPlatformSettings platformSettings = null,
+            Action onComplete = null)
         {
+            if (!Directory.Exists(outputpath)) { Directory.CreateDirectory(outputpath); }
+
+            outputpath = IOAssistant.ConvertToUnityRelativePath(outputpath);
             SpriteAtlas atlas;
-            atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(outputpath + IOAssistant.FileExtension_SpriteAtlas);
+            string name = EditorUtil.TailorLast(inputPath);
+            string assetPath = outputpath + "/" + name + IOAssistant.FileExtension_SpriteAtlas;
+            atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(assetPath);
             if (atlas == null)
             {
-                string name = "NewSpriteAtlas";
-                for (int i = 0; i < inputPath.Length; ++i)
-                {
-                    char value = inputPath[i];
-                    if (value == '\\' || value == '/')
-                    {
-                        name = inputPath.Substring(i + 1);
-                        break;
-                    }
-                }
                 atlas = new SpriteAtlas();
-                atlas.name = name;
-                AssetDatabase.CreateAsset(atlas, outputpath);
+                if (string.IsNullOrEmpty(name)) { name = "NewSpriteAtlas"; }
+                AssetDatabase.CreateAsset(atlas, assetPath);
             }
 
-            Object[] sprites = AssetDatabase.LoadAllAssetsAtPath(inputPath);
-            HashSet<Object> packables = new HashSet<Object>(atlas.GetPackables());
-            Object[] outPackables = sprites.Where(e => !packables.Contains(e)).ToArray();
-            atlas.Add(outPackables);
+            Object[] packables = atlas.GetPackables();
+            if (packables != null && packables.Length > 0)
+            {
+                atlas.Remove(packables);
+            }
+
+            List<Object> sprites = new List<Object>();
+            if (holeDir)
+            {
+                sprites.Add(AssetDatabase.LoadAssetAtPath<DefaultAsset>(IOAssistant.ConvertToUnityRelativePath(inputPath)));
+            }
+            else
+            {
+                List<string> files = IOAssistant.GetFiles(inputPath, string.Empty, SearchOption.AllDirectories, file => file.EndsWith(IOAssistant.FileExtension_Png) || file.EndsWith(IOAssistant.FileExtension_Jpg)).ToList();
+                files.ForEach(e =>
+                {
+                    string path = IOAssistant.ConvertToUnityRelativePath(e);
+                    sprites.Add(AssetDatabase.LoadAssetAtPath<Sprite>(path));
+                });
+            }
+            atlas.Add(sprites.ToArray());
 
             atlas.SetIncludeInBuild(includeInBuild);
             atlas.SetTextureSettings(texSettings);
             atlas.SetPackingSettings(packSettings);
-            TextureImporterPlatformSettings atlasSettings = atlas.GetPlatformSettings(buildTarget.ToString());
-            atlasSettings.overridden = platformSettings.overridden;
-            atlasSettings.maxTextureSize = platformSettings.maxTextureSize;
-            atlasSettings.format = platformSettings.format;
-            atlasSettings.textureCompression = platformSettings.textureCompression;
-            atlas.SetPlatformSettings(atlasSettings);
+            if (platformSettings != null)
+            {
+                TextureImporterPlatformSettings atlasSettings = atlas.GetPlatformSettings(buildTarget.ToString());
+                atlasSettings.overridden = platformSettings.overridden;
+                atlasSettings.maxTextureSize = platformSettings.maxTextureSize;
+                atlasSettings.format = platformSettings.format;
+                atlasSettings.textureCompression = platformSettings.textureCompression;
+                atlas.SetPlatformSettings(atlasSettings);
+            }
+
+            onComplete?.Invoke();
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
@@ -258,30 +301,28 @@ namespace Excalibur
         {
             public bool includeInBuild;
             public string overrallOutput;
-            public BuildTarget buildTarget;
             public string directory;
-            public TextureImporterPlatformSettings platformSettings;
 
             private SpriteAtlasGenerator _generator;
-            private string _outputPath;
             private Grouping _grouping;
             private string[] _subDirectories;
             private string[] _spriteAtlasFolder;
             private SpriteAtlasTextureSettings _texSettings;
             private SpriteAtlasPackingSettings _packSettings;
             private Object[][] _sprites;
-            private bool _showItem, _showTexSettings, _showPackingSettings;
+            private bool 
+                _showItem = false,
+                _showTexSettings = true,
+                _showPackingSettings = true;
             private bool[] _showItems;
             private int _paddingIndex;
 
             public GenSpriteAtlasItem() { }
 
-            public void SetDirectoryAndPlatformSetting(string directory, SpriteAtlasGenerator generator)
+            public void SetItemInfo(string directory, SpriteAtlasGenerator generator)
             {
                 _generator = generator;
                 this.directory = directory;
-                platformSettings = generator._platformSettings;
-                buildTarget = generator._buildTarget;
                 _GrabDirectories();
                 this.directory = EditorUtil.GetPathNameInAssets(directory);
                 _grouping = _subDirectories == null || _subDirectories.Length == 0 ? Grouping.AllInOne : Grouping.OneByOne;
@@ -291,8 +332,15 @@ namespace Excalibur
                     case Grouping.AllInOne:
                         _spriteAtlasFolder = new string[1] { this.directory };
                         _showItems = new bool[1];
+                        string path = IOAssistant.CombinePath(Application.dataPath, directory);
+                        string[] files = IOAssistant.GetFiles(path, string.Empty, SearchOption.AllDirectories,
+                            file => file.EndsWith(IOAssistant.FileExtension_Png) || file.EndsWith(IOAssistant.FileExtension_Jpg));
                         _sprites = new Sprite[1][];
-                        _sprites[0] = AssetDatabase.LoadAllAssetsAtPath("Assets/" + this.directory);
+                        _sprites[0] = new Sprite[files.Length];
+                        for (int j = 0; j < files.Length; ++j)
+                        {
+                            _sprites[0][j] = AssetDatabase.LoadAssetAtPath<Sprite>(IOAssistant.ConvertToUnityRelativePath(files[j]));
+                        }
                         break;
                     case Grouping.OneByOne:
                         _spriteAtlasFolder = new string[length];
@@ -300,39 +348,50 @@ namespace Excalibur
                         _sprites = new Object[length][];
                         for (int i = 0; i < length; ++i)
                         {
-                            _spriteAtlasFolder[i] = _subDirectories[i].Split('/')[1];
-                            List<string> subDirs = IOAssistant.GetDirectories(IOAssistant.CombinePath(Application.dataPath, _subDirectories[i]), string.Empty, SearchOption.TopDirectoryOnly).ToList();
-                            subDirs.ForEach(e => e = IOAssistant.ConvertToUnityRelativePath(e));
-                            string[] guidPaths = AssetDatabase.FindAssets("", subDirs.ToArray());
-                            foreach (string item in guidPaths)
+                            _spriteAtlasFolder[i] = EditorUtil.TailorLast(_subDirectories[i]);
+                            path = IOAssistant.CombinePath(Application.dataPath, _subDirectories[i]);
+                            files = IOAssistant.GetFiles(path, string.Empty, SearchOption.AllDirectories, 
+                                file => file.EndsWith(IOAssistant.FileExtension_Png) || file.EndsWith(IOAssistant.FileExtension_Jpg));
+                            _sprites[i] = new Object[files.Length];
+                            for (int j = 0; j < files.Length; ++j)
                             {
-                                string fullPath = AssetDatabase.GUIDToAssetPath(item);
-                                _sprites[i] = AssetDatabase.LoadAllAssetsAtPath(fullPath);
+                                _sprites[i][j] = AssetDatabase.LoadAssetAtPath<Sprite>(IOAssistant.ConvertToUnityRelativePath(files[j]));
                             }
                         }
                         break;
                 }
             }
 
-            public void GenerateSpriteAtlases()
+            public void GenerateSpriteAtlas()
             {
-                string inputPath, outputPath;
                 switch (_grouping)
                 {
                     case Grouping.AllInOne:
-                        inputPath = IOAssistant.CombinePath(Application.dataPath, directory);
-                        outputPath = IOAssistant.CombinePath(Application.dataPath, _outputPath);
-                        GenerateSpriteAtlas(inputPath, outputPath, includeInBuild, buildTarget, platformSettings, _texSettings, _packSettings);
+                        _GenerateSpriteAtlas(directory, true);
                         break;
                     case Grouping.OneByOne:
                         for (int i = 0; i < _subDirectories.Length; ++i)
                         {
-                            inputPath = IOAssistant.CombinePath(Application.dataPath, _subDirectories[i]);
-                            outputPath = IOAssistant.CombinePath(Application.dataPath, _outputPath, _spriteAtlasFolder[i]);
-                            GenerateSpriteAtlas(inputPath, outputPath, includeInBuild, buildTarget, platformSettings, _texSettings, _packSettings);
+                            _GenerateSpriteAtlas(_subDirectories[i], false);
                         }
                         break;
                 }
+            }
+
+            private void _GenerateSpriteAtlas(string directory, bool holeDir)
+            {
+                string inputPath = IOAssistant.CombinePath(Application.dataPath, directory);
+                string outputPath;
+                if (holeDir)
+                {
+                    outputPath = IOAssistant.CombinePath(Application.dataPath, _generator.outputPath);
+                }
+                else
+                {
+                    string[] names = directory.Split('/');
+                    outputPath = IOAssistant.CombinePath(Application.dataPath, _generator.outputPath, names[1]);
+                }
+                SpriteAtlasGenerator.GenerateSpriteAtlas(inputPath, outputPath, holeDir, includeInBuild, _generator.buildTarget, _texSettings, _packSettings, _generator.platformSettings, null);
             }
 
             private void _GrabDirectories()
@@ -356,72 +415,53 @@ namespace Excalibur
 
             public void LayoutGUI()
             {
-                LayoutSpriteAtlasPackingSettings();
-                LayoutSpriteAtlasTextureSettings();
                 _LayoutSprites();
             }
 
             public void LayoutSpriteAtlasTextureSettings()
             {
-                EditorGUILayout.BeginVertical();
-                _showPackingSettings = EditorGUILayout.BeginFoldoutHeaderGroup(_showPackingSettings, "Texture");
-                if (_showPackingSettings)
-                {
-                    EditorGUILayout.BeginHorizontal();
-                    GUILayout.Space(RETRACT);
-                    _texSettings.readable = EditorGUILayout.Toggle("Read/Write", _texSettings.readable, GUILayout.Width(140f));
-                    EditorGUILayout.EndHorizontal();
-                    EditorGUILayout.BeginHorizontal();
-                    GUILayout.Space(RETRACT);
-                    _texSettings.sRGB = EditorGUILayout.Toggle("sRGB", _texSettings.sRGB, GUILayout.Width(140f));
-                    EditorGUILayout.EndHorizontal();
-                    EditorGUILayout.BeginHorizontal();
-                    GUILayout.Space(RETRACT);
-                    _texSettings.generateMipMaps = EditorGUILayout.Toggle("Generate MipMaps",
-                        _texSettings.generateMipMaps, GUILayout.Width(140f));
-                    EditorGUILayout.EndHorizontal();
-                    EditorGUILayout.BeginHorizontal();
-                    GUILayout.Space(RETRACT);
-                    _texSettings.filterMode = (FilterMode)EditorGUILayout.EnumPopup("Filter Mode", _texSettings.filterMode);
-                    EditorGUILayout.EndHorizontal();
-                }
-                EditorGUILayout.EndFoldoutHeaderGroup();
-                EditorGUILayout.EndVertical();
-            }
-
-            public void LayoutSpriteAtlasPackingSettings()
-            {
-                EditorGUILayout.BeginVertical();
-                _showTexSettings = EditorGUILayout.BeginFoldoutHeaderGroup(_showTexSettings, "Packing");
+                _showTexSettings = EditorGUILayout.BeginFoldoutHeaderGroup(_showTexSettings, "Texture Settings");
                 if (_showTexSettings)
                 {
                     EditorGUILayout.BeginHorizontal();
                     GUILayout.Space(RETRACT);
+                    EditorGUILayout.BeginVertical();
+                    _texSettings.readable = EditorGUILayout.Toggle("Read/Write", _texSettings.readable, GUILayout.Width(140f));
+                    _texSettings.sRGB = EditorGUILayout.Toggle("sRGB", _texSettings.sRGB, GUILayout.Width(140f));
+                    _texSettings.generateMipMaps = EditorGUILayout.Toggle("Generate MipMaps",
+                        _texSettings.generateMipMaps, GUILayout.Width(140f));
+                    _texSettings.filterMode = (FilterMode)EditorGUILayout.EnumPopup("Filter Mode", _texSettings.filterMode);
+                    EditorGUILayout.EndVertical();
+                    EditorGUILayout.EndHorizontal();
+                }
+                EditorGUILayout.EndFoldoutHeaderGroup();
+            }
+
+            public void LayoutSpriteAtlasPackingSettings()
+            {
+                _showPackingSettings = EditorGUILayout.BeginFoldoutHeaderGroup(_showPackingSettings, "Packing Settings");
+                if (_showPackingSettings)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Space(RETRACT);
+                    EditorGUILayout.BeginVertical();
                     _packSettings.enableRotation = EditorGUILayout.Toggle("Allow Rotation", _packSettings.enableRotation, GUILayout.Width(140f));
-                    EditorGUILayout.EndHorizontal();
-                    EditorGUILayout.BeginHorizontal();
-                    GUILayout.Space(RETRACT);
                     _packSettings.enableTightPacking = EditorGUILayout.Toggle("Allow TightPacking", _packSettings.enableTightPacking, GUILayout.Width(140f));
-                    EditorGUILayout.EndHorizontal();
-                    EditorGUILayout.BeginHorizontal();
-                    GUILayout.Space(RETRACT);
                     int paddingIndex = EditorGUILayout.Popup("Padding", _paddingIndex, Padding);
                     if (paddingIndex != _paddingIndex)
                     {
                         _packSettings.padding = int.Parse(Padding[paddingIndex]);
                         _paddingIndex = paddingIndex;
                     }
+                    EditorGUILayout.EndVertical();
                     EditorGUILayout.EndHorizontal();
                 }
                 EditorGUILayout.EndFoldoutHeaderGroup();
-                EditorGUILayout.EndVertical();
             }
 
             public void LayoutIncludeInBuild()
             {
-                EditorGUILayout.BeginHorizontal();
                 includeInBuild = EditorGUILayout.Toggle("Include In Build", includeInBuild);
-                EditorGUILayout.EndHorizontal();
             }
 
             private void _LayoutSprites()
@@ -432,53 +472,100 @@ namespace Excalibur
                 {
                     EditorGUILayout.BeginHorizontal();
                     GUILayout.Space(RETRACT);
+                    EditorGUILayout.BeginVertical();
+                    EditorGUILayout.BeginFoldoutHeaderGroup(true, "ignore");
+                    EditorGUILayout.EndFoldoutHeaderGroup();
+                    EditorGUILayout.LabelField("Settings");
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Space(RETRACT);
+                    EditorGUILayout.BeginVertical();
+                    LayoutIncludeInBuild();
+                    LayoutSpriteAtlasTextureSettings();
+                    LayoutSpriteAtlasPackingSettings();
+                    if (GUILayout.Button("Apply Overrall Setting"))
+                    {
+                        ApplayOverrallSettings();
+                        Debug.Log("已应用全局设置");
+                    }
+                    EditorGUILayout.EndVertical();
+                    EditorGUILayout.EndHorizontal();
+                    GUILayout.Space(RETRACT * 0.5f);
                     for (int i = 0; i < _spriteAtlasFolder.Length; ++i)
                     {
                         EditorGUILayout.BeginVertical();
                         switch (_grouping)
                         {
                             case Grouping.AllInOne:
-                                for (int j = 0; j < _sprites[0].Length; ++j)
-                                {
-                                    EditorGUILayout.ObjectField(new GUIContent(_sprites[0][j].name), _sprites[0][j], typeof(Object), false);
-                                }
-                                break;
-                            case Grouping.OneByOne:
                                 EditorGUILayout.BeginHorizontal();
                                 GUILayout.Space(RETRACT);
+                                EditorGUILayout.BeginVertical();
+                                Color origin = GUI.backgroundColor;
+                                GUI.backgroundColor = Color.green;
+                                if (GUILayout.Button("Generate"))
+                                {
+                                    _GenerateSpriteAtlas(_spriteAtlasFolder[i], true);
+                                }
+                                GUI.backgroundColor = origin;
+                                for (int j = 0; j < _sprites[0].Length; ++j)
+                                {
+                                    EditorGUILayout.BeginHorizontal();
+                                    EditorGUILayout.LabelField(_sprites[0][j].name, GUILayout.Width(RETRACT * 12));
+                                    EditorGUILayout.ObjectField(_sprites[0][j], typeof(Object), false);
+                                    EditorGUILayout.EndHorizontal();
+                                }
+                                EditorGUILayout.EndVertical();
+                                EditorGUILayout.EndHorizontal();
+                                break;
+                            case Grouping.OneByOne:
                                 EditorGUILayout.BeginVertical();
                                 _showItems[i] = EditorGUILayout.BeginFoldoutHeaderGroup(_showItems[i], _spriteAtlasFolder[i]);
                                 if (_showItems[i])
                                 {
+                                    EditorGUILayout.BeginHorizontal();
+                                    GUILayout.Space(RETRACT);
+                                    EditorGUILayout.BeginVertical();
+                                    origin = GUI.backgroundColor;
+                                    GUI.backgroundColor = Color.green;
+                                    if (GUILayout.Button("Generate"))
+                                    {
+                                        _GenerateSpriteAtlas(_subDirectories[i], false);
+                                    }
+                                    GUI.backgroundColor = origin;
                                     for (int j = 0; j < _sprites[i].Length; ++j)
                                     {
-                                        EditorGUILayout.ObjectField(new GUIContent(_sprites[i][j].name), 
-                                            _sprites[i][j], typeof(Object), false);
+                                        EditorGUILayout.BeginHorizontal();
+                                        EditorGUILayout.LabelField(_sprites[i][j].name, GUILayout.Width(RETRACT * 12));
+                                        EditorGUILayout.ObjectField(_sprites[i][j], typeof(Object), false);
+                                        EditorGUILayout.EndHorizontal();
                                     }
+                                    EditorGUILayout.EndVertical();
+                                    EditorGUILayout.EndHorizontal();
                                 }
                                 EditorGUILayout.EndFoldoutHeaderGroup();
-                                EditorGUILayout.EndVertical();
                                 EditorGUILayout.EndVertical();
                                 break;
                         }
                         EditorGUILayout.EndVertical();
+                        GUILayout.Space(5);
                     }
+                    EditorGUILayout.EndVertical();
                     EditorGUILayout.EndHorizontal();
                 }
                 EditorGUILayout.EndFoldoutHeaderGroup();
                 EditorGUILayout.EndVertical();
             }
 
-            private void ApplayOverrallSettings()
+            public void ApplayOverrallSettings()
             {
                 includeInBuild = _generator._overrallSettings.includeInBuild;
                 _texSettings = _generator._overrallSettings._texSettings;
                 _packSettings = _generator._overrallSettings._packSettings;
+                _paddingIndex = Padding.ToList().IndexOf(_packSettings.padding.ToString());
             }
 
             public void Save (IDataWriter writer)
             {
-                writer.Write(_outputPath);
+                writer.Write(directory);
                 writer.Write(includeInBuild);
                 SaveSpriteAtlasPackingSettings(writer);
                 SaveSpriteAtlasTextureSettings(writer);
@@ -486,7 +573,7 @@ namespace Excalibur
 
             public void Load (IDataReader reader)
             {
-                _outputPath = reader.ReadString();
+                directory = reader.ReadString();
                 includeInBuild = reader.ReadBool();
                 LoadSpriteAtlasPackingSettings(reader);
                 LoadSpriteAtlasTextureSettings(reader);

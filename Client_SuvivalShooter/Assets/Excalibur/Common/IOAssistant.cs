@@ -24,7 +24,7 @@ namespace Excalibur
 
         public static string ConvertToUnityRelativePath (string path)
         {
-            if (!AssetPathVerify (path)) { return default; }
+            if (!AssetPathVerify (path)) { return string.Empty; }
             path = ConvertPath (path);
             path = path.Substring (path.IndexOf ("Assets/"));
             return path;

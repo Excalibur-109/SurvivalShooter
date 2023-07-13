@@ -7,7 +7,7 @@ namespace Excalibur
 {
     public class MainEditorWindow : EditorWindow
     {
-        string[] presetArr;
+        static string[] presetArr;
 
         Vector2 scrollPos;
 
@@ -45,6 +45,7 @@ namespace Excalibur
         private void OnDisable()
         {
             EditorProjectPreset.Instance.Save();
+            EditorProjectPreset.Instance.ClearCaches();
         }
 
         private void _CustomCommands()
