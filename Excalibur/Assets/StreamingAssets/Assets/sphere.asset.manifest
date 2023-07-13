@@ -1,0 +1,33 @@
+ManifestFileVersion: 0
+CRC: 3870449608
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 569fd3abc38b17981053fb779df8932c
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 4084816dd650866025802c6ce3016a34
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 135
+  Script: {instanceID: 0}
+- Class: 136
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/BundleResources/Prefab/Others/Sphere.prefab
+Dependencies:
+- F:/Projects/ExcaliburFramework/Excalibur/Assets/StreamingAssets/Assets/capsule.asset
+- F:/Projects/ExcaliburFramework/Excalibur/Assets/StreamingAssets/Assets/spheremat.asset

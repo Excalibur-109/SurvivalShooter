@@ -1,0 +1,19 @@
+ManifestFileVersion: 0
+CRC: 215022097
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 3c28c2f92c50a75d35c74c11b8e25bd4
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 5651999fa58938ac55fc849c3d2539bc
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/BundleResources/Material/cubeMat.mat
+Dependencies: []

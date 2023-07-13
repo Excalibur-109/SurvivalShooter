@@ -1,0 +1,5 @@
+1
+F:/Projects/EAProject/AssetsEditor/Configuration/develop
+F:/Projects/EAProject/Assets/AssetBundleSource/Configurations
+F:/Projects/EAProject/Assets/Scripts/RunTime/Configurations
+False

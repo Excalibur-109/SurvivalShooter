@@ -1,0 +1,14 @@
+#ANNOTATION#
+public partial class #TYPE#
+{/n#FIELD#
+
+    private void CaptureComponents()
+    {/n#COMPONENTS#
+    }
+}
+#ANNOTATION#
+
+public partial class #TYPE# : UIForm
+{
+    public #TYPE#(string formName, GameObject gameObject) : base(formName, gameObject) {}
+}

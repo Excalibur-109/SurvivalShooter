@@ -1,0 +1,29 @@
+///summary #ANNOTATION# /// summary
+public class #TYPE#Cfg
+{
+    public static Dictionary<int, #TYPE#> Config = new Dictionary<int, #TYPE#>();
+
+    private #TYPE#Cfg() {}
+
+    public class #TYPE#
+    {#FIELDS#
+    }
+
+    public static string GetName() => typeof(#TYPE#).Name;
+
+    public static void Deserialize() => Config = FormatXMLHandler.Deserialize<#TYPE#>(GetName());
+
+    public static #TYPE# TryGetValue(int id)
+    {
+        #TYPE# value = default(#TYPE#);
+        try
+        {
+            value = Config[id];
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"{GetName()}配置表不存在id为({id})的数据");
+        }
+        return value;
+    }
+}
