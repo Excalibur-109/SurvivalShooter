@@ -16,7 +16,7 @@ namespace Excalibur
         protected string _srcPath;
         protected string _dstPath;
         protected string _result;
-        protected Encoding _encoding = new UTF8Encoding (true);//Encoding.UTF8;
+        protected Encoding _encoding = Encoding.UTF8; // new UTF8Encoding (true);
         public FormatFileHandler () { }
 
         public void SetSrc (string path) => _srcPath = path;
@@ -35,6 +35,11 @@ namespace Excalibur
             return "Configurations.cs";
         }
 
+        public static string GetDesializeConfigClsName ()
+        {
+            return "DeserializeConfigurations.cs";
+        }
+
         public static string GetConfigContainerString ()
         {
             string str = "using System.Collections.Generic;\nusing System;\nusing UnityEngine;\nusing Excalibur;\r\n\r\n";
@@ -43,7 +48,13 @@ namespace Excalibur
 
         public static string GetConfigClsString ()
         {
-            string str = "///summary #ANNOTATION# /// summary\r\npublic class #TYPE#Cfg\r\n{\r\n    public static Dictionary<int, #TYPE#> Config = new Dictionary<int, #TYPE#> ();\r\n\r\n    private #TYPE#Cfg () {}\r\n\r\n    public class #TYPE#\r\n    {#FIELDS#\r\n    }\r\n\r\n    public static string GetName () => typeof (#TYPE#).Name;\r\n\r\n    public static void Deserialize () => Config = FormatXMLHandler.Deserialize<#TYPE#> (GetName ());\r\n\r\n    public static #TYPE# TryGetValue (int id)\r\n    {\r\n        #TYPE# value = default (#TYPE#);\r\n        try\r\n        {\r\n            value = Config[id];\r\n        }\r\n        catch (Exception e)\r\n        {\r\n            Debug.LogError ($\"{GetName ()}配置表不存在id为 ({id})的数据\");\r\n        }\r\n        return value;\r\n    }\r\n}\r\n";
+            string str = "///summary #ANNOTATION# /// summary\r\npublic static class #TYPE#Cfg\r\n{\r\n    public static Dictionary<int, #TYPE#> Config = new Dictionary<int, #TYPE#> ();\r\n\r\n    public class #TYPE#\r\n    {#FIELDS#\r\n    }\r\n\r\n    public static string GetName () => typeof (#TYPE#).Name;\r\n\r\n    public static void Deserialize () => Config = FormatXMLHandler.Deserialize<#TYPE#> (GetName ());\r\n\r\n    public static #TYPE# TryGetValue (int id)\r\n    {\r\n        #TYPE# value = default (#TYPE#);\r\n        try\r\n        {\r\n            value = Config[id];\r\n        }\r\n        catch (Exception e)\r\n        {\r\n            Debug.LogError ($\"{GetName ()}配置表不存在id为 ({id})的数据\");\r\n        }\r\n        return value;\r\n    }\r\n}\r\n";
+            return str;
+        }
+
+        public static string GetDeserializeConfigurationsStr ()
+        {
+            string str = "public static class DeserializeConfigurations \r\n{\r\n\tpublic static void DeserilaizeConfigs()\r\n\t{\r\n#READ#\t}\r\n}";
             return str;
         }
 
@@ -161,6 +172,7 @@ namespace Excalibur
     {
         public override void Serialize ()
         {
+            StringBuilder desrilaizeSB = new StringBuilder();
             process = 0f;
             try
             {
@@ -183,6 +195,7 @@ namespace Excalibur
                             {
                                 string[] ret = name.Split ('&');
                                 string type = ret[1];
+                                desrilaizeSB.AppendLine("\t\t" + type + "Cfg.Deserialize();");
                                 StringBuilder sb2 = new StringBuilder ();
                                 int column = 0;
                                 while (column < sheet.Dimension.Columns)
@@ -205,9 +218,19 @@ namespace Excalibur
                     }
                 }
                 _result = sb.ToString ();
+                if (!Directory.Exists(_dstPath)) { Directory.CreateDirectory(_dstPath); };  
                 using (StreamWriter writer = new StreamWriter(File.Open(Path.Combine(_dstPath, GetConfigClsName()), FileMode.OpenOrCreate), _encoding))
                 {
                     writer.Write(_result);
+                }
+                
+                _result = GetDeserializeConfigurationsStr().Replace("#READ#", desrilaizeSB.ToString());
+                if (!string.IsNullOrEmpty(_result))
+                {
+                    using (StreamWriter writer = new StreamWriter(File.Open(Path.Combine(_dstPath, GetDesializeConfigClsName()), FileMode.OpenOrCreate), _encoding))
+                    {
+                        writer.Write(_result);
+                    }
                 }
             }
             catch (Exception e)
@@ -363,9 +386,9 @@ namespace Excalibur
                                 string filePath = _dstPath + $"/{type}.xml";
 
                                 XmlWriterSettings setting = new XmlWriterSettings ();
-                                setting.Encoding = new UTF8Encoding (false);
+                                setting.Encoding = Encoding.UTF8;
 
-                                using (StreamWriter sw = new StreamWriter (filePath, false, new UTF8Encoding (false)))
+                                using (StreamWriter sw = new StreamWriter (filePath, false, Encoding.UTF8))
                                 {
                                     xmlDocument.Save (sw);
                                     sw.Close ();

@@ -9,7 +9,7 @@ namespace Excalibur
         private int id;
         protected string formName;
         protected EventHandler handler;
-        /// <summary> ¿ªÆô´«²Î /// </summary>
+        /// <summary>  /// </summary>
         protected EventParam openParam;
         public override string name => formName;
 

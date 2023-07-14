@@ -50,13 +50,13 @@ namespace Excalibur
 
     public delegate void InputAction ();
 
-    /// <summary> °´¼üÊäÈëÏìÓ¦Àà /// </summary>
+    /// <summary> Ó¦ /// </summary>
     public class InputResponser : IExecutableBehaviour
     {
         #region Fields
 
         private readonly List<KeyCode> _inputKeys;
-        private readonly List<KeyCode> _inputKeysMap; // °´¼üÓ³Éä
+        private readonly List<KeyCode> _inputKeysMap; // Ó³
         private readonly Dictionary<KeyCode, InputAction> _inputKeyDownActions;
         private readonly Dictionary<KeyCode, InputAction> _inputKeyActions;
         private readonly Dictionary<KeyCode, InputAction> _inputKeyUpActions;
@@ -95,7 +95,7 @@ namespace Excalibur
 
         #region Attach Key Actions
 
-        /// <summary> Á´½Ó¼üÅÌ°´¼ü /// </summary>
+        /// <summary> Ó¼Ì° /// </summary>
         public void AttachInputKeys (List<KeyCode> inputKeys)
         {
             if (_inputKeys.Count > 0) { return; }
@@ -154,7 +154,7 @@ namespace Excalibur
 
         #region Attach MouseButton Actions
 
-        /// <summary> Á´½ÓÊó±ê°´¼ü /// </summary>
+        /// <summary> ê°´ /// </summary>
         public void AttachInputButton (List<MouseButton> inputButtons)
         {
             if (_inputButtons.Count > 0) { return; }
@@ -211,37 +211,37 @@ namespace Excalibur
         #endregion
 
         #region Response
-        /// <summary> ¼üÅÌ°´ÏÂ /// </summary>
+        /// <summary> Ì° /// </summary>
         private void _ResponseKeyDown (KeyCode keyCode)
         {
             _inputKeyDownActions[_GetOriginalKey (keyCode)]?.Invoke ();
         }
 
-        /// <summary> ¼üÅÌ°´×¡ /// </summary>
+        /// <summary> Ì°×¡ /// </summary>
         private void _ResponseKey (KeyCode keyCode)
         {
             _inputKeyActions[_GetOriginalKey (keyCode)]?.Invoke ();
         }
 
-        /// <summary> ¼üÅÌÌ§Æð /// </summary>
+        /// <summary> Ì§ /// </summary>
         private void _ResponseKeyUp (KeyCode keyCode)
         {
             _inputKeyUpActions[_GetOriginalKey (keyCode)]?.Invoke ();
         }
 
-        /// <summary> Êó±ê°´ÏÂ /// </summary>
+        /// <summary> ê°´ /// </summary>
         private void _ResponseMouseButtonDown (MouseButton mouseButton) 
         {
             _inputButtonDownActions[mouseButton]?.Invoke ();
         }
 
-        /// <summary> Êó±ê°´×¡ /// </summary>
+        /// <summary> ê°´×¡ /// </summary>
         private void _ResponseMouseButton (MouseButton mouseButton)
         {
             _inputButtonActions[mouseButton]?.Invoke ();
         }
 
-        /// <summary> Êó±êÌ§Æð /// </summary>
+        /// <summary> Ì§ /// </summary>
         private void _ResponseMouseButtonUp (MouseButton mouseButton)
         {
             _inputButtonUpActions[mouseButton]?.Invoke ();

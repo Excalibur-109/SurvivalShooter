@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Excalibur
 {
-    /// <summary> ¼ÆÊ±Íê³ÉµÄÎ¯ÍÐ /// </summary>
+    /// <summary> Ê±ÉµÎ¯ /// </summary>
     public delegate void TickCallback (int elapsed);
 
     public sealed partial class TimingSchedule : Singleton<TimingSchedule>, IExecutableBehaviour, IPersistant
@@ -15,11 +15,11 @@ namespace Excalibur
         private readonly ExecutableBehaviourAssistant _timerExecuteAssistant = new ExecutableBehaviourAssistant();
         private ObjectPool<Timer> _pool;
 
-        private const int FRAME_COUNT_INTERVAL = 1; /// Ö¡Êý¼ÆËãÊ±¼ä¼ä¸ô(Ãë)
+        private const int FRAME_COUNT_INTERVAL = 1; /// Ö¡Ê±()
 
         private int
-            _gameTime,          /// ÓÎÏ·Ê±¼ä(µ¥Î»£ºÃë)
-            _persistentTime,    /// ³ÖÐøÔö³¤µÄÊ±¼ä£¬²»ÊÜÆäËûÓ°Ïì(µ¥Î»£ºÃë)
+            _gameTime,          /// Ï·Ê±(Î»)
+            _persistentTime,    /// Ê±ä£¬Ó°(Î»)
             _frameCounter,
             _circularPersistentTime,
             _circularGameTime;
@@ -112,7 +112,7 @@ namespace Excalibur
         }
     }
 
-    /// <summary> Timer ¾«È·¶ÈÎªºÁÃë£ºmilliseconds /// </summary>
+    /// <summary> Timer È·Îªë£ºmilliseconds /// </summary>
     public partial class TimingSchedule
     {
         public class TimerToken
@@ -280,10 +280,10 @@ namespace Excalibur
                 return true;
             }
 
-            [Obsolete("Î´Íê³É")]
+            [Obsolete("Î´")]
             public async Task StartAsync()
             {
-                Debug.Log($"TimerÒì²½Ïß³ÌID:{Thread.CurrentThread.ManagedThreadId}");
+                Debug.Log($"Timerì²½ß³ID:{Thread.CurrentThread.ManagedThreadId}");
                 if (!_CheckValidate()) { return; }
 
                 await Task.Delay(_delay);
@@ -315,10 +315,10 @@ namespace Excalibur
         }
     }
 
-    /// <summary> Methods, repeat < 0 ÎªÎÞÏÞ /// </summary>
+    /// <summary> Methods, repeat < 0 Îª /// </summary>
     public partial class TimingSchedule
     {
-        /// <summary> Ã»ÓÐMillisecondsµÄ¶¼ÊÇÃë /// </summary>
+        /// <summary> Ã»MillisecondsÄ¶ /// </summary>
         public void ScheduleMilliseconds (int time, Action onComplete, TickCallback onTick = default, 
             int interval = 1, int delay = 0, int repeat = 1)
         {
@@ -363,7 +363,7 @@ namespace Excalibur
             ScheduleMilliseconds((int)(time * MILLI_SECONDS), onComplete, onTick);
         }
 
-        [Obsolete("Î´Íê³É", true)]
+        [Obsolete("Î´", true)]
         public void ScheduleOnNextFrame() { }
 
         public TimerToken ScheduleTokenMilliseconds (int time, Action onComplete, TickCallback onTick = default,
@@ -401,7 +401,7 @@ namespace Excalibur
             return ScheduleToken(time, onComplete, null, 1f, delay, -1);
         }
 
-        [Obsolete("Î´Íê³É", true)]
+        [Obsolete("Î´", true)]
         public async void ScheduleMillisecondsAsync(int time, Action onComplete, TickCallback onTick = default,
             int interval = 1, int delay = 0, int repeat = 1)
         {
@@ -410,15 +410,15 @@ namespace Excalibur
             ReleaseTimer(timer);
         }
 
-        [Obsolete("Î´Íê³É", true)]
+        [Obsolete("Î´", true)]
         public void ScheduleAsync(int time, Action onComplete, TickCallback onTick = default,
             int interval = 1, int delay = 0, int repeat = 1)
         {
-            Debug.Log($"Ö÷Ïß³ÌID:{Thread.CurrentThread.ManagedThreadId}");
+            Debug.Log($"ß³ID:{Thread.CurrentThread.ManagedThreadId}");
             ScheduleMillisecondsAsync(time * MILLI_SECONDS, onComplete, onTick, interval * MILLI_SECONDS, delay * MILLI_SECONDS, repeat);
         }
 
-        [Obsolete("Î´Íê³É", true)]
+        [Obsolete("Î´", true)]
         public void ScheduleAsync (float time, Action onComplete, TickCallback onTick = default,
             float interval = 1f, float delay = 0f, int repeat = 1)
         {
@@ -428,13 +428,13 @@ namespace Excalibur
             ScheduleMillisecondsAsync(t, onComplete, onTick, i, d, repeat);
         }
 
-        [Obsolete("Î´Íê³É", true)]
+        [Obsolete("Î´", true)]
         public void TickAsync (int time, TickCallback onTick, Action onComplete = default)
         {
             ScheduleMillisecondsAsync(time * MILLI_SECONDS, onComplete, onTick);
         }
 
-        [Obsolete("Î´Íê³É", true)]
+        [Obsolete("Î´", true)]
         public void TickAsync (float time, TickCallback onTick, Action onComplete = default)
         {
             ScheduleMillisecondsAsync((int)(time * MILLI_SECONDS), onComplete, onTick);

@@ -70,7 +70,7 @@ public abstract class BaseListItem : DirtyBehaviour,
         SetSelectedEffect ();
     }
 
-    public void Execute ()
+    public override void Execute ()
     {
         isSelected = _list.IsSelectedIndex (data);
         SetSelectedEffect ();

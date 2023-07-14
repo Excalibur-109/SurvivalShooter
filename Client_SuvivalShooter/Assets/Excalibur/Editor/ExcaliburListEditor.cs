@@ -107,7 +107,7 @@ namespace Excalibur
                                     if ((ListType)listType.enumValueIndex != ListType.Content)
                                     {
                                         scrolllAxis.enumValueIndex = (int)ScrolllAxis.Vertical;
-                                        Debug.LogError("列表不允许自由滑动");
+                                        Debug.LogError("斜苫");
                                     }
                                 }
                                 break;

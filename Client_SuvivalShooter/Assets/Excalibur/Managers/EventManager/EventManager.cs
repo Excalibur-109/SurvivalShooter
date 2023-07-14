@@ -13,7 +13,7 @@ public sealed class EventManager : Singleton<EventManager>
     {
         if (_eventDic.ContainsKey (eventName))
         {
-            Debug.LogError (string.Format ("{0}已经监听", eventName));
+            Debug.LogError (string.Format ("{0}丫", eventName));
             return;
         }
         _eventDic.Add (eventName, eventHandler);
@@ -23,7 +23,7 @@ public sealed class EventManager : Singleton<EventManager>
     {
         if (!_eventDic.ContainsKey (eventName))
         {
-            Debug.LogError (string.Format ("事件{0}不存在", eventName));
+            Debug.LogError (string.Format ("录{0}", eventName));
             return;
         }
         _eventDic.Remove (eventName);
@@ -33,7 +33,7 @@ public sealed class EventManager : Singleton<EventManager>
     {
         if (!_eventDic.ContainsKey (eventName))
         {
-            throw new Exception (string.Format ("触发的事件{0}不存在", eventName));
+            throw new Exception (string.Format ("录{0}", eventName));
         }
 
         _eventDic[eventName].Invoke (parameters);

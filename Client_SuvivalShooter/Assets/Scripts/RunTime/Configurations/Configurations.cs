@@ -4,11 +4,9 @@ using UnityEngine;
 using Excalibur;
 
 ///summary 测试 /// summary
-public class TestCfg
+public static class TestCfg
 {
     public static Dictionary<int, Test> Config = new Dictionary<int, Test> ();
-
-    private TestCfg () {}
 
     public class Test
     {
@@ -50,11 +48,9 @@ public class TestCfg
 }
 
 ///summary 测试 /// summary
-public class Test2Cfg
+public static class Test2Cfg
 {
     public static Dictionary<int, Test2> Config = new Dictionary<int, Test2> ();
-
-    private Test2Cfg () {}
 
     public class Test2
     {

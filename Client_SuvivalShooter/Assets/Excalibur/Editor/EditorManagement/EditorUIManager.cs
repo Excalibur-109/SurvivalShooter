@@ -14,7 +14,7 @@ namespace Excalibur
             winCaches = winCaches.Where(e => e.Value != null).ToDictionary(pair => pair.Key, pair => pair.Value);
             if (winCaches.ContainsKey(drawer.title))
             {
-                Debug.LogWarningFormat("{0}窗口已经打开了", drawer.title);
+                Debug.LogWarningFormat("{0}丫", drawer.title);
                 return;
             }
             drawer.Initialize();

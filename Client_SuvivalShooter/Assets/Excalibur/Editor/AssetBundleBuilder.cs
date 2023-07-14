@@ -7,8 +7,6 @@ using UnityEngine;
 using static Excalibur.AssetsManager;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Text;
-using UnityEditor.Presets;
 
 namespace Excalibur
 {
@@ -50,7 +48,7 @@ namespace Excalibur
             }
             if (string.IsNullOrEmpty(srcPath))
             {
-                EditorUtility.DisplayDialog("Warning", $"打包路径不存在", "OK");
+                EditorUtility.DisplayDialog("Warning", $"路", "OK");
                 return;
             }
             srcPath = IOAssistant.ConvertPath(Path.Combine(Application.dataPath, srcPath));

@@ -6,18 +6,18 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /*
- * ±à¼­Æ÷·Ç²¥·ÅÄ£Ê½ÏÂ£¬ÅÅÁĞitem£¬item¸öÊı¸ù¾İ»¬¶¯·½Ê½¹Ì¶¨
- * µ¥ĞĞ/µ¥ÁĞÊ¼ÖÕ¾ÓÖĞÅÅÁĞ
- * ¶àĞĞ/¶àÁĞÄ¬ÈÏ´Ó×óÉÏ½Ç¿ªÊ¼ÅÅÁĞ£¬¸ù¾İ»¬¶¯·½Ïò£¬´¹Ö±»¬¶¯´Ó´Ó×óµ½ÓÒ£¬´ÓÉÏµ½ÏÂ£»Ë®Æ½»¬¶¯´ÓÉÏµ½ÏÂ£¬´Ó×óµ½ÓÒ
- * Ë®Æ½¡¢´¹Ö±»¬¶¯£¬»áÔÚÏàÓ¦·½ÏòÉÏ³ıÁËMaskÄÚµÄitemÍâ£¬¶àÉú³ÉÁ½¸öitemÓÃÓÚĞéÄâÁĞ±íÎ»ÖÃ±ä»¯´¦Àí
- * ScrolllAxis.Horizontal       Ë®Æ½·½Ïò»¬¶¯
- * ScrolllAxis.Vertical         ´¹Ö±·½Ïò»¬¶¯
- * ScrolllAxis.Arbitrary        »áÓĞÒ»¸öcontent´æ·ÅÄÚÈİ
+ * à¼­Ç²Ä£Ê½Â£itemitemİ»Ê½Ì¶
+ * /Ê¼Õ¾
+ * /Ä¬Ï´Ï½Ç¿Ê¼Ğ£İ»ò£¬´Ö±Ó´Ò£ÏµÂ£Ë®Æ½ÏµÂ£
+ * Ë®Æ½Ö±Ó¦Ï³MaskÚµitemâ£¬itemĞ±Î»Ã±ä»¯
+ * ScrolllAxis.Horizontal       Ë®Æ½ò»¬¶
+ * ScrolllAxis.Vertical         Ö±ò»¬¶
+ * ScrolllAxis.Arbitrary        Ò»content
  * 
- * Vertical     ¿ÉÒÔÑ¡Ôñ¹Ì¶¨ÁĞÊı£¬Èç¹û²»¹Ì¶¨ÁĞÊı¾Í¸ù¾İMask¿í×Ô¶¯ÅÅÁĞÁĞÊı
- * Horizontal   ¿ÉÒÔÑ¡Ôñ¹Ì¶¨ĞĞÊı£¬Èç¹û²»¹Ì¶¨ĞĞÊı¾Í¸ù¾İMask¸ß×Ô¶¯ÅÅÁĞĞĞÊı
+ * Vertical     Ñ¡Ì¶Ì¶Í¸MaskÔ¶
+ * Horizontal   Ñ¡Ì¶Ì¶Í¸MaskÔ¶
  * 
- * ScrollType.Nothing    ×î¶àÖ»»áÅÅÁĞÁĞ±íÄÚËùÓĞÄÜ¼ûµÄitem¸öÊı¡£ÆäËû½«»áÓĞ¶àÁ½ÁĞ»òÕßÁ½ÅÅÍêÈ«ÔÚMaskÍâµÄitemÀ´´¦ÀíĞéÄâĞ§¹û
+ * ScrollType.Nothing    Ö»Ğ±Ü¼itemĞ¶Ğ»È«MaskitemĞ§
  */
 
 namespace Excalibur
@@ -31,7 +31,7 @@ namespace Excalibur
     {
         private enum MoveType { Nothing, Dragging, DragDamp, Scrolling, ScrollDamp, Elastic, ScrollTo, ScrollBar }
 
-        /// ĞéÄâ¹ö¶¯ÁĞ±íÍêÈ«ÔÚÊÓ´°ÍâµÄÓĞ 1 ĞĞ/ÁĞ
+        /// Ğ±È«Ó´ 1 /
         private int FULL_OUT_BOUND_COUNT = 2;
 
         [SerializeField] private BaseListItem _prefab;
@@ -89,7 +89,7 @@ namespace Excalibur
         private List<BaseData> 
             _sources = new List<BaseData> ();
         private BaseData _interactData;
-        /// <summary> Ñ¡ÔñÊı¾İ /// </summary>
+        /// <summary> Ñ¡ /// </summary>
         private List<BaseData>
             _selections = new List<BaseData> ();
         private List<IObserver>
@@ -176,15 +176,15 @@ namespace Excalibur
         #region Item Data Operate Methods
 
         /// <summary>
-        /// ÒÑ¾­ÓĞÊı¾İµÄÇé¿öÏÂĞÂÔö¡¢É¾³ıÊı¾İ£¬µ«²»¸Ä±äÏÖÔÚµÄÏÔÊ¾Î»ÖÃ£¬ÈÃrelayout = false
+        /// Ñ¾İµÉ¾İ£Ä±ÚµÊ¾Î»Ã£relayout = false
         /// </summary>
         public void SurveilDatas<T> (IEnumerable<T> dataSrc, bool relayout = true) where T : BaseData
         {
-            if (!_prefab) { Debug.Log ("ÁĞ±íÔ¤ÖÆÌåÎª¿Õ"); }
+            if (!_prefab) { Debug.Log ("Ğ±Ô¤Îª"); }
 
             if (listType == ListType.Content || scrolllAxis == ScrolllAxis.Arbitrary)
             {
-                Debug.Log ("ÁĞ±í²»ÎªContentÇÒ²»ÄÜÈÎÒâ»¬¶¯²ÅÄÜÉèÖÃÊı¾İ");
+                Debug.Log ("Ğ±ÎªContentÒ²â»¬");
                 return;
             }
 
@@ -318,7 +318,7 @@ namespace Excalibur
             }
         }
 
-        /// Ôö¼Ó»òÕßĞŞ¸Ä
+        /// Ó»Ş¸
         public void OnRefresh (IEnumerable<BaseData> datas)
         {
             foreach (var data in datas)
@@ -327,7 +327,7 @@ namespace Excalibur
             }
         }
 
-        /// <summary> ÒÆ³ıµ¥¸öÊı¾İ /// </summary>
+        /// <summary> Æ³ /// </summary>
         public void OnRemove (BaseData data)
         {
             if (_selections.Count > 0 && _selections.Contains (data))
@@ -348,7 +348,7 @@ namespace Excalibur
             TransitionMove (MoveType.Elastic);
         }
 
-        /// <summary> ÒÆ³ı¶à¸öÊı¾İ /// </summary>
+        /// <summary> Æ³ /// </summary>
         public void OnRemove (IEnumerable<BaseData> datas)
         {
             foreach (BaseData data in datas)
@@ -608,13 +608,13 @@ namespace Excalibur
             _scrollExceedOffset.x = 0f;
             if (scrollPos.x < -maxScrollRange.x)
             {
-                // Ïò×ó»¬¶¯
+                // ó»¬¶
                 _scrollExceedOffset.x = scrollPos.x + maxScrollRange.x;
                 return true;
             }
             else if (scrollPos.x > 0f)
             {
-                // ÏòÓÒ»¬¶¯
+                // Ò»
                 _scrollExceedOffset.x = scrollPos.x;
                 return true;
             }
@@ -828,7 +828,7 @@ namespace Excalibur
             return false;
         }
 
-        /// <summary> ¿É»¬¶¯¾àÀëÎªÊÓ´°ÍâµÄ²¿·Ö /// </summary>
+        /// <summary> É»ÎªÓ´Ä² /// </summary>
         private void CalcScrollRange ()
         {
             _maxScrollRange = Vector2.zero;
@@ -920,9 +920,9 @@ namespace Excalibur
 
         public void ScrollTo (int dataIndex) { ScrollTo (dataIndex, true); }
         public void ScrollTo (int dataIndex, bool animated) { }
-        /// <param name="axis"><=0Ë®Æ½£¬>=1´¹Ö±</param>
+        /// <param name="axis"><=0Ë®Æ½>=1Ö±</param>
         public void ScrollTo (float position, int axis) { ScrollTo (position, axis, false); }
-        /// <param name="axis"><=0Ë®Æ½£¬>=1´¹Ö±</param>
+        /// <param name="axis"><=0Ë®Æ½>=1Ö±</param>
         public void ScrollTo (float position, int axis, bool animated)
         {
             if (axis < 0) { axis = 0; }
@@ -956,7 +956,7 @@ namespace Excalibur
         {
             if (!_prefab)
             {
-                throw new NullReferenceException ("List Prefab Îª¿Õ");
+                throw new NullReferenceException ("List Prefab Îª");
             }
 
             if (listType == ListType.Grid && scrolllAxis != ScrolllAxis.Arbitrary)

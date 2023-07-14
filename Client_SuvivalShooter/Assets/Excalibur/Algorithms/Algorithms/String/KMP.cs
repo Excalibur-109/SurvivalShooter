@@ -4,32 +4,32 @@ using System.Collections.Generic;
 namespace Excalibur.Algorithms
 {
     /*
-    * KMPËã·¨£¨Knuth-Morris-PrattËã·¨£©ÊÇÒ»ÖÖ×Ö·û´®Æ¥ÅäËã·¨£¬ÓÃÓÚÔÚÒ»¸öÎÄ±¾´®ÖÐ²éÕÒÒ»¸öÄ£Ê½´®µÄ³öÏÖÎ»ÖÃ¡£Ïà±ÈÓÚÆÓËØµÄ×Ö·û´®Æ¥ÅäËã·¨£¬KMPËã·¨¾ßÓÐ¸ü¸ßµÄÐ§ÂÊ£¬ÌØ±ðÊÊÓÃÓÚ´óÎÄ±¾ºÍ³¤Ä£Ê½´®µÄÆ¥Åä¡£
-    KMPËã·¨µÄºËÐÄË¼ÏëÊÇÀûÓÃÄ£Ê½´®±¾ÉíµÄÐÅÏ¢À´±ÜÃâ²»±ØÒªµÄ×Ö·û±È½Ï¡£ËüÍ¨¹ý¹¹½¨Ò»¸ö²¿·ÖÆ¥Åä±í£¨Partial Match Table£¬¼ò³ÆPMT»ònextÊý×é£©£¬À´ÌáÇ°¼ÆËãÄ£Ê½´®ÖÐÃ¿¸öÎ»ÖÃµÄ×î³¤¹«¹²Ç°×ººó×º³¤¶È¡£Í¨¹ýÕâ¸ö²¿·ÖÆ¥Åä±í£¬Ëã·¨ÄÜ¹»¸ù¾ÝÒÑÆ¥ÅäµÄ×Ö·û£¬¿ìËÙµØµ÷ÕûÄ£Ê½´®µÄ±È½ÏÎ»ÖÃ£¬´Ó¶ø¼õÉÙ²»±ØÒªµÄ×Ö·û±È½Ï´ÎÊý¡£
+    * KMPã·¨Knuth-Morris-Prattã·¨Ò»Ö·Æ¥ã·¨Ò»Ä±Ð²Ò»Ä£Ê½Ä³Î»Ã¡ØµÖ·Æ¥ã·¨KMPã·¨Ð¸ßµÐ§Ê£Ø±Ú´Ä±Í³Ä£Ê½Æ¥ä¡£
+    KMPã·¨ÄºË¼Ä£Ê½Ï¢â²»ÒªÖ·È½Ï¡Í¨Ò»Æ¥Partial Match TablePMTnexté£©Ç°Ä£Ê½Ã¿Î»Ãµî³¤Ç°×º×ºÈ¡Í¨Æ¥ã·¨Ü¹Æ¥Ö·ÙµØµÄ£Ê½Ä±È½Î»Ã£Ó¶Ù²ÒªÖ·È½Ï´
 
-    ÏÂÃæÊÇKMPËã·¨µÄÏêÏ¸²½Öè£º
+    KMPã·¨Ï¸è£º
 
-    ¹¹½¨²¿·ÖÆ¥Åä±í£¨nextÊý×é£©£º
-    ²¿·ÖÆ¥Åä±í¼ÇÂ¼ÁËÄ£Ê½´®ÖÐÃ¿¸öÎ»ÖÃµÄ×î³¤¹«¹²Ç°×ººó×º³¤¶È¡£¾ßÌå¹¹½¨¹ý³ÌÈçÏÂ£º
+    Æ¥nexté£©
+    Æ¥Â¼Ä£Ê½Ã¿Î»Ãµî³¤Ç°×º×ºÈ¡å¹¹Â£
 
-    ³õÊ¼»¯nextÊý×é£¬next[0] = -1£¬next[1] = 0£»
-    ´ÓÎ»ÖÃ2¿ªÊ¼±éÀúÄ£Ê½´®£¬Î¬»¤Á½¸öÖ¸Õë£ºi±íÊ¾µ±Ç°Î»ÖÃ£¬j±íÊ¾×î³¤¹«¹²Ç°×ººó×ºµÄ³¤¶È£»
-    ÈôÄ£Ê½´®µÄµÚi¸ö×Ö·ûÓëÇ°j¸ö×Ö·ûÆ¥Åä£¬Ôònext[i] = j + 1£¬È»ºói++£¬j++£»
-    ÈôÄ£Ê½´®µÄµÚi¸ö×Ö·ûÓëÇ°j¸ö×Ö·û²»Æ¥Åä£º
-    ÈôjÎª0£¬Ôònext[i] = 0£¬i++£»
-    Èôj²»Îª0£¬Ôò½«j¸üÐÂÎªnext[j-1]£¬¼ÌÐøÆ¥Åä¡£
-    ÔÚÎÄ±¾´®ÖÐ²éÕÒÄ£Ê½´®£º
-    ÀûÓÃ¹¹½¨ºÃµÄ²¿·ÖÆ¥Åä±í£¬½øÐÐÎÄ±¾´®ÓëÄ£Ê½´®µÄÆ¥Åä¹ý³Ì£¬¾ßÌå²½ÖèÈçÏÂ£º
+    Ê¼nexté£¬next[0] = -1next[1] = 0
+    Î»2Ê¼Ä£Ê½Î¬Ö¸ë£ºiÊ¾Ç°Î»Ã£jÊ¾î³¤Ç°×º×ºÄ³È£
+    Ä£Ê½ÄµiÖ·Ç°jÖ·Æ¥ä£¬next[i] = j + 1È»i++j++
+    Ä£Ê½ÄµiÖ·Ç°jÖ·Æ¥ä£º
+    jÎª0next[i] = 0i++
+    jÎª0jÎªnext[j-1]Æ¥ä¡£
+    Ä±Ð²Ä£Ê½
+    Ã¹ÃµÄ²Æ¥Ä±Ä£Ê½Æ¥Ì£å²½Â£
 
-    ³õÊ¼»¯ÎÄ±¾´®Ö¸ÕëiºÍÄ£Ê½´®Ö¸Õëj£¬·Ö±ðÖ¸ÏòµÚÒ»¸ö×Ö·û£»
-    ÈôÎÄ±¾´®µÄµÚi¸ö×Ö·ûÓëÄ£Ê½´®µÄµÚj¸ö×Ö·ûÆ¥Åä£¬Ôòi++£¬j++£»
-    ÈôÄ£Ê½´®µÄÖ¸Õëj´ïµ½Ä©Î²£¨¼´ÍêÈ«Æ¥Åä£©£¬ÔòÕÒµ½ÁËÒ»¸öÆ¥ÅäµÄÎ»ÖÃ£»
-    ÈôÎÄ±¾´®µÄµÚi¸ö×Ö·ûÓëÄ£Ê½´®µÄµÚj¸ö×Ö·û²»Æ¥Åä£º
-    ÈôjÎª0£¬ÔòÎÄ±¾´®Ö¸ÕëiºóÒÆÒ»Î»£¬¼ÌÐøÆ¥Åä£»
-    Èôj²»Îª0£¬Ôò½«Ä£Ê½´®Ö¸Õëj¸üÐÂÎªnext[j-1]£¬¼ÌÐøÆ¥Åä¡£
-    ÖØ¸´²½Öè2£¬Ö±µ½ÕÒµ½ËùÓÐµÄÆ¥ÅäÎ»ÖÃ»ò±éÀúÍêÕû¸öÎÄ±¾´®¡£
+    Ê¼Ä±Ö¸iÄ£Ê½Ö¸jÖ±Ö¸Ò»Ö·
+    Ä±ÄµiÖ·Ä£Ê½ÄµjÖ·Æ¥ä£¬i++j++
+    Ä£Ê½Ö¸jïµ½Ä©Î²È«Æ¥ä£©ÒµÒ»Æ¥Î»Ã£
+    Ä±ÄµiÖ·Ä£Ê½ÄµjÖ·Æ¥ä£º
+    jÎª0Ä±Ö¸iÒ»Î»Æ¥ä£»
+    jÎª0Ä£Ê½Ö¸jÎªnext[j-1]Æ¥ä¡£
+    Ø¸2Ö±ÒµÐµÆ¥Î»Ã»Ä±
 
-    KMPËã·¨µÄÊ±¼ä¸´ÔÓ¶ÈÎªO(m+n)£¬ÆäÖÐmÎªÄ£Ê½´®µÄ³¤¶È£¬nÎªÎÄ±¾´®µÄ³¤¶È¡£Ïà±ÈÓÚÆÓËØµÄ×Ö·û´®Æ¥ÅäËã·¨£¬KMPËã·¨¼õÉÙÁË²»±ØÒªµÄ×Ö·û±È½Ï£¬Ìá¸ßÁËÆ¥ÅäÐ§ÂÊ¡£Òò´Ë£¬KMPËã·¨ÔÚ×Ö·û´®Æ¥ÅäÎÊÌâÖÐµÃµ½¹ã·ºÓ¦ÓÃ¡£
+    KMPã·¨Ê±ä¸´Ó¶ÎªO(m+n)mÎªÄ£Ê½Ä³È£nÎªÄ±Ä³È¡ØµÖ·Æ¥ã·¨KMPã·¨Ë²ÒªÖ·È½Ï£Æ¥Ð§Ê¡Ë£KMPã·¨Ö·Æ¥ÐµÃµã·ºÓ¦Ã¡
     */
     public static class KMP
     {
@@ -100,19 +100,19 @@ namespace Excalibur.Algorithms
     }
 
     /*
-     SundayËã·¨ÊÇÒ»ÖÖ¸ßÐ§µÄ×Ö·û´®Æ¥ÅäËã·¨£¬ÓÃÓÚÔÚÎÄ±¾´®ÖÐ²éÕÒÄ£Ê½´®µÄ³öÏÖÎ»ÖÃ¡£ËüµÄË¼Ïë¼òµ¥Ö±¹Û£¬Í¨¹ýÔ¤´¦ÀíÄ£Ê½´®ºÍÎÄ±¾´®µÄ×Ö·ûÀ´È·¶¨Ã¿´Î±È½ÏµÄÎ»ÖÃ£¬´Ó¶ø¼õÉÙ±È½Ï´ÎÊý£¬Ìá¸ßÆ¥ÅäÐ§ÂÊ¡£
-    ÏÂÃæÊÇSundayËã·¨µÄÀíÂÛÔ­Àí£º
-    Ô¤´¦ÀíÄ£Ê½´®£º
-    ¼ÇÂ¼Ä£Ê½´®ÖÐÃ¿¸ö×Ö·û×îÓÒ³öÏÖµÄÎ»ÖÃ¡£
-    Èô×Ö·ûÔÚÄ£Ê½´®ÖÐ¶à´Î³öÏÖ£¬Ôò¼ÇÂ¼×îÓÒ±ßµÄÎ»ÖÃ¡£
-    ÔÚÎÄ±¾´®ÖÐ²éÕÒÄ£Ê½´®£º
-    ´ÓÎÄ±¾´®µÄÆðÊ¼Î»ÖÃ¿ªÊ¼£¬Öð¸ö±È½ÏÄ£Ê½´®ºÍÎÄ±¾´®µÄ¶ÔÓ¦×Ö·û¡£
-    ÈôÆ¥Åä³É¹¦£¬Ôò¼ÌÐø±È½ÏÏÂÒ»¸ö×Ö·û¡£
-    ÈôÆ¥ÅäÊ§°Ü£¬Ôò¸ù¾ÝÎÄ±¾´®ÖÐµ±Ç°±È½ÏµÄ×Ö·ûµÄÏÂÒ»¸ö×Ö·ûÀ´¾ö¶¨ÏÂÒ»´Î±È½ÏµÄÎ»ÖÃ£º
-    Èôµ±Ç°×Ö·ûµÄÏÂÒ»¸ö×Ö·ûÔÚÄ£Ê½´®ÖÐ²»´æÔÚ£¬Ôò½«Ä£Ê½´®ÒÆ¶¯µ½µ±Ç°×Ö·ûµÄÏÂÒ»¸öÎ»ÖÃ¡£
-    ·ñÔò£¬½«Ä£Ê½´®ÓÒÒÆ£¬Ê¹Ä£Ê½´®µÄ×îÓÒ±ß×Ö·ûÓëÎÄ±¾´®ÖÐµÄµ±Ç°×Ö·û¶ÔÆë¡£
-    ÖØ¸´²½Öè2£¬Ö±µ½ÕÒµ½ËùÓÐµÄÆ¥ÅäÎ»ÖÃ»ò±éÀúÍêÕû¸öÎÄ±¾´®¡£
-    SundayËã·¨µÄÊ±¼ä¸´ÔÓ¶ÈÎªO(n+m)£¬ÆäÖÐnÎªÎÄ±¾´®µÄ³¤¶È£¬mÎªÄ£Ê½´®µÄ³¤¶È¡£Ëü¾ßÓÐ½ÏºÃµÄÆ½¾ùÐÔÄÜ£¬ÔÚÊµ¼ùÖÐ±»¹ã·ºÓ¦ÓÃ
+     Sundayã·¨Ò»Ö¸Ð§Ö·Æ¥ã·¨Ä±Ð²Ä£Ê½Ä³Î»Ã¡Ë¼Ö±Û£Í¨Ô¤Ä£Ê½Ä±Ö·È·Ã¿Î±È½ÏµÎ»Ã£Ó¶Ù±È½Ï´Æ¥Ð§Ê¡
+    Sundayã·¨Ô­
+    Ô¤Ä£Ê½
+    Â¼Ä£Ê½Ã¿Ö·Ò³ÖµÎ»Ã¡
+    Ö·Ä£Ê½Ð¶Î³Ö£Â¼Ò±ßµÎ»Ã¡
+    Ä±Ð²Ä£Ê½
+    Ä±Ê¼Î»Ã¿Ê¼È½Ä£Ê½Ä±Ä¶Ó¦Ö·
+    Æ¥É¹È½Ò»Ö·
+    Æ¥Ê§Ü£Ä±ÐµÇ°È½ÏµÖ·Ò»Ö·Ò»Î±È½ÏµÎ»Ã£
+    Ç°Ö·Ò»Ö·Ä£Ê½Ð²Ú£Ä£Ê½Æ¶Ç°Ö·Ò»Î»Ã¡
+    ò£¬½Ä£Ê½Æ£Ê¹Ä£Ê½Ò±Ö·Ä±ÐµÄµÇ°Ö·ë¡£
+    Ø¸2Ö±ÒµÐµÆ¥Î»Ã»Ä±
+    Sundayã·¨Ê±ä¸´Ó¶ÎªO(n+m)nÎªÄ±Ä³È£mÎªÄ£Ê½Ä³È¡Ð½ÏºÃµÆ½Ü£ÊµÐ±ã·ºÓ¦
      */
     public class Sunday
     {
@@ -192,26 +192,26 @@ namespace Excalibur.Algorithms
     }
 
     /*
-     Boyer-MooreËã·¨ÊÇÒ»ÖÖ¸ßÐ§µÄ×Ö·û´®ËÑË÷Ëã·¨£¬ÓÃÓÚÔÚÒ»¸öÎÄ±¾´®ÖÐ²éÕÒÒ»¸öÄ£Ê½´®µÄ³öÏÖÎ»ÖÃ¡£Ïà±ÈÓÚÆÓËØµÄ×Ö·û´®Æ¥ÅäËã·¨£¬Boyer-MooreËã·¨Í¨³£¾ßÓÐ¸ü¸ßµÄÐ§ÂÊ£¬ÌØ±ðÊÊÓÃÓÚ´óÎÄ±¾ºÍ³¤Ä£Ê½´®µÄÆ¥Åä¡£
+     Boyer-Mooreã·¨Ò»Ö¸Ð§Ö·ã·¨Ò»Ä±Ð²Ò»Ä£Ê½Ä³Î»Ã¡ØµÖ·Æ¥ã·¨Boyer-Mooreã·¨Í¨Ð¸ßµÐ§Ê£Ø±Ú´Ä±Í³Ä£Ê½Æ¥ä¡£
 
-    Boyer-MooreËã·¨µÄºËÐÄË¼ÏëÊÇ¸ù¾ÝÄ£Ê½´®µÄ×Ö·û±È½Ï½á¹û£¬ÀûÓÃÁ½¸öÆô·¢Ê½¹æÔòÀ´Ìø¹ý¾¡Á¿¶àµÄÎÄ±¾´®ÖÐµÄ×Ö·û£¬´Ó¶ø¼õÉÙ±È½Ï´ÎÊý¡£
+    Boyer-Mooreã·¨ÄºË¼Ç¸Ä£Ê½Ö·È½Ï½Ê½Ä±ÐµÖ·Ó¶Ù±È½Ï´
 
-    ÏÂÃæÊÇBoyer-MooreËã·¨µÄÖ÷Òª²½Öè£º
+    Boyer-Mooreã·¨Òªè£º
 
-    Ô¤´¦ÀíÄ£Ê½´®£º
+    Ô¤Ä£Ê½
 
-    ¼ÆËãÄ£Ê½´®ÖÐÃ¿¸ö×Ö·ûµÄ×îÓÒ³öÏÖÎ»ÖÃ£¨rightmost occurrence£©¡£
-    ¼ÆËãÄ£Ê½´®µÄºÃºó×º¹æÔò£¨good suffix rule£©£¬ÒÔ±ãÔÚÆ¥Åä¹ý³ÌÖÐÄÜ¹»Ìø¹ýÒ»Ð©×Ö·û¡£
-    ÔÚÎÄ±¾´®ÖÐ²éÕÒÄ£Ê½´®£º
+    Ä£Ê½Ã¿Ö·Ò³Î»Ã£rightmost occurrence
+    Ä£Ê½ÄºÃº×ºgood suffix ruleÔ±Æ¥Ü¹Ò»Ð©Ö·
+    Ä±Ð²Ä£Ê½
 
-    ´ÓÎÄ±¾´®µÄÄ©Î²¿ªÊ¼ÓëÄ£Ê½´®µÄÄ©Î²½øÐÐ±È½Ï¡£
-    Èôµ±Ç°×Ö·ûÆ¥Åä£¬Ôò¼ÌÐøÏòÇ°±È½Ï£¬Ö±µ½ÍêÈ«Æ¥Åä»ò²»Æ¥Åä¡£
-    Èô²»Æ¥Åä£¬Ôò¸ù¾ÝºÃºó×º¹æÔòºÍ×îÓÒ³öÏÖÎ»ÖÃÀ´¾ö¶¨Ìø¹ýµÄ×Ö·ûÊý¡£
-    Boyer-MooreËã·¨Í¨¹ýÔ¤´¦ÀíÄ£Ê½´®£¬ÀûÓÃ×îÓÒ³öÏÖÎ»ÖÃºÍºÃºó×º¹æÔò£¬ÄÜ¹»Ìø¹ý¾¡Á¿¶àµÄÎÄ±¾´®ÖÐµÄ×Ö·û£¬´Ó¶øÌá¸ßÆ¥ÅäÐ§ÂÊ¡£ËüµÄÊ±¼ä¸´ÔÓ¶ÈÍ¨³£ÎªO(n+m)£¬ÆäÖÐnÎªÎÄ±¾´®µÄ³¤¶È£¬mÎªÄ£Ê½´®µÄ³¤¶È¡£
+    Ä±Ä©Î²Ê¼Ä£Ê½Ä©Î²Ð±È½Ï¡
+    Ç°Ö·Æ¥ä£¬Ç°È½Ï£Ö±È«Æ¥Æ¥ä¡£
+    Æ¥ä£¬ÝºÃº×ºÒ³Î»Ö·
+    Boyer-Mooreã·¨Í¨Ô¤Ä£Ê½Ò³Î»ÃºÍºÃº×ºÜ¹Ä±ÐµÖ·Ó¶Æ¥Ð§Ê¡Ê±ä¸´Ó¶Í¨ÎªO(n+m)nÎªÄ±Ä³È£mÎªÄ£Ê½Ä³È¡
 
-    Boyer-MooreËã·¨ÔÚÊµ¼ùÖÐ±»¹ã·ºÓ¦ÓÃ£¬ÊÇÒ»ÖÖÐÔÄÜÓÅÒìµÄ×Ö·û´®ËÑË÷Ëã·¨¡£
+    Boyer-Mooreã·¨ÊµÐ±ã·ºÓ¦Ã£Ò»Ö·ã·¨
 
-    Çë×¢Òâ£¬Boyer-MooreËã·¨µÄ¾ßÌåÊµÏÖ½ÏÎª¸´ÔÓ£¬°üº¬ÁË¶ÔÄ£Ê½´®µÄÔ¤´¦Àí¡¢ºÃºó×º¹æÔòºÍ×îÓÒ³öÏÖÎ»ÖÃµÄ¼ÆËãµÈ¡£ÏêÏ¸µÄÊµÏÖ´úÂë³¬³öÁË±¾»Ø´ðµÄÆª·ù£¬Äú¿ÉÒÔ²éÔÄÏà¹ØÎÄÏ×»ò²Î¿¼ÏÖÓÐµÄBoyer-MooreËã·¨µÄÊµÏÖ¿âºÍ×ÊÁÏ¡£
+    ×¢â£¬Boyer-Mooreã·¨Ä¾ÊµÖ½ÎªÓ£Ë¶Ä£Ê½Ô¤Ãº×ºÒ³Î»ÃµÄ¼È¡Ï¸ÊµÖ´ë³¬Ë±Ø´ÆªÔ²×»Î¿ÐµBoyer-Mooreã·¨ÊµÖ¿Ï¡
     */
     //public static class BoyerMoore
     //{

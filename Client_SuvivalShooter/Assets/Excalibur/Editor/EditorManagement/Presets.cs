@@ -172,6 +172,17 @@ namespace Excalibur
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("生成相关类"))
             {
+                if (string.IsNullOrEmpty(selectedDirectory))
+                {
+                    EditorUtility.DisplayDialog("Warning", "表目录不存在", "OK");
+                    return;
+                }
+                
+                if (string.IsNullOrEmpty(classPath))
+                {
+                    EditorUtility.DisplayDialog("Warning", "未选择输出路径", "OK");
+                    return;
+                }
                 clsHandler = new FormatExcelClsHandler();
                 clsHandler.SetSrc(Path.Combine(EditorProjectPreset.GameAssetsPath, FOLDER, selectedDirectory));
                 clsHandler.SetDst(Path.Combine(Application.dataPath, classPath));
@@ -200,6 +211,16 @@ namespace Excalibur
             }
             if (GUILayout.Button("生成配置"))
             {
+                if (string.IsNullOrEmpty(selectedDirectory))
+                {
+                    EditorUtility.DisplayDialog("Warning", "表目录不存在", "OK");
+                    return;
+                }
+                if (string.IsNullOrEmpty(destinationPath))
+                {
+                    EditorUtility.DisplayDialog("Warning", "未选择输出路径", "OK");
+                    return;
+                }
                 xmlHandler = new FormatXMLHandler();
                 xmlHandler.SetSrc(Path.Combine(EditorProjectPreset.GameAssetsPath, FOLDER, selectedDirectory));
                 xmlHandler.SetDst(Path.Combine(Application.dataPath, destinationPath));
@@ -254,6 +275,11 @@ namespace Excalibur
         {
             string path = Path.Combine(EditorProjectPreset.GameAssetsPath, FOLDER);
             directories = Directory.GetDirectories(path);
+                
+            if (string.IsNullOrEmpty(selectedDirectory))
+            {
+                selectedDirectory = directories[0];
+            }
             for (int i = 0; i < directories.Length; ++i)
             {
                 string directory = directories[i];
