@@ -1,4 +1,4 @@
-
+﻿
 namespace Excalibur
 {
     public interface IWindowDrawer : IPersistant

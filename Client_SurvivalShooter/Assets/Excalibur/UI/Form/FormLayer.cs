@@ -1,4 +1,4 @@
-namespace Excalibur
+﻿namespace Excalibur
 {
     public enum FormLayer
     {
