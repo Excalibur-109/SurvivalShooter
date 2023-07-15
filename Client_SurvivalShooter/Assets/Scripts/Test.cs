@@ -73,7 +73,7 @@ public class Test : MonoBehaviour
         //TimingSchedule.Instance.Schedule(t, null, state => text.text = (state / 1000f).ToString("f1"), 1f, 0, -1);
         //TimingSchedule.Instance.ScheduleAsync(5, () => text.text = "Complete",
         //    state => text.text = (state / 1000f).ToString("f1"), 1, 0, 1);
-        TimingSchedule.Instance.Tick(t, state => text1.text = (t - state / 1000f).ToString("f1"), () => text2.text = "Complete");
+        Timing.Instance.Tick(t, state => text1.text = (t - state / 1000f).ToString("f1"), () => text2.text = "Complete");
         //TimingSchedule.Instance.TickAsync(t, state => text2.text = state.ToString());
     }
 

@@ -8,7 +8,7 @@ namespace Excalibur
     /// <summary> ʱɵί /// </summary>
     public delegate void TickCallback (int elapsed);
 
-    public sealed partial class TimingSchedule : Singleton<TimingSchedule>, IExecutableBehaviour, IPersistant
+    public sealed partial class Timing : Singleton<Timing>, IExecutableBehaviour, IPersistant
     {
         public const int MILLI_SECONDS = 1000;
 
@@ -113,7 +113,7 @@ namespace Excalibur
     }
 
     /// <summary> Timer ȷΪ룺milliseconds /// </summary>
-    public partial class TimingSchedule
+    public partial class Timing
     {
         public class TimerToken
         {
@@ -316,7 +316,7 @@ namespace Excalibur
     }
 
     /// <summary> Methods, repeat < 0 Ϊ /// </summary>
-    public partial class TimingSchedule
+    public partial class Timing
     {
         /// <summary> ûMillisecondsĶ /// </summary>
         public void ScheduleMilliseconds (int time, Action onComplete, TickCallback onTick = default, 
@@ -442,7 +442,7 @@ namespace Excalibur
     }
 
     /// <summary> UnityEngine.Time /// </summary>
-    public partial class TimingSchedule
+    public partial class Timing
     {
         public static float time => Time.time;
         public static double timeAsDouble => Time.timeAsDouble;

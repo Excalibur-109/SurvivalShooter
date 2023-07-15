@@ -7,7 +7,7 @@ namespace Excalibur
         private const float AUTO_RELEASE_DELAY = 3f;
 
         private readonly ObjectPool<T> r_pool;
-        private readonly TimingSchedule.TimerToken r_timerToken;
+        private readonly Timing.TimerToken r_timerToken;
         private readonly Action<T> r_actionOnAutoRelease;
 
         /// <summary> releaseInterval 秒 /// </summary>
@@ -15,7 +15,7 @@ namespace Excalibur
         {
             r_pool = new ObjectPool<T>(actionOnGet, actionOnRelease);
             r_actionOnAutoRelease = actionOnAutoRelease;
-            r_timerToken = TimingSchedule.Instance.ScheduleInfinite(releaseInterval, AutoRelease, AUTO_RELEASE_DELAY);
+            r_timerToken = Timing.Instance.ScheduleInfinite(releaseInterval, AutoRelease, AUTO_RELEASE_DELAY);
         }
 
         public T Get ()
