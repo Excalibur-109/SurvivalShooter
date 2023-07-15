@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour
+namespace Excalibur
 {
-    // Start is called before the first frame update
-    void Start()
+    public class AudioManager : Singleton<AudioManager>
     {
-        
-    }
+        private AudioListener _audioListener;
+        private float _volume;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public float GetVolume()
+        {
+            return _volume;
+        }
+
+        public void SetVolume(float volume)
+        {
+            _volume = Mathf.Clamp01(volume);
+        }
     }
 }
