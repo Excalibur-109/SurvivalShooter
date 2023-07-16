@@ -7,7 +7,7 @@ namespace Excalibur
         private Camera _mainCamera;
         private Camera _uiCamera;
 
-        public Camera mainCamera { get { if (_mainCamera == null) { _mainCamera = Camera.main; } return _mainCamera; } }
+        public Camera mainCamera => _mainCamera;
         public Camera uiCamera => _uiCamera;
 
         public void CreateUICamera ()
@@ -19,7 +19,19 @@ namespace Excalibur
             _uiCamera.orthographic = true;
             _uiCamera.depth = 100;
             _uiCamera.cullingMask = 1 << 5;
-            Object.DontDestroyOnLoad (_uiCamera);
+            Object.DontDestroyOnLoad(_uiCamera);
+        }
+
+        public void CreateMainCamera()
+        {
+            GameObject mainCameraGO = new GameObject ("Main Camera");
+            mainCameraGO.tag = "MainCamera";
+            mainCameraGO.transform.position = Vector3.up * 10f;
+            _mainCamera = mainCameraGO.AddComponent<Camera>();
+            _mainCamera.clearFlags = CameraClearFlags.SolidColor;
+            _mainCamera.backgroundColor = Color.black;
+            _mainCamera.cullingMask &= ~(1 << 5);
+            Object.DontDestroyOnLoad(_mainCamera);
         }
     }
 }

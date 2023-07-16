@@ -16,11 +16,7 @@ namespace Excalibur
 
         protected override void OnConstructed ()
         {
-            CameraManager.Instance.CreateUICamera ();
-            GameObject uiRootGO = new GameObject ("UIRoot");
-            _uiRoot = uiRootGO.transform;
-            _uiRoot.SetParent (uiCamera.transform);
-            _uiRoot.localPosition = Vector3.zero;
+            CameraManager.Instance.CreateUICamera();
         }
 
         public void Open (string formName, EventParam eventParam = null)

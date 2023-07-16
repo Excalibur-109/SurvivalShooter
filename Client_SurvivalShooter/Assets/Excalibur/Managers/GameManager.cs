@@ -11,6 +11,7 @@ public sealed class GameManager : MonoSingleton<GameManager>, IExecutableBehavio
     protected override void Awake ()
     {
         base.Awake ();
+        _InitializeGame();
     }
 
     protected override void Start ()
@@ -37,6 +38,16 @@ public sealed class GameManager : MonoSingleton<GameManager>, IExecutableBehavio
         {
             _executableBehaviourAssistant.Execute ();
         }
+    }
+
+    private void _InitializeGame()
+    {
+        CameraManager.Instance.CreateMainCamera();
+    }
+
+    public void StartGame()
+    {
+
     }
 
     public void AttachExecutableUnit (IExecutableBehaviour unit)
