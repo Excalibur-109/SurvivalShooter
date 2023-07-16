@@ -31,6 +31,7 @@ namespace Excalibur
             _mainCamera.clearFlags = CameraClearFlags.SolidColor;
             _mainCamera.backgroundColor = Color.black;
             _mainCamera.cullingMask &= ~(1 << 5);
+            _mainCamera.orthographicSize = 5f;
             Object.DontDestroyOnLoad(_mainCamera);
         }
     }

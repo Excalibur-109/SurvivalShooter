@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: floor
+  serializedVersion: 2
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 0
+      compressionQuality: 0
+      maxTextureSize: 0
+      textureCompression: 0
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 0
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 0
+      blockOffset: 0
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 0fa7b1ec38b1aff4ca45d432a5460cfb, type: 3}
+    bindAsDefault: 0
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: ed2125902b85c004b89c8995394c0327, type: 3}
+  - {fileID: 21300000, guid: 573126310516ea544b29682823a7524d, type: 3}
+  - {fileID: 21300000, guid: a76147a16894fc34c8eb12d3d8566fb9, type: 3}
+  - {fileID: 21300000, guid: f743b0d621876e647b27609a05dca069, type: 3}
+  - {fileID: 21300000, guid: 915723d68f5338b4ab1e8818f0e95de2, type: 3}
+  - {fileID: 21300000, guid: 66e962f61d04f7344a1e8fd2700d6fe7, type: 3}
+  - {fileID: 21300000, guid: 9e996b778bb12c54f889516d5e1c8efc, type: 3}
+  - {fileID: 21300000, guid: 7b8258e77199a3047b78c3aebcac2f85, type: 3}
+  - {fileID: 21300000, guid: e6e22e68330290e469ecad8d748817af, type: 3}
+  - {fileID: 21300000, guid: 98a7d139732b77d45a9cbeba670e5a25, type: 3}
+  - {fileID: 21300000, guid: 9d1c0e39c7b2f4e4c9db2d1e7e6f761c, type: 3}
+  - {fileID: 21300000, guid: 43e3ec5c9bc2fae4d873ad7853141954, type: 3}
+  - {fileID: 21300000, guid: a211c0ac50e0d7f4683c0c254ccc2890, type: 3}
+  - {fileID: 21300000, guid: ba37958d37929f242a2b1174fb985cf3, type: 3}
+  - {fileID: 21300000, guid: 581b44ceb14226a43adde9efb0a7022d, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - floor_7
+  - floor_side
+  - floor_side2
+  - floor_stair
+  - floor_side3
+  - floor_side4
+  - floor_10
+  - floor_4
+  - floor_side5
+  - floor_9
+  - floor_1
+  - floor_6
+  - floor_8
+  - floor_5
+  - floor_3
+  m_RenderDataMap: {}
+  m_Tag: floor
+  m_IsVariant: 0
+  m_IsPlaceholder: 0

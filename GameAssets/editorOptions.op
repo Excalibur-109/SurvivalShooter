@@ -11,10 +11,10 @@ Configurations
 Scripts/RunTime/Configurations
 develop
 3
-AtlasTextures
+GameResource/Tiles
 BundleResources/Atlas
 False
-False
+True
 False
 0
 False
@@ -24,8 +24,8 @@ False
 2048
 -1
 1
-5
-AtlasTextures/DemoGraphics
+2
+GameResource/Tiles/floor
 False
 False
 False
@@ -34,7 +34,7 @@ False
 False
 False
 0
-AtlasTextures/Scaffolding
+GameResource/Tiles/wall
 False
 False
 False
