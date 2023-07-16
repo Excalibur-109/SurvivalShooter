@@ -1,3 +1,4 @@
 {
-	"name": "Excalibur"
+	"name": "Excalibur",
+	"excludePlatforms": "Assets/Excalibur/Editor/*"
 }
