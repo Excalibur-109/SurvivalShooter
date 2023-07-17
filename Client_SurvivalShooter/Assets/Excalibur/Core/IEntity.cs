@@ -20,8 +20,8 @@ namespace Excalibur
         Quaternion rotation { get; set; }
         void SetActive (bool active);
         void SetParent (Transform parent);
-        Component AddComponent<T> () where T : Component;
-        Component GetComponent<T> () where T : Component;
+        T AddComponent<T> () where T : Component;
+        T GetComponent<T> () where T : Component;
         bool RemoveComponent<T> () where T : Component;
         void Destory ();
     }

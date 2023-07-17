@@ -59,12 +59,12 @@ namespace Excalibur
             Object.Destroy (gameObject);
         }
 
-        public Component AddComponent<T> () where T : Component
+        public T AddComponent<T> () where T : Component
         {
             return gameObject.AddComponent<T> ();
         }
 
-        public Component GetComponent<T> () where T : Component
+        public T GetComponent<T> () where T : Component
         {
             return transform.GetComponent<T> ();
         }
