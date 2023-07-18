@@ -244,7 +244,7 @@ namespace Excalibur
             outputpath = IOAssistant.ConvertToUnityRelativePath(outputpath);
             SpriteAtlas atlas;
             string name = EditorUtil.TailorLast(inputPath);
-            string assetPath = outputpath + "/" + name + IOAssistant.FileExtension_SpriteAtlas;
+            string assetPath = outputpath + "/" + name + IOAssistant.FileExt_SpriteAtlas;
             atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(assetPath);
             if (atlas == null)
             {
@@ -266,7 +266,7 @@ namespace Excalibur
             }
             else
             {
-                List<string> files = IOAssistant.GetFiles(inputPath, string.Empty, SearchOption.AllDirectories, file => file.EndsWith(IOAssistant.FileExtension_Png) || file.EndsWith(IOAssistant.FileExtension_Jpg)).ToList();
+                List<string> files = IOAssistant.GetFiles(inputPath, string.Empty, SearchOption.AllDirectories, file => file.EndsWith(IOAssistant.FileExt_Png) || file.EndsWith(IOAssistant.FileExt_Jpg)).ToList();
                 files.ForEach(e =>
                 {
                     string path = IOAssistant.ConvertToUnityRelativePath(e);
@@ -334,7 +334,7 @@ namespace Excalibur
                         _showItems = new bool[1];
                         string path = IOAssistant.CombinePath(Application.dataPath, directory);
                         string[] files = IOAssistant.GetFiles(path, string.Empty, SearchOption.AllDirectories,
-                            file => file.EndsWith(IOAssistant.FileExtension_Png) || file.EndsWith(IOAssistant.FileExtension_Jpg));
+                            file => file.EndsWith(IOAssistant.FileExt_Png) || file.EndsWith(IOAssistant.FileExt_Jpg));
                         _sprites = new Sprite[1][];
                         _sprites[0] = new Sprite[files.Length];
                         for (int j = 0; j < files.Length; ++j)
@@ -351,7 +351,7 @@ namespace Excalibur
                             _spriteAtlasFolder[i] = EditorUtil.TailorLast(_subDirectories[i]);
                             path = IOAssistant.CombinePath(Application.dataPath, _subDirectories[i]);
                             files = IOAssistant.GetFiles(path, string.Empty, SearchOption.AllDirectories, 
-                                file => file.EndsWith(IOAssistant.FileExtension_Png) || file.EndsWith(IOAssistant.FileExtension_Jpg));
+                                file => file.EndsWith(IOAssistant.FileExt_Png) || file.EndsWith(IOAssistant.FileExt_Jpg));
                             _sprites[i] = new Object[files.Length];
                             for (int j = 0; j < files.Length; ++j)
                             {

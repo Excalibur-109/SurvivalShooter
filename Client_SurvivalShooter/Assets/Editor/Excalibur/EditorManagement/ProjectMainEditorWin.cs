@@ -2,6 +2,9 @@
 using UnityEditor;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Excalibur
 {
@@ -50,10 +53,34 @@ namespace Excalibur
 
         private void _CustomCommands()
         {
+            EditorGUILayout.BeginVertical();
+
             if (GUILayout.Button("Generate ABConfig"))
             {
                 AssetBundleBuilder.GenerateAssetBundleConfig();
             }
+
+            if (GUILayout.Button("Generate Editor Assets Config"))
+            {
+                List<string> exclude = new List<string>()
+                {
+                    IOAssistant.FileExt_Anim, IOAssistant.FileExt_Meta
+                };
+
+                AssetBundleBuildPreset preset = (AssetBundleBuildPreset)EditorProjectPreset.Instance.GetPreset(EditorPreset.AssetBundleBuild);
+                string path = Path.Combine(Application.dataPath, preset.assetsPath);
+                string[] files = IOAssistant.GetFiles(path, "*.*", SearchOption.AllDirectories, file => !exclude.Contains(file));
+                JObject jObect = new JObject();
+                for (int i = 0; i < files.Length; ++i)
+                {
+                    string fileName = Path.GetFileNameWithoutExtension(files[i]);
+                    jObect[fileName] = IOAssistant.ConvertToUnityRelativePath(files[i]);
+                }
+                File.WriteAllText(CP.GetEditorAssetConfigPath(), jObect.ToString());
+                AssetDatabase.Refresh();
+            }
+
+            EditorGUILayout.EndVertical();
         }
     }
 }

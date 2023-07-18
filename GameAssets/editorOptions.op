@@ -11,7 +11,7 @@ Configurations
 Scripts/RunTime/Configurations
 develop
 3
-GameResource/Tiles
+Hero and Opponents/Sprites
 BundleResources/Atlas
 False
 True
@@ -24,8 +24,8 @@ False
 2048
 -1
 1
-2
-GameResource/Tiles/floor
+3
+Hero and Opponents/Sprites/Enemy2
 False
 False
 False
@@ -34,7 +34,7 @@ False
 False
 False
 0
-GameResource/Tiles/wall
+Hero and Opponents/Sprites/Enemy4
 False
 False
 False
@@ -43,7 +43,7 @@ False
 False
 False
 0
-AtlasTextures/ZombieCharacter
+Hero and Opponents/Sprites/Enemy5
 False
 False
 False
@@ -52,9 +52,7 @@ False
 False
 False
 0
-AtlasTextures/Bullets
-False
-False
+alse
 False
 0
 False

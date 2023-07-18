@@ -7,14 +7,15 @@ namespace Excalibur
 {
     public static class IOAssistant
     {
-        public static string FileExtension_Meta => ".meta";
-        public static string FileExtension_CS => ".cs";
-        public static string FileExtension_Txt => ".txt";
-        public static string FileExtension_Shader => ".shader";
-        public static string FileExtension_Scene => ".unity";
-        public static string FileExtension_SpriteAtlas => ".spriteatlas";
-        public static string FileExtension_Png => ".png";
-        public static string FileExtension_Jpg => ".jpg";
+        public static string FileExt_Meta => ".meta";
+        public static string FileExt_CS => ".cs";
+        public static string FileExt_Txt => ".txt";
+        public static string FileExt_Shader => ".shader";
+        public static string FileExt_Scene => ".unity";
+        public static string FileExt_SpriteAtlas => ".spriteatlas";
+        public static string FileExt_Png => ".png";
+        public static string FileExt_Jpg => ".jpg";
+        public static string FileExt_Anim => ".anim";
 
         public static string ConvertPath (string path)
         {

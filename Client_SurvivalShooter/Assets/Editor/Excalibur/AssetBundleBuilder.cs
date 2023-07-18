@@ -113,7 +113,7 @@ namespace Excalibur
 
         private static bool _ValidateAssetPath(string assetsPath)
         {
-            if (assetsPath.Contains(IOAssistant.FileExtension_Meta) || assetsPath.Contains(IOAssistant.FileExtension_CS))
+            if (assetsPath.Contains(IOAssistant.FileExt_Meta) || assetsPath.Contains(IOAssistant.FileExt_CS))
             {
                 return false;
             }
@@ -121,13 +121,13 @@ namespace Excalibur
             switch (buildAssets)
             {
                 case BundleAssets.Assets:
-                    valid = !(assetsPath.Contains(IOAssistant.FileExtension_Shader) || assetsPath.Contains(IOAssistant.FileExtension_Scene));
+                    valid = !(assetsPath.Contains(IOAssistant.FileExt_Shader) || assetsPath.Contains(IOAssistant.FileExt_Scene));
                     break;
                 case BundleAssets.Scenes:
-                    valid = assetsPath.Contains(IOAssistant.FileExtension_Scene);
+                    valid = assetsPath.Contains(IOAssistant.FileExt_Scene);
                     break;
                 case BundleAssets.Shaders:
-                    valid = assetsPath.Contains(IOAssistant.FileExtension_Shader);
+                    valid = assetsPath.Contains(IOAssistant.FileExt_Shader);
                     break;
             }
             return valid;

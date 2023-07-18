@@ -40,9 +40,10 @@ public sealed class GameManager : MonoSingleton<GameManager>, IExecutableBehavio
         }
     }
 
-    private void _InitializeGame()
+    private void  _InitializeGame()
     {
         CameraManager.Instance.CreateMainCamera();
+        CameraManager.Instance.CreateUICamera();
     }
 
     public void StartGame()

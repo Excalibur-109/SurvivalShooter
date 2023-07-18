@@ -13,12 +13,18 @@ namespace Excalibur
             BundleOutputPathKey = "BundleOutputPath",
             BundleIdentifiersKey = "BundleIdentifiers",
             AssetBundleConfig = "abconfig.json",
+            EditorAssetConfig = "assetConfig.json",
             ProjectPresets = "ProjectPresets",
             ProjectSettings = "Settings";
 
         public static string GetAssetBundleConfigPath ()
         {
             return Path.Combine(Application.dataPath, AssetBundleConfig);
+        }
+
+        public static string GetEditorAssetConfigPath()
+        {
+            return Path.Combine(Application.dataPath, EditorAssetConfig);
         }
     }
 }
