@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Threading;
 using OfficeOpenXml.ConditionalFormatting;
+using UnityEditor;
 #if UNITY_EDITOR && ASSET_BUNDLE_LOAD_DISENABLE
 using UnityEditor;
 #endif
@@ -32,16 +33,24 @@ namespace Excalibur
 
         /// <summary> 配置文件记录的 Asset 和 AssetBundle 的信息 /// </summary>
         private Dictionary<string, IdentifyManifest> _identifierDic = new Dictionary<string, IdentifyManifest>();
+#if UNITY_EDITOR && ASSET_BUNDLE_LOAD_DISENABLE
+#endif
+        private Dictionary<string, string> _editorAssetsConfig;
 
         public bool Executable { get; set; }
 
         protected override void OnConstructed()
         {
-            string jsonStr = File.ReadAllText(CP.GetAssetBundleConfigPath());
-            JObject jObject = JObject.Parse(jsonStr);
-            _identifierDic = JsonConvert.DeserializeObject<Dictionary<string, IdentifyManifest>>((string)jObject[CP.BundleIdentifiersKey]);
-            AssetBundle.UnloadAllAssetBundles(true);
-            GameManager.Instance.AttachExecutableUnit(this);
+#if UNITY_EDITOR && ASSET_BUNDLE_LOAD_DISENABLE
+#endif
+            string jsonStr = File.ReadAllText(CP.GetEditorAssetConfigPath());
+            _editorAssetsConfig = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr);
+
+            //string jsonStr = File.ReadAllText(CP.GetAssetBundleConfigPath());
+            //JObject jObject = JObject.Parse(jsonStr);
+            //_identifierDic = JsonConvert.DeserializeObject<Dictionary<string, IdentifyManifest>>((string)jObject[CP.BundleIdentifiersKey]);
+            //AssetBundle.UnloadAllAssetBundles(true);
+            //GameManager.Instance.AttachExecutableUnit(this);
         }
 
         public void Execute ()
@@ -59,16 +68,17 @@ namespace Excalibur
 
         public void LoadAsset<T> (string assetName, System.Action<T> onComplete = null) where T : Object
         {
-#if UNITY_EDITOR && ASSET_BUNDLE_LOAD_DISENABLE
-            T result = AssetDatabase.LoadAssetAtPath<T>(_GetAssetBundlePath(assetName));
-            try
+            if (_editorAssetsConfig.TryGetValue(assetName, out string assetPath))
             {
+                T result = AssetDatabase.LoadAssetAtPath<T>(assetPath);
                 onComplete?.Invoke(result);
             }
-            catch (System.ArgumentNullException e)
+            else
             {
-                throw e;
+                Debug.LogWarningFormat("Editor下不存在资源：{0}", assetName);
             }
+            return;
+#if UNITY_EDITOR && ASSET_BUNDLE_LOAD_DISENABLE
 #else
             _LoadAsset<T>(assetName, onComplete);
 #endif

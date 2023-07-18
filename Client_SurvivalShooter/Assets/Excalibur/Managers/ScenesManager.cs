@@ -13,17 +13,12 @@ namespace Excalibur
     {
         private readonly Dictionary<string, Scene> r_Scenes = new Dictionary<string, Scene>();
 
-        public void LoadScene(string sceneName, Action onSceneLoaded)
+        public IEnumerator LoadScene (string sceneName, Action onSceneLoaded = default)
         {
             if (r_Scenes.ContainsKey(sceneName))
             {
-                return;
+                yield break;
             }
-            GameManager.Instance.StartRoutine(LoadScene_Internal(sceneName, onSceneLoaded));
-        }
-
-        IEnumerator LoadScene_Internal (string sceneName, Action onSceneLoaded)
-        {
             AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
             operation.allowSceneActivation = false;
             yield return operation.isDone;
@@ -35,6 +30,22 @@ namespace Excalibur
         public void MoveObjectToScene(string sceneName, GameObject gameObject)
         {
             SceneManager.MoveGameObjectToScene(gameObject, r_Scenes[sceneName]);
+        }
+
+        public void InstantiateObjectToScene(string sceneName, GameObject gameObject, Action onInstantiate = default)
+        {
+            GameObject go = MonoExtension.InitializeObject(gameObject);
+            MoveObjectToScene(sceneName, go);
+        }
+
+        public void InstantiateObjectToGameScene(GameObject gameObject, Action onInstantiate = default)
+        {
+            InstantiateObjectToScene(SceneName.Game.ToString(), gameObject, onInstantiate);
+        }
+
+        public void InstantiateObjectToUIScene(GameObject gameObject, Action onInstantiate = default)
+        {
+            InstantiateObjectToScene(SceneName.UI.ToString(), gameObject, onInstantiate);
         }
     }
 }

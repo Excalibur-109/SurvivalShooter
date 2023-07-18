@@ -99,5 +99,17 @@ namespace Excalibur
         {
             return Path.Combine(CombinePath(path1, path2, path3, path4), path5);
         }
+
+        public static bool ContainExt(this string target, string[] exts)
+        {
+            for (int i = 0; i < exts.Length; ++i)
+            {
+                if (target.EndsWith(exts[i]))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }
