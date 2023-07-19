@@ -32,20 +32,31 @@ namespace Excalibur
             SceneManager.MoveGameObjectToScene(gameObject, r_Scenes[sceneName]);
         }
 
-        public void InstantiateObjectToScene(string sceneName, GameObject gameObject, Action onInstantiate = default)
+        public void MoveObjectToGameScene(GameObject gameObject)
+        {
+            MoveObjectToScene(SceneName.Game.ToString(), gameObject);
+        }
+
+        public void MoveObjectToUIScene(GameObject gameObject)
+        {
+            MoveObjectToScene(SceneName.UI.ToString(), gameObject);
+        }
+
+        public GameObject InstantiateObjectToScene(string sceneName, GameObject gameObject, Action onInstantiate = default)
         {
             GameObject go = MonoExtension.InitializeObject(gameObject);
             MoveObjectToScene(sceneName, go);
+            return go;
         }
 
-        public void InstantiateObjectToGameScene(GameObject gameObject, Action onInstantiate = default)
+        public GameObject InstantiateObjectToGameScene(GameObject gameObject, Action onInstantiate = default)
         {
-            InstantiateObjectToScene(SceneName.Game.ToString(), gameObject, onInstantiate);
+            return InstantiateObjectToScene(SceneName.Game.ToString(), gameObject, onInstantiate);
         }
 
-        public void InstantiateObjectToUIScene(GameObject gameObject, Action onInstantiate = default)
+        public GameObject InstantiateObjectToUIScene(GameObject gameObject, Action onInstantiate = default)
         {
-            InstantiateObjectToScene(SceneName.UI.ToString(), gameObject, onInstantiate);
+            return InstantiateObjectToScene(SceneName.UI.ToString(), gameObject, onInstantiate);
         }
     }
 }

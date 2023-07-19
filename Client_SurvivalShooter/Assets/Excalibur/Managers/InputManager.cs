@@ -155,7 +155,7 @@ namespace Excalibur
         #region Attach MouseButton Actions
 
         /// <summary> 갴 /// </summary>
-        public void AttachInputButton (List<MouseButton> inputButtons)
+        public void AttachInputButtons (List<MouseButton> inputButtons)
         {
             if (_inputButtons.Count > 0) { return; }
             for (int i = 0; i < inputButtons.Count; ++i)
@@ -311,5 +311,30 @@ namespace Excalibur
                 }
             }
         }
+    }
+
+    public enum InputType
+    {
+        KeyCode = 1,
+        MouseButton = 2,
+    }
+
+    public enum InputGroup
+    {
+        Global = 1,
+        Player = 2,
+        UI = 3,
+    }
+    
+    public enum InputActionType
+    {
+        None,
+        MovePlayerUp = 1,
+        MovePlayerDown = 2, 
+        MovePlayerLeft = 3,
+        MovePlayerRight = 4,
+        Attack = 5,
+        OpenBackpack = 6,
+        Global,
     }
 }

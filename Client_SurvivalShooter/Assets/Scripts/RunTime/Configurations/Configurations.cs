@@ -16,6 +16,12 @@ public static class CharacterCfg
         public int type;
         ///summary 预制体 ///summary
         public string prefab;
+        ///summary 标记 ///summary
+        public int flag;
+        ///summary 等级 ///summary
+        public int level;
+        ///summary 武器 ///summary
+        public int weaponId;
     }
 
     public static string GetName () => typeof (Character).Name;
@@ -25,6 +31,80 @@ public static class CharacterCfg
     public static Character TryGetValue (int id)
     {
         Character value = default (Character);
+        try
+        {
+            value = Config[id];
+        }
+        catch (Exception e)
+        {
+            Debug.LogError ($"{GetName ()}配置表不存在id为 ({id})的数据");
+        }
+        return value;
+    }
+}
+
+///summary 道具 /// summary
+public static class ItemCfg
+{
+    public static Dictionary<int, Item> Config = new Dictionary<int, Item> ();
+
+    public class Item
+    {
+        ///summary 主键 ///summary
+        public int id;
+        ///summary 类型 ///summary
+        public int type;
+        ///summary 预制体 ///summary
+        public string prefab;
+        ///summary 图片 ///summary
+        public string icon;
+    }
+
+    public static string GetName () => typeof (Item).Name;
+
+    public static void Deserialize () => Config = FormatXMLHandler.Deserialize<Item> (GetName ());
+
+    public static Item TryGetValue (int id)
+    {
+        Item value = default (Item);
+        try
+        {
+            value = Config[id];
+        }
+        catch (Exception e)
+        {
+            Debug.LogError ($"{GetName ()}配置表不存在id为 ({id})的数据");
+        }
+        return value;
+    }
+}
+
+///summary 按键输入 /// summary
+public static class PlayerInputCfg
+{
+    public static Dictionary<int, PlayerInput> Config = new Dictionary<int, PlayerInput> ();
+
+    public class PlayerInput
+    {
+        ///summary 主键 ///summary
+        public int id;
+        ///summary 组 ///summary
+        public int group;
+        ///summary 输入类型 ///summary
+        public int inputType;
+        ///summary 具体按键 ///summary
+        public int key;
+        ///summary 输入事件 ///summary
+        public int inputAction;
+    }
+
+    public static string GetName () => typeof (PlayerInput).Name;
+
+    public static void Deserialize () => Config = FormatXMLHandler.Deserialize<PlayerInput> (GetName ());
+
+    public static PlayerInput TryGetValue (int id)
+    {
+        PlayerInput value = default (PlayerInput);
         try
         {
             value = Config[id];

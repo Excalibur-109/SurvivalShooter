@@ -13,7 +13,6 @@ namespace Excalibur
         protected override void Awake()
         {
             base.Awake();
-            StartRoutine(InitializeGame_Routine());
         }
 
         protected override void Start()
@@ -40,23 +39,6 @@ namespace Excalibur
             {
                 _executableBehaviourAssistant.Execute();
             }
-        }
-
-        IEnumerator InitializeGame_Routine()
-        {
-            CameraManager.Instance.CreateMainCamera();
-            CameraManager.Instance.CreateUICamera();
-            for (SceneName name = SceneName.Game; name <= SceneName.UI; ++name)
-            {
-                yield return StartRoutine(ScenesManager.Instance.LoadScene(name.ToString()));
-            }
-            ScenesManager.Instance.MoveObjectToScene(SceneName.UI.ToString(), CameraManager.Instance.uiCamera.gameObject);
-            StartGame();
-        }
-
-        public void StartGame()
-        {
-            AssetsManager.Instance.LoadAsset<GameObject>("Player", go => ScenesManager.Instance.InstantiateObjectToGameScene(go));
         }
 
         public void AttachExecutableUnit(IExecutableBehaviour unit)

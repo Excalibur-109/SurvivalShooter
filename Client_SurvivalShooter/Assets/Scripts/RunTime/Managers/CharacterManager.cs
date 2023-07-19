@@ -4,13 +4,31 @@ using UnityEngine;
 using Excalibur;
 using System;
 
-public class UnitManager : Singleton<UnitManager>
+public class CharacterManager : Singleton<CharacterManager>
 {
-    public static T CreateUnit<T>(GameObject gameObject, Action<T> onCreated) where T : Unit, new()
+    private Dictionary<CharacterType, List<Character>> chracters;
+
+    public Character player => player;
+
+    protected override void OnConstructed()
     {
-        T unit = new T();
-        unit.Attach(gameObject);
-        onCreated(unit);
-        return unit;
+        chracters = new Dictionary<CharacterType, List<Character>>();
+    }
+
+    public Character CreateCharacter(int id, Action onCreated = default)
+    {
+        Character role = new Character();
+        role.InitData(id);
+        AddCharacter(role.characterType, role);
+        return role;
+    }
+
+    public void AddCharacter(CharacterType type, Character character)
+    {
+        if (!chracters.ContainsKey(type))
+        {
+            chracters.Add(type, new List<Character>());
+        }
+        chracters[type].Add(character);
     }
 }

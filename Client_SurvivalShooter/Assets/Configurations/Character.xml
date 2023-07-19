@@ -4,5 +4,16 @@
     <id>10000</id>
     <type>1</type>
     <prefab>Player</prefab>
+    <flag>1</flag>
+    <level>1</level>
+    <weaponId>2007</weaponId>
+  </Character>
+  <Character>
+    <id>10001</id>
+    <type>2</type>
+    <prefab>Slime</prefab>
+    <flag>2</flag>
+    <level>1</level>
+    <weaponId>0</weaponId>
   </Character>
 </CharacterCfg>

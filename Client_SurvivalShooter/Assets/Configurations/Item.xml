@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ItemCfg>
+  <Item>
+    <id>20000</id>
+    <type>0</type>
+    <prefab />
+    <icon />
+  </Item>
+  <Item>
+    <id>20001</id>
+    <type>0</type>
+    <prefab />
+    <icon />
+  </Item>
+  <Item>
+    <id>20002</id>
+    <type>0</type>
+    <prefab />
+    <icon />
+  </Item>
+  <Item>
+    <id>20003</id>
+    <type>0</type>
+    <prefab />
+    <icon />
+  </Item>
+  <Item>
+    <id>20004</id>
+    <type>0</type>
+    <prefab />
+    <icon />
+  </Item>
+  <Item>
+    <id>20005</id>
+    <type>0</type>
+    <prefab />
+    <icon />
+  </Item>
+  <Item>
+    <id>20006</id>
+    <type>0</type>
+    <prefab />
+    <icon />
+  </Item>
+  <Item>
+    <id>20007</id>
+    <type>0</type>
+    <prefab />
+    <icon />
+  </Item>
+  <Item>
+    <id>20008</id>
+    <type>0</type>
+    <prefab />
+    <icon />
+  </Item>
+  <Item>
+    <id>20009</id>
+    <type>0</type>
+    <prefab />
+    <icon />
+  </Item>
+  <Item>
+    <id>20010</id>
+    <type>0</type>
+    <prefab />
+    <icon />
+  </Item>
+  <Item>
+    <id>20011</id>
+    <type>0</type>
+    <prefab />
+    <icon />
+  </Item>
+  <Item>
+    <id>20012</id>
+    <type>0</type>
+    <prefab />
+    <icon />
+  </Item>
+  <Item>
+    <id>20013</id>
+    <type>0</type>
+    <prefab />
+    <icon />
+  </Item>
+  <Item>
+    <id>20014</id>
+    <type>0</type>
+    <prefab />
+    <icon />
+  </Item>
+  <Item>
+    <id>20015</id>
+    <type>0</type>
+    <prefab />
+    <icon />
+  </Item>
+  <Item>
+    <id>20016</id>
+    <type>0</type>
+    <prefab />
+    <icon />
+  </Item>
+</ItemCfg>
