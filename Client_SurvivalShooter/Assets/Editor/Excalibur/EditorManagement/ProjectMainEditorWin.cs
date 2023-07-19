@@ -71,7 +71,7 @@ namespace Excalibur
                     dic.Add(fileName, IOAssistant.ConvertToUnityRelativePath(files[i]));
                 }
                 
-                File.WriteAllText(CP.GetEditorAssetConfigPath(), JsonConvert.SerializeObject(dic));
+                File.WriteAllText(CP.GetEditorAssetConfigPath(), JsonConvert.SerializeObject(dic, Formatting.Indented));
                 AssetDatabase.Refresh();
             }
         }

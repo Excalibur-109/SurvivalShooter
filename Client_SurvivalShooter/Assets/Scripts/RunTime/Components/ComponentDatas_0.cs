@@ -11,3 +11,8 @@ public class PositionComponent : IComponent
 	public Vector3 pos;
 }
 
+public class SpeedComponent : IComponent
+{
+	public float speed;
+}
+

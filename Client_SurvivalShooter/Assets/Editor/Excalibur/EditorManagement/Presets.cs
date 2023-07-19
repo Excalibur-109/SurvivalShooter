@@ -13,6 +13,7 @@ using Excalibur.Algorithms;
 using static UnityEditor.Progress;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using Codice.CM.Interfaces;
+using System.Diagnostics;
 
 namespace Excalibur
 {
@@ -252,6 +253,11 @@ namespace Excalibur
                 }
             }
             EditorGUILayout.EndHorizontal();
+            if (GUILayout.Button("打开路径"))
+            {
+                string path = IOAssistant.CombinePath(EditorProjectPreset.GameAssetsPath, FOLDER, selectedDirectory);
+                Process.Start(path);
+            }
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndScrollView();
         }

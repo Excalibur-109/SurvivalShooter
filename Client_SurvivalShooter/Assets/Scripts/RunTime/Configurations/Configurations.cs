@@ -3,38 +3,28 @@ using System;
 using UnityEngine;
 using Excalibur;
 
-///summary 测试 /// summary
-public static class TestCfg
+///summary 角色表 /// summary
+public static class CharacterCfg
 {
-    public static Dictionary<int, Test> Config = new Dictionary<int, Test> ();
+    public static Dictionary<int, Character> Config = new Dictionary<int, Character> ();
 
-    public class Test
+    public class Character
     {
         ///summary 主键 ///summary
         public int id;
-        ///summary 字段1 ///summary
-        public int field1;
-        ///summary 字段2 ///summary
-        public float field2;
-        ///summary 字段3 ///summary
-        public int[] field3;
-        ///summary 用来看的 ///summary
-        public float[] field_float;
-        ///summary 字段4 ///summary
-        public int[][] field4;
-        ///summary 字段5 ///summary
-        public float[][] field5;
-        ///summary 字符串 ///summary
-        public string icon;
+        ///summary 类型 ///summary
+        public int type;
+        ///summary 预制体 ///summary
+        public string prefab;
     }
 
-    public static string GetName () => typeof (Test).Name;
+    public static string GetName () => typeof (Character).Name;
 
-    public static void Deserialize () => Config = FormatXMLHandler.Deserialize<Test> (GetName ());
+    public static void Deserialize () => Config = FormatXMLHandler.Deserialize<Character> (GetName ());
 
-    public static Test TryGetValue (int id)
+    public static Character TryGetValue (int id)
     {
-        Test value = default (Test);
+        Character value = default (Character);
         try
         {
             value = Config[id];
@@ -47,34 +37,30 @@ public static class TestCfg
     }
 }
 
-///summary 测试 /// summary
-public static class Test2Cfg
+///summary 武器 /// summary
+public static class WeaponCfg
 {
-    public static Dictionary<int, Test2> Config = new Dictionary<int, Test2> ();
+    public static Dictionary<int, Weapon> Config = new Dictionary<int, Weapon> ();
 
-    public class Test2
+    public class Weapon
     {
         ///summary 主键 ///summary
         public int id;
-        ///summary 字段1 ///summary
-        public int field1;
-        ///summary 字段2 ///summary
-        public float field2;
-        ///summary 字段3 ///summary
-        public int[] field3;
-        ///summary 字段4 ///summary
-        public int[][] field4;
-        ///summary 字段5 ///summary
-        public int[][] field5;
+        ///summary 武器类型 ///summary
+        public int weaponType;
+        ///summary 对应Assets ///summary
+        public string prefabName;
+        ///summary 生成位置 ///summary
+        public float[] spawnPos;
     }
 
-    public static string GetName () => typeof (Test2).Name;
+    public static string GetName () => typeof (Weapon).Name;
 
-    public static void Deserialize () => Config = FormatXMLHandler.Deserialize<Test2> (GetName ());
+    public static void Deserialize () => Config = FormatXMLHandler.Deserialize<Weapon> (GetName ());
 
-    public static Test2 TryGetValue (int id)
+    public static Weapon TryGetValue (int id)
     {
-        Test2 value = default (Test2);
+        Weapon value = default (Weapon);
         try
         {
             value = Config[id];

@@ -2,7 +2,7 @@
 {
 	public static void DeserilaizeConfigs()
 	{
-		TestCfg.Deserialize();
-		Test2Cfg.Deserialize();
+		CharacterCfg.Deserialize();
+		WeaponCfg.Deserialize();
 	}
 }
