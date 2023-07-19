@@ -10,6 +10,9 @@ using System.Runtime.InteropServices;
 using UnityEngine.U2D;
 using UnityEditor.U2D;
 using Excalibur.Algorithms;
+using static UnityEditor.Progress;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+using Codice.CM.Interfaces;
 
 namespace Excalibur
 {
@@ -322,28 +325,37 @@ namespace Excalibur
         List<Vector2> itemsView = new List<Vector2>();
         List<bool> itemsFoldState = new List<bool>();
 
-        private class ComItems 
+        string[] comTypes = new string[] { "class", "struct" };
+        int comTypeIndex = 0;
+
+        static Color guiColor;
+        bool gening = false;
+
+        private class ComItems
         {
             public string fileName;
             public List<string> clsNames = new List<string>();
-            public Dictionary<string, Dictionary<string, string>> fields = new Dictionary<string, Dictionary<string, string>>();
+            public List<List<string>> types = new List<List<string>>();
+            public List<List<string>> names = new List<List<string>>();
 
-            public List<string> newClsNames = new List<string>();
-            public Dictionary<string, Dictionary<string, string>> newClsfields = new Dictionary<string, Dictionary<string, string>>();
         }
 
         public string title => "ComponentsGen";
 
         public void Initialize()
         {
+            gening = false;
+            guiColor = GUI.backgroundColor;
             _LoadComponents();
         }
+
+        static Vector2 scrollPos;
 
         public void OnEditorGUI()
         {
             EditorGUILayout.BeginVertical();
 
-            EditorGUILayout.HelpBox("Only append type allowed.", MessageType.Info);
+            EditorGUILayout.HelpBox("1.Only append type allowed.\n2.不允许重复类名", MessageType.Info);
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("数据文件夹", GUILayout.Width(120f));
@@ -353,10 +365,31 @@ namespace Excalibur
                 EditorUtil.ChooseAssetsDirectory(ref exportPath, "选择数据文件夹", () => _LoadComponents());
             }
             EditorGUILayout.EndHorizontal();
+            int selectedIndex = EditorGUILayout.Popup(comTypeIndex, comTypes);
+            if (selectedIndex != comTypeIndex)
+            {
+                comTypeIndex = selectedIndex;
+            }
+
+            //if (GUILayout.Button("Convert all to selected type(class/struct)"))
+            //{
+            //    _ConvertType();
+            //}
+
+            if (gening) { return; }
+
+            GUI.backgroundColor = Color.green;
+            if (GUILayout.Button("Generate All"))
+            {
+                _GenAll();
+            }
+            GUI.backgroundColor = guiColor;
 
             EditorGUILayout.Space(20);
+            scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
             for (int i = 0; i < items.Count; ++i)
             {
+                ComItems item = items[i];
                 itemsFoldState[i] = EditorGUILayout.BeginFoldoutHeaderGroup(itemsFoldState[i], items[i].fileName);
                 if (itemsFoldState[i])
                 {
@@ -364,42 +397,80 @@ namespace Excalibur
                     EditorGUILayout.Space(20);
                     itemsView[i] = EditorGUILayout.BeginScrollView(itemsView[i]);
                     EditorGUILayout.BeginVertical();
-                    ComItems item = items[i];
                     for (int j = 0; j < item.clsNames.Count; ++j)
                     {
                         EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.LabelField("Class Name:", GUILayout.Width(100));
-                        EditorGUILayout.TextField(item.clsNames[j]);
+                        item.clsNames[j] = EditorGUILayout.TextField(item.clsNames[j]);
                         EditorGUILayout.EndHorizontal();
                         EditorGUILayout.LabelField("Fields:");
                         EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.Space(20);
                         EditorGUILayout.BeginVertical();
-                        foreach (var field in item.fields[item.clsNames[j]])
+                        for (int k = 0; k < item.types[j].Count; ++k)
                         {
                             EditorGUILayout.BeginHorizontal();
                             EditorGUILayout.LabelField("Type:", GUILayout.Width(70));
-                            EditorGUILayout.TextField(field.Key);
+                            item.types[j][k] = EditorGUILayout.TextField(item.types[j][k]);
                             EditorGUILayout.LabelField("Name:", GUILayout.Width(70));
-                            EditorGUILayout.TextField(field.Value);
+                            item.names[j][k] = EditorGUILayout.TextField(item.names[j][k]);
                             EditorGUILayout.EndHorizontal();
                         }
+                        if (GUILayout.Button("Create Field"))
+                        {
+                            if (item.types[j].Contains(string.Empty)) { return; }
+                            item.types[j].Add(string.Empty);
+                            item.names[j].Add(string.Empty);
+                        }
+                        EditorGUILayout.Space(2);
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndHorizontal();
                     }
+                    EditorGUILayout.Space(5);
+                    EditorGUILayout.LabelField("Create New Class/Struct Here:");
+
+                    if (GUILayout.Button("Create New Class/Struct"))
+                    {
+                        if (item.clsNames.Contains(string.Empty)) { return; }
+                        item.clsNames.Add(string.Empty);
+                        item.types.Add(new List<string>() { string.Empty });
+                        item.names.Add(new List<string>() { string.Empty });
+                    }
                     EditorGUILayout.EndVertical();
+
+                    if (item.clsNames.Count > 0)
+                    {
+                        GUI.backgroundColor = Color.green;
+                        if (GUILayout.Button("Append"))
+                        {
+                            _GenAppendItem(item);
+                        }
+                        GUI.backgroundColor = guiColor;
+                    }
                     EditorGUILayout.EndScrollView();
                     EditorGUILayout.EndHorizontal();
                 }
                 EditorGUILayout.EndFoldoutHeaderGroup();
             }
 
+            if (GUILayout.Button("Add New File"))
+            {
+                ComItems tmp = new ComItems()
+                {
+                    fileName = $"ComponentDatas_{items.Count}",
+                };
+                items.Add(tmp);
+                itemsView.Add(Vector2.zero);
+                itemsFoldState.Add(false);
+            }
+            EditorGUILayout.EndScrollView();
+
             EditorGUILayout.EndVertical();
         }
 
         public void OpenWindow()
         {
-            EditorUIManager.Instance.OpenWindow<PresetsWindow>(this);
+            EditorWindow.GetWindow<GenComponentData>(title).Show();
         }
 
         public void Save(IDataWriter writer)
@@ -437,6 +508,7 @@ namespace Excalibur
                     itemsView.Add(Vector2.zero);
                     using (StreamReader reader = new StreamReader(File.OpenRead(file)))
                     {
+                        int current = -1;
                         while (true)
                         {
                             string clsLine = reader.ReadLine();
@@ -446,20 +518,24 @@ namespace Excalibur
                             }
                             if (KMP.Contains(clsLine, "public"))
                             {
-                                string tmp = clsLine.Trim();
+                                string tmp = clsLine.TrimStart();
                                 string[] elements = tmp.Split(' ');
-                                if (KMP.Contains(clsLine, "class"))
+                                if (KMP.Contains(clsLine, "class") || KMP.Contains(clsLine, "struct"))
                                 {
                                     clsName = elements[2];
                                     item.clsNames.Add(clsName);
-                                    item.fields.Add(clsName, new Dictionary<string, string>());
+                                    item.types.Add(new List<string>());
+                                    item.names.Add(new List<string>());
+                                    ++current;
                                 }
                                 else
                                 {
-                                    item.fields[clsName].Add(elements[1], elements[2].TrimEnd(new char[] { ';' }));
+                                    item.types[current].Add(elements[1]);
+                                    item.names[current].Add(elements[2].TrimEnd(new char[] { ';' }));
                                 }
                             }
                         }
+                        reader.Dispose();
                     }
                 }
             }
@@ -469,6 +545,61 @@ namespace Excalibur
         {
             string head = "using UnityEngine;\r\nusing Excalibur;\r\n\n";
             return head;
+        }
+
+        private void _ConvertType()
+        {
+
+            _LoadComponents();
+        }
+
+        private void _GenAll()
+        {
+            gening = true;
+            for (int i = 0; i < items.Count; ++i)
+            {
+                _GenAppendItem(items[i]);
+            }
+
+            gening = false;
+        }
+
+        private void _GenAppendItem(ComItems item)
+        {
+            if (item.clsNames.Count == 0)
+            {
+                return;
+            }
+
+            gening = true;
+            string file = IOAssistant.CombinePath(Application.dataPath, exportPath, item.fileName + IOAssistant.FileExt_CS);
+            StringBuilder sb = new StringBuilder();
+            sb.Append(_GetHeadStr());
+            for (int i = 0; i < item.clsNames.Count; ++i)
+            {
+                string clsName = item.clsNames[i];
+                if (string.IsNullOrEmpty(clsName)) { continue; }
+                sb.AppendLine(string.Format("public {0} {1} : IComponent", comTypes[comTypeIndex], item.clsNames[i]));
+                sb.AppendLine("{");
+                for (int j = 0; j < item.types[i].Count; j++)
+                {
+                    string type = item.types[i][j];
+                    string name = item.names[i][j];
+                    if (string.IsNullOrEmpty(type) || string.IsNullOrEmpty(name))
+                    {
+                        continue;
+                    }
+                    sb.AppendLine(string.Format("\tpublic {0} {1};", type, name));
+                }
+                sb.AppendLine("}\r\n");
+            }
+            File.WriteAllText(file, sb.ToString(), new UTF8Encoding(true));
+            //using (StreamWriter writer = new StreamWriter(File.OpenWrite(file), new UTF8Encoding(true)))
+            //{
+            //    writer.Write(sb.ToString());
+            //    writer.Dispose();
+            //}
+            gening = false;
         }
     }
 }

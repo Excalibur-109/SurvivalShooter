@@ -1,7 +1,13 @@
+﻿using UnityEngine;
 using Excalibur;
-using UnityEngine;
 
 public class HealthComponent : IComponent
 {
-    public int health;
+	public int health;
 }
+
+public class PositionComponent : IComponent
+{
+	public Vector3 pos;
+}
+
