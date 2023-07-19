@@ -66,6 +66,7 @@ namespace Excalibur
                     () => 
                     {
                         _genSpriteAtlasItems.Clear();
+                        _genSpriteAtlasItemsCache.Clear();
                         _UpdateItems();
                     });
             }

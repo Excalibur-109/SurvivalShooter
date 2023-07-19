@@ -30,19 +30,18 @@ namespace Excalibur
         private void OnGUI()
         {
             scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+            EditorGUILayout.BeginVertical();
             for (int i = 0; i < presetArr.Length; ++i)
             {
-                GUILayout.BeginHorizontal();
                 if (GUILayout.Button(string.Format("Open {0}", presetArr[i])))
                 {
                     EditorPreset preset = (EditorPreset)Enum.Parse(typeof(EditorPreset), presetArr[i]);
                     EditorProjectPreset.Instance.GetPreset(preset).OpenWindow();
                 }
-                GUILayout.EndHorizontal();
             }
-            GUILayout.BeginHorizontal();
+            GUILayout.Space(20);
             _CustomCommands();
-            GUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
             EditorGUILayout.EndScrollView();
         }
 
@@ -54,8 +53,6 @@ namespace Excalibur
 
         private void _CustomCommands()
         {
-            EditorGUILayout.BeginVertical();
-
             if (GUILayout.Button("Generate ABConfig"))
             {
                 AssetBundleBuilder.GenerateAssetBundleConfig();
@@ -77,8 +74,6 @@ namespace Excalibur
                 File.WriteAllText(CP.GetEditorAssetConfigPath(), JsonConvert.SerializeObject(dic));
                 AssetDatabase.Refresh();
             }
-
-            EditorGUILayout.EndVertical();
         }
     }
 }

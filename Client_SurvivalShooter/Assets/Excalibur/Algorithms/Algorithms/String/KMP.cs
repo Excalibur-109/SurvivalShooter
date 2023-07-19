@@ -33,6 +33,11 @@ namespace Excalibur.Algorithms
     */
     public static class KMP
     {
+        public static bool Contains(string text, string pattern)
+        {
+            return Search(text, pattern) >= 0;
+        }
+
         public static int Search(string text, string pattern)
         {
             int[] pmt = _CalculatePMT(pattern);
