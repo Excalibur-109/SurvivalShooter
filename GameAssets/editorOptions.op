@@ -1,4 +1,4 @@
-3
+4
 1
 BundleResources
 
@@ -11,7 +11,7 @@ Configurations
 Scripts/RunTime/Configurations
 develop
 3
-Hero and Opponents/Sprites
+AtlasTextures
 BundleResources/Atlas
 False
 True
@@ -24,8 +24,8 @@ False
 2048
 -1
 1
-3
-Hero and Opponents/Sprites/Enemy2
+5
+AtlasTextures/Bullets
 False
 False
 False
@@ -34,25 +34,9 @@ False
 False
 False
 0
-Hero and Opponents/Sprites/Enemy4
+AtlasTextures/DemoGraphics
 False
 False
-False
-0
-False
-False
-False
-0
-Hero and Opponents/Sprites/Enemy5
-False
-False
-False
-0
-False
-False
-False
-0
-alse
 False
 0
 False
@@ -68,3 +52,23 @@ False
 False
 False
 0
+AtlasTextures/Items
+False
+False
+False
+0
+False
+False
+False
+0
+AtlasTextures/Scaffolding
+False
+False
+False
+0
+False
+False
+False
+0
+4
+Scripts/RunTime/Components

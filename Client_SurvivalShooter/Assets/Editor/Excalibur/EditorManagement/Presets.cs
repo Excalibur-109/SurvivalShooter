@@ -9,6 +9,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using UnityEngine.U2D;
 using UnityEditor.U2D;
+using Excalibur.Algorithms;
 
 namespace Excalibur
 {
@@ -311,6 +312,163 @@ namespace Excalibur
                     settings.configurationPath = destinationPath;
                 }
             }
+        }
+    }
+
+    public class ComponentsGen : IWindowDrawer
+    {
+        public string exportPath;
+        List<ComItems> items = new List<ComItems>();
+        List<Vector2> itemsView = new List<Vector2>();
+        List<bool> itemsFoldState = new List<bool>();
+
+        private class ComItems 
+        {
+            public string fileName;
+            public List<string> clsNames = new List<string>();
+            public Dictionary<string, Dictionary<string, string>> fields = new Dictionary<string, Dictionary<string, string>>();
+
+            public List<string> newClsNames = new List<string>();
+            public Dictionary<string, Dictionary<string, string>> newClsfields = new Dictionary<string, Dictionary<string, string>>();
+        }
+
+        public string title => "ComponentsGen";
+
+        public void Initialize()
+        {
+            _LoadComponents();
+        }
+
+        public void OnEditorGUI()
+        {
+            EditorGUILayout.BeginVertical();
+
+            EditorGUILayout.HelpBox("Only append type allowed.", MessageType.Info);
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("数据文件夹", GUILayout.Width(120f));
+            EditorGUILayout.TextField(exportPath);
+            if (GUILayout.Button("选择", GUILayout.Width(100f)))
+            {
+                EditorUtil.ChooseAssetsDirectory(ref exportPath, "选择数据文件夹", () => _LoadComponents());
+            }
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.Space(20);
+            for (int i = 0; i < items.Count; ++i)
+            {
+                itemsFoldState[i] = EditorGUILayout.BeginFoldoutHeaderGroup(itemsFoldState[i], items[i].fileName);
+                if (itemsFoldState[i])
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.Space(20);
+                    itemsView[i] = EditorGUILayout.BeginScrollView(itemsView[i]);
+                    EditorGUILayout.BeginVertical();
+                    ComItems item = items[i];
+                    for (int j = 0; j < item.clsNames.Count; ++j)
+                    {
+                        EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.LabelField("Class Name:", GUILayout.Width(100));
+                        EditorGUILayout.TextField(item.clsNames[j]);
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.LabelField("Fields:");
+                        EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.Space(20);
+                        EditorGUILayout.BeginVertical();
+                        foreach (var field in item.fields[item.clsNames[j]])
+                        {
+                            EditorGUILayout.BeginHorizontal();
+                            EditorGUILayout.LabelField("Type:", GUILayout.Width(70));
+                            EditorGUILayout.TextField(field.Key);
+                            EditorGUILayout.LabelField("Name:", GUILayout.Width(70));
+                            EditorGUILayout.TextField(field.Value);
+                            EditorGUILayout.EndHorizontal();
+                        }
+                        EditorGUILayout.EndVertical();
+                        EditorGUILayout.EndHorizontal();
+                    }
+                    EditorGUILayout.EndVertical();
+                    EditorGUILayout.EndScrollView();
+                    EditorGUILayout.EndHorizontal();
+                }
+                EditorGUILayout.EndFoldoutHeaderGroup();
+            }
+
+            EditorGUILayout.EndVertical();
+        }
+
+        public void OpenWindow()
+        {
+            EditorUIManager.Instance.OpenWindow<PresetsWindow>(this);
+        }
+
+        public void Save(IDataWriter writer)
+        {
+            writer.Write(exportPath);
+        }
+
+        public void Load(IDataReader reader)
+        {
+            exportPath = reader.ReadString();
+        }
+
+        public void Terminate()
+        {
+            items.Clear();
+        }
+
+        private void _LoadComponents()
+        {
+            if (string.IsNullOrEmpty(exportPath)) { return; }
+            items.Clear();
+            string[] files = IOAssistant.GetFiles(Path.Combine(Application.dataPath, exportPath), string.Empty, SearchOption.TopDirectoryOnly, file => file.EndsWith(IOAssistant.FileExt_CS));
+            if (files.Length > 0)
+            {
+                string clsName = string.Empty;
+                for (int i = 0; i < files.Length; ++i)
+                {
+                    string file = files[i];
+                    ComItems item = new ComItems()
+                    {
+                        fileName = Path.GetFileNameWithoutExtension(file),
+                    };
+                    items.Add(item);
+                    itemsFoldState.Add(false);
+                    itemsView.Add(Vector2.zero);
+                    using (StreamReader reader = new StreamReader(File.OpenRead(file)))
+                    {
+                        while (true)
+                        {
+                            string clsLine = reader.ReadLine();
+                            if (string.IsNullOrEmpty(clsLine) && reader.Peek() < 0)
+                            {
+                                break;
+                            }
+                            if (KMP.Contains(clsLine, "public"))
+                            {
+                                string tmp = clsLine.Trim();
+                                string[] elements = tmp.Split(' ');
+                                if (KMP.Contains(clsLine, "class"))
+                                {
+                                    clsName = elements[2];
+                                    item.clsNames.Add(clsName);
+                                    item.fields.Add(clsName, new Dictionary<string, string>());
+                                }
+                                else
+                                {
+                                    item.fields[clsName].Add(elements[1], elements[2].TrimEnd(new char[] { ';' }));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private static string _GetHeadStr()
+        {
+            string head = "using UnityEngine;\r\nusing Excalibur;\r\n\n";
+            return head;
         }
     }
 }

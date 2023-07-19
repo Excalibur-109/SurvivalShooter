@@ -12,6 +12,7 @@ namespace Excalibur
         AssetBundleBuild = 1,
         Configuration = 2,
         SpriteAtlasGenerator = 3,
+        ComponentGen = 4,
     }
 
     public class EditorProjectPreset : Singleton<EditorProjectPreset>, IPersistant, IPersistantBehaviour
@@ -107,6 +108,9 @@ namespace Excalibur
                     break;
                 case EditorPreset.SpriteAtlasGenerator:
                     preset = new SpriteAtlasGenerator();
+                    break;
+                case EditorPreset.ComponentGen:
+                    preset = new ComponentsGen();
                     break;
             }
             return preset;
