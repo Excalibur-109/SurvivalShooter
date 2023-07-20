@@ -2,18 +2,22 @@
 <SpawnCfg>
   <Spawn>
     <id>5000</id>
-    <spawnType>2</spawnType>
-    <position>0</position>
-    <radius>3.8</radius>
+    <spawnType>3</spawnType>
+    <position>
+      <float>0</float>
+    </position>
+    <radius>0</radius>
     <targets>
-      <int>0</int>
+      <int>10000</int>
     </targets>
   </Spawn>
   <Spawn>
     <id>5001</id>
     <spawnType>2</spawnType>
-    <position>0</position>
-    <radius>4.57</radius>
+    <position>
+      <float>0</float>
+    </position>
+    <radius>3.8</radius>
     <targets>
       <int>0</int>
     </targets>
@@ -21,8 +25,10 @@
   <Spawn>
     <id>5002</id>
     <spawnType>2</spawnType>
-    <position>0</position>
-    <radius>6.3</radius>
+    <position>
+      <float>0</float>
+    </position>
+    <radius>4.57</radius>
     <targets>
       <int>0</int>
     </targets>
@@ -30,26 +36,32 @@
   <Spawn>
     <id>5003</id>
     <spawnType>2</spawnType>
-    <position>0</position>
+    <position>
+      <float>0</float>
+    </position>
+    <radius>6.3</radius>
+    <targets>
+      <int>0</int>
+    </targets>
+  </Spawn>
+  <Spawn>
+    <id>5004</id>
+    <spawnType>2</spawnType>
+    <position>
+      <float>0</float>
+    </position>
     <radius>7.92</radius>
     <targets>
       <int>10003</int>
     </targets>
   </Spawn>
   <Spawn>
-    <id>5004</id>
-    <spawnType>2</spawnType>
-    <position>0</position>
-    <radius>4.6</radius>
-    <targets>
-      <int>0</int>
-    </targets>
-  </Spawn>
-  <Spawn>
     <id>5005</id>
     <spawnType>2</spawnType>
-    <position>0</position>
-    <radius>4.72</radius>
+    <position>
+      <float>0</float>
+    </position>
+    <radius>4.6</radius>
     <targets>
       <int>0</int>
     </targets>
@@ -57,8 +69,10 @@
   <Spawn>
     <id>5006</id>
     <spawnType>2</spawnType>
-    <position>0</position>
-    <radius>7.9</radius>
+    <position>
+      <float>0</float>
+    </position>
+    <radius>4.72</radius>
     <targets>
       <int>0</int>
     </targets>
@@ -66,8 +80,10 @@
   <Spawn>
     <id>5007</id>
     <spawnType>2</spawnType>
-    <position>0</position>
-    <radius>0.1</radius>
+    <position>
+      <float>0</float>
+    </position>
+    <radius>7.9</radius>
     <targets>
       <int>0</int>
     </targets>
@@ -75,8 +91,10 @@
   <Spawn>
     <id>5008</id>
     <spawnType>2</spawnType>
-    <position>0</position>
-    <radius>6.44</radius>
+    <position>
+      <float>0</float>
+    </position>
+    <radius>0.1</radius>
     <targets>
       <int>0</int>
     </targets>
@@ -84,8 +102,10 @@
   <Spawn>
     <id>5009</id>
     <spawnType>2</spawnType>
-    <position>0</position>
-    <radius>8.2</radius>
+    <position>
+      <float>0</float>
+    </position>
+    <radius>6.44</radius>
     <targets>
       <int>0</int>
     </targets>
@@ -93,16 +113,31 @@
   <Spawn>
     <id>5010</id>
     <spawnType>2</spawnType>
-    <position>0</position>
+    <position>
+      <float>0</float>
+    </position>
+    <radius>8.2</radius>
+    <targets>
+      <int>0</int>
+    </targets>
+  </Spawn>
+  <Spawn>
+    <id>5011</id>
+    <spawnType>2</spawnType>
+    <position>
+      <float>0</float>
+    </position>
     <radius>6.16</radius>
     <targets>
       <int>10002</int>
     </targets>
   </Spawn>
   <Spawn>
-    <id>5011</id>
+    <id>5012</id>
     <spawnType>2</spawnType>
-    <position>0</position>
+    <position>
+      <float>0</float>
+    </position>
     <radius>12.1</radius>
     <targets>
       <int>0</int>

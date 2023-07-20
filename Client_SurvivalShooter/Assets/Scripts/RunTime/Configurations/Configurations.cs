@@ -129,7 +129,7 @@ public static class SpawnCfg
         ///summary 类型 ///summary
         public int spawnType;
         ///summary 生成中心点 ///summary
-        public float position;
+        public float[] position;
         ///summary 半径 ///summary
         public float radius;
         ///summary 生成对象 ///summary
