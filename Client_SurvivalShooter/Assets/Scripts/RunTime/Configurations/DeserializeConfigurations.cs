@@ -5,6 +5,7 @@
 		CharacterCfg.Deserialize();
 		ItemCfg.Deserialize();
 		PlayerInputCfg.Deserialize();
+		SpawnCfg.Deserialize();
 		WeaponCfg.Deserialize();
 	}
 }

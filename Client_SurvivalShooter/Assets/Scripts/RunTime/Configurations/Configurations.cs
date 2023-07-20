@@ -117,6 +117,44 @@ public static class PlayerInputCfg
     }
 }
 
+///summary 生成Entity /// summary
+public static class SpawnCfg
+{
+    public static Dictionary<int, Spawn> Config = new Dictionary<int, Spawn> ();
+
+    public class Spawn
+    {
+        ///summary 主键 ///summary
+        public int id;
+        ///summary 类型 ///summary
+        public int spawnType;
+        ///summary 生成中心点 ///summary
+        public float position;
+        ///summary 半径 ///summary
+        public float radius;
+        ///summary 生成对象 ///summary
+        public int[] targets;
+    }
+
+    public static string GetName () => typeof (Spawn).Name;
+
+    public static void Deserialize () => Config = FormatXMLHandler.Deserialize<Spawn> (GetName ());
+
+    public static Spawn TryGetValue (int id)
+    {
+        Spawn value = default (Spawn);
+        try
+        {
+            value = Config[id];
+        }
+        catch (Exception e)
+        {
+            Debug.LogError ($"{GetName ()}配置表不存在id为 ({id})的数据");
+        }
+        return value;
+    }
+}
+
 ///summary 武器 /// summary
 public static class WeaponCfg
 {

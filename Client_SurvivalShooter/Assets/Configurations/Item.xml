@@ -3,103 +3,151 @@
   <Item>
     <id>20000</id>
     <type>0</type>
-    <prefab />
-    <icon />
+    <prefab>Apple</prefab>
+    <icon>icon</icon>
   </Item>
   <Item>
     <id>20001</id>
     <type>0</type>
-    <prefab />
-    <icon />
+    <prefab>Banana</prefab>
+    <icon>icon</icon>
   </Item>
   <Item>
     <id>20002</id>
     <type>0</type>
-    <prefab />
-    <icon />
+    <prefab>Cherry</prefab>
+    <icon>icon</icon>
   </Item>
   <Item>
     <id>20003</id>
     <type>0</type>
-    <prefab />
-    <icon />
+    <prefab>Kiwi</prefab>
+    <icon>icon</icon>
   </Item>
   <Item>
     <id>20004</id>
     <type>0</type>
-    <prefab />
-    <icon />
+    <prefab>Melon</prefab>
+    <icon>icon</icon>
   </Item>
   <Item>
     <id>20005</id>
     <type>0</type>
-    <prefab />
-    <icon />
+    <prefab>Orange</prefab>
+    <icon>icon</icon>
   </Item>
   <Item>
     <id>20006</id>
     <type>0</type>
-    <prefab />
-    <icon />
+    <prefab>Pineapple</prefab>
+    <icon>icon</icon>
   </Item>
   <Item>
     <id>20007</id>
     <type>0</type>
-    <prefab />
-    <icon />
+    <prefab>Strawberry</prefab>
+    <icon>icon</icon>
   </Item>
   <Item>
     <id>20008</id>
     <type>0</type>
-    <prefab />
-    <icon />
+    <prefab>DesertEagle</prefab>
+    <icon>icon</icon>
   </Item>
   <Item>
     <id>20009</id>
     <type>0</type>
-    <prefab />
-    <icon />
+    <prefab>FlyingEye</prefab>
+    <icon>icon</icon>
   </Item>
   <Item>
     <id>20010</id>
     <type>0</type>
-    <prefab />
-    <icon />
+    <prefab>Goblin</prefab>
+    <icon>icon</icon>
   </Item>
   <Item>
     <id>20011</id>
     <type>0</type>
-    <prefab />
-    <icon />
+    <prefab>LaserPistol</prefab>
+    <icon>icon</icon>
   </Item>
   <Item>
     <id>20012</id>
     <type>0</type>
-    <prefab />
-    <icon />
+    <prefab>LaserRifle</prefab>
+    <icon>icon</icon>
   </Item>
   <Item>
     <id>20013</id>
     <type>0</type>
-    <prefab />
-    <icon />
+    <prefab>Mushroom</prefab>
+    <icon>icon</icon>
   </Item>
   <Item>
     <id>20014</id>
     <type>0</type>
-    <prefab />
-    <icon />
+    <prefab>Pistol</prefab>
+    <icon>icon</icon>
   </Item>
   <Item>
     <id>20015</id>
     <type>0</type>
-    <prefab />
-    <icon />
+    <prefab>Player</prefab>
+    <icon>icon</icon>
   </Item>
   <Item>
     <id>20016</id>
     <type>0</type>
-    <prefab />
-    <icon />
+    <prefab>Revolver</prefab>
+    <icon>icon</icon>
+  </Item>
+  <Item>
+    <id>20017</id>
+    <type>0</type>
+    <prefab>Rifle</prefab>
+    <icon>icon</icon>
+  </Item>
+  <Item>
+    <id>20018</id>
+    <type>0</type>
+    <prefab>RocketLauncher</prefab>
+    <icon>icon</icon>
+  </Item>
+  <Item>
+    <id>20019</id>
+    <type>0</type>
+    <prefab>ShotGun</prefab>
+    <icon>icon</icon>
+  </Item>
+  <Item>
+    <id>20020</id>
+    <type>0</type>
+    <prefab>SkeletonBroadsword</prefab>
+    <icon>icon</icon>
+  </Item>
+  <Item>
+    <id>20021</id>
+    <type>0</type>
+    <prefab>skeletonShield</prefab>
+    <icon>icon</icon>
+  </Item>
+  <Item>
+    <id>20022</id>
+    <type>0</type>
+    <prefab>Slime</prefab>
+    <icon>icon</icon>
+  </Item>
+  <Item>
+    <id>20023</id>
+    <type>0</type>
+    <prefab>Snipe</prefab>
+    <icon>icon</icon>
+  </Item>
+  <Item>
+    <id>20024</id>
+    <type>0</type>
+    <prefab>SubmachienGun</prefab>
+    <icon>icon</icon>
   </Item>
 </ItemCfg>

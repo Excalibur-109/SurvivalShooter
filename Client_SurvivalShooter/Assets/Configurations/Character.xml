@@ -16,4 +16,44 @@
     <level>1</level>
     <weaponId>0</weaponId>
   </Character>
+  <Character>
+    <id>10002</id>
+    <type>2</type>
+    <prefab>FlyingEye</prefab>
+    <flag>2</flag>
+    <level>1</level>
+    <weaponId>0</weaponId>
+  </Character>
+  <Character>
+    <id>10003</id>
+    <type>2</type>
+    <prefab>Goblin</prefab>
+    <flag>2</flag>
+    <level>1</level>
+    <weaponId>0</weaponId>
+  </Character>
+  <Character>
+    <id>10004</id>
+    <type>2</type>
+    <prefab>Mushroom</prefab>
+    <flag>2</flag>
+    <level>1</level>
+    <weaponId>0</weaponId>
+  </Character>
+  <Character>
+    <id>10005</id>
+    <type>2</type>
+    <prefab>SkeletonBroadsword</prefab>
+    <flag>2</flag>
+    <level>1</level>
+    <weaponId>0</weaponId>
+  </Character>
+  <Character>
+    <id>10006</id>
+    <type>2</type>
+    <prefab>SkeletonShield</prefab>
+    <flag>2</flag>
+    <level>1</level>
+    <weaponId>0</weaponId>
+  </Character>
 </CharacterCfg>

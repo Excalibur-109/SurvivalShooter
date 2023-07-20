@@ -98,29 +98,25 @@ public class Character : Unit
 
     private void MoveUp()
     {
-        characterData.position.pos += Vector3.up * Timing.deltaTime * 10f;
-        position = characterData.position.pos;
+        position += Vector3.up * Timing.deltaTime * 10f;
         CameraController.Instance.UpdatePosition();
     }
 
     private void MoveDown()
     {
-        characterData.position.pos += Vector3.down * Timing.deltaTime * 10f;
-        position = characterData.position.pos;
+        position += Vector3.down * Timing.deltaTime * 10f;
         CameraController.Instance.UpdatePosition();
     }
 
     private void MoveLeft()
     {
-        characterData.position.pos += Vector3.left * Timing.deltaTime * 10f;
-        position = characterData.position.pos;
+        position += Vector3.left * Timing.deltaTime * 10f;
         CameraController.Instance.UpdatePosition();
     }
 
     private void MoveRight()
     {
-        characterData.position.pos += Vector3.right * Timing.deltaTime * 10f;
-        position = characterData.position.pos;
+        position += Vector3.right * Timing.deltaTime * 10f;
         CameraController.Instance.UpdatePosition();
     }
 

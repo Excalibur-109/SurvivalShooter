@@ -126,7 +126,7 @@ namespace Excalibur
 
         public static object FormatParse (string type, string value)
         {
-            if (string.IsNullOrEmpty (type) | string.IsNullOrEmpty (value)) { return null; }
+            if (string.IsNullOrEmpty (type) | string.IsNullOrEmpty (value)) { return default; }
             object o = null;
             switch (type)
             {
@@ -253,153 +253,156 @@ namespace Excalibur
             string[] files = Directory.GetFiles (_srcPath);
             int total = files.Length;
             for (int i = 0; i < files.Length; ++i)
+            {
+                string file = files[i].Replace ("\\", "/");
+                Debug.Log($"开始导入表{Path.GetFileNameWithoutExtension(file)}");
+                using (ExcelPackage package = new ExcelPackage (File.OpenRead (file)))
                 {
-                    string file = files[i].Replace ("\\", "/");
-                    using (ExcelPackage package = new ExcelPackage (File.OpenRead (file)))
+                    int sheetCount = package.Workbook.Worksheets.Count;
+                    int current = 1;
+                    while (current <= sheetCount)
                     {
-                        int sheetCount = package.Workbook.Worksheets.Count;
-                        int current = 1;
-                        while (current <= sheetCount)
+                        ExcelWorksheet sheet = package.Workbook.Worksheets[current];
+                        string name = sheet.Name;
+                        if (name.Contains ("&"))
                         {
-                            ExcelWorksheet sheet = package.Workbook.Worksheets[current];
-                            string name = sheet.Name;
-                            if (name.Contains ("&"))
+                            string[] ret = name.Split ('&');
+                            string type = ret[1];
+                            string typeName = string.Format ("{0}Cfg+{1}", type, type); /// 嵌套类中类名为+号连接。e.g. 外部类名+嵌套类名
+                            Type typeRet = assembly.GetType (typeName);
+                            List<object> list = new List<object> ();
+                            FieldInfo[] fields = typeRet.GetFields ();
+                            int row = 4, column;
+                            while (row <= sheet.Dimension.Rows)
                             {
-                                string[] ret = name.Split ('&');
-                                string type = ret[1];
-                                string typeName = string.Format ("{0}Cfg+{1}", type, type); /// 嵌套类中类名为+号连接。e.g. 外部类名+嵌套类名
-                                Type typeRet = assembly.GetType (typeName);
-                                List<object> list = new List<object> ();
-                                FieldInfo[] fields = typeRet.GetFields ();
-                                int row = 4, column;
-                                while (row <= sheet.Dimension.Rows)
+                                column = 0;
+                                int fieldIndex = 0;
+                                var obj = Activator.CreateInstance (typeRet);
+                                while (column < sheet.Dimension.Columns)
                                 {
-                                    column = 0;
-                                    int fieldIndex = 0;
-                                    var obj = Activator.CreateInstance (typeRet);
-                                    while (column < sheet.Dimension.Columns)
+                                    ++column;
+                                    object typeStr = sheet.GetValue (2, column);
+                                    if (typeStr == null || string.IsNullOrEmpty (typeStr.ToString ())) { continue; }
+                                    if (sheet.GetValue (row, column) != null)
                                     {
-                                        ++column;
-                                        object typeStr = sheet.GetValue (2, column);
-                                        if (typeStr == null || string.IsNullOrEmpty (typeStr.ToString ())) { continue; }
-                                        if (sheet.GetValue (row, column) != null)
-                                        {
-                                            object cellValue = sheet.GetValue (row, column);
-                                            obj.GetType ().GetField (fields[fieldIndex++].Name)
-                                                .SetValue (obj, FormatParse (typeStr.ToString (), cellValue.ToString ()));
-                                        }
+                                        object cellValue = sheet.GetValue (row, column);
+                                        obj.GetType ().GetField (fields[fieldIndex].Name)
+                                            .SetValue (obj, FormatParse (typeStr.ToString (), cellValue.ToString ()));
                                     }
-                                    list.Add (obj);
-                                    ++row;
+                                    ++fieldIndex;
                                 }
-
-                                XmlDocument xmlDocument = new XmlDocument ();
-                                XmlDeclaration declaration = xmlDocument.CreateXmlDeclaration ("1.0", "utf-8", "");
-                                xmlDocument.AppendChild (declaration);
-                                XmlElement root = xmlDocument.CreateElement ($"{type}Cfg");
-                                xmlDocument.AppendChild (root);
-                                /// xmlElement Create
-                                for (int j = 0; j < list.Count; ++j)
-                                {
-                                    XmlElement typeElement = xmlDocument.CreateElement (typeRet.Name);
-                                    object o = list[j];
-                                    for (int k = 0; k < fields.Length; ++k)
-                                    {
-                                        XmlElement element = xmlDocument.CreateElement (fields[k].Name);
-                                        var value = o.GetType ().GetField (fields[k].Name).GetValue (o);
-                                        switch (value)
-                                        {
-                                            case int a1:
-                                            case uint a2:
-                                            case float a3:
-                                            case string a4:
-                                                element.InnerText = value.ToString ();
-                                                break;
-                                            case int[] a5:
-                                                if (a5 != null)
-                                                {
-                                                    for (int h = 0; h < a5.Length; ++h)
-                                                    {
-                                                        XmlElement child = xmlDocument.CreateElement ("int");
-                                                        child.InnerText = a5[h].ToString ();
-                                                        element.AppendChild (child);
-                                                    }
-                                                }
-                                                break;
-                                            case float[] a6:
-                                                if (a6 != null)
-                                                {
-                                                    for (int h = 0; h < a6.Length; ++h)
-                                                    {
-                                                        XmlElement child = xmlDocument.CreateElement ("float");
-                                                        child.InnerText = a6[h].ToString ();
-                                                        element.AppendChild (child);
-                                                    }
-                                                }
-                                                break;
-                                            case int[][] a7:
-                                                if (a7 != null)
-                                                {
-                                                    for (int h = 0; h < a7.Length; ++h)
-                                                    {
-                                                        XmlElement child = xmlDocument.CreateElement ($"index_{h}");
-                                                        int[] t = a7[h];
-                                                        if (t != null)
-                                                        {
-                                                            for (int m = 0; m < t.Length; ++m)
-                                                            {
-                                                                XmlElement c = xmlDocument.CreateElement ("int");
-                                                                c.InnerText = t[m].ToString ();
-                                                                child.AppendChild (c);
-                                                            }
-                                                        }
-                                                        element.AppendChild (child);
-                                                    }
-                                                }
-                                                break;
-                                            case float[][] a8:
-                                                if (a8 != null)
-                                                {
-                                                    for (int h = 0; h < a8.Length; ++h)
-                                                    {
-                                                        XmlElement child = xmlDocument.CreateElement ($"index_{h}");
-                                                        float[] t = a8[h];
-                                                        if (t != null)
-                                                        {
-                                                            for (int m = 0; m < t.Length; ++m)
-                                                            {
-                                                                XmlElement c = xmlDocument.CreateElement ("float");
-                                                                c.InnerText = t[m].ToString ();
-                                                                child.AppendChild (c);
-                                                            }
-                                                        }
-                                                        element.AppendChild (child);
-                                                    }
-                                                }
-                                                break;
-                                        }
-                                        typeElement.AppendChild (element);
-                                    }
-                                    root.AppendChild (typeElement);
-                                }
-
-                                string filePath = _dstPath + $"/{type}.xml";
-
-                                XmlWriterSettings setting = new XmlWriterSettings ();
-                                setting.Encoding = Encoding.UTF8;
-
-                                using (StreamWriter sw = new StreamWriter (filePath, false, Encoding.UTF8))
-                                {
-                                    xmlDocument.Save (sw);
-                                    sw.Close ();
-                                }
+                                list.Add (obj);
+                                ++row;
                             }
-                            ++current;
+
+                            XmlDocument xmlDocument = new XmlDocument ();
+                            XmlDeclaration declaration = xmlDocument.CreateXmlDeclaration ("1.0", "utf-8", "");
+                            xmlDocument.AppendChild (declaration);
+                            XmlElement root = xmlDocument.CreateElement ($"{type}Cfg");
+                            xmlDocument.AppendChild (root);
+                            /// xmlElement Create
+                            for (int j = 0; j < list.Count; ++j)
+                            {
+                                XmlElement typeElement = xmlDocument.CreateElement (typeRet.Name);
+                                object o = list[j];
+                                for (int k = 0; k < fields.Length; ++k)
+                                {
+                                    XmlElement element = xmlDocument.CreateElement (fields[k].Name);
+                                    var value = o.GetType ().GetField (fields[k].Name).GetValue (o);
+                                    switch (value)
+                                    {
+                                        case int a1:
+                                        case uint a2:
+                                        case float a3:
+                                        case string a4:
+                                            element.InnerText = value.ToString ();
+                                            break;
+                                        case int[] a5:
+                                            if (a5 != null)
+                                            {
+                                                for (int h = 0; h < a5.Length; ++h)
+                                                {
+                                                    XmlElement child = xmlDocument.CreateElement ("int");
+                                                    child.InnerText = a5[h].ToString ();
+                                                    element.AppendChild (child);
+                                                }
+                                            }
+                                            break;
+                                        case float[] a6:
+                                            if (a6 != null)
+                                            {
+                                                for (int h = 0; h < a6.Length; ++h)
+                                                {
+                                                    XmlElement child = xmlDocument.CreateElement ("float");
+                                                    child.InnerText = a6[h].ToString ();
+                                                    element.AppendChild (child);
+                                                }
+                                            }
+                                            break;
+                                        case int[][] a7:
+                                            if (a7 != null)
+                                            {
+                                                for (int h = 0; h < a7.Length; ++h)
+                                                {
+                                                    XmlElement child = xmlDocument.CreateElement ($"index_{h}");
+                                                    int[] t = a7[h];
+                                                    if (t != null)
+                                                    {
+                                                        for (int m = 0; m < t.Length; ++m)
+                                                        {
+                                                            XmlElement c = xmlDocument.CreateElement ("int");
+                                                            c.InnerText = t[m].ToString ();
+                                                            child.AppendChild (c);
+                                                        }
+                                                    }
+                                                    element.AppendChild (child);
+                                                }
+                                            }
+                                            break;
+                                        case float[][] a8:
+                                            if (a8 != null)
+                                            {
+                                                for (int h = 0; h < a8.Length; ++h)
+                                                {
+                                                    XmlElement child = xmlDocument.CreateElement ($"index_{h}");
+                                                    float[] t = a8[h];
+                                                    if (t != null)
+                                                    {
+                                                        for (int m = 0; m < t.Length; ++m)
+                                                        {
+                                                            XmlElement c = xmlDocument.CreateElement ("float");
+                                                            c.InnerText = t[m].ToString ();
+                                                            child.AppendChild (c);
+                                                        }
+                                                    }
+                                                    element.AppendChild (child);
+                                                }
+                                            }
+                                            break;
+                                    }
+                                    typeElement.AppendChild (element);
+                                }
+                                root.AppendChild (typeElement);
+                            }
+
+                            string filePath = _dstPath + $"/{type}.xml";
+
+                            XmlWriterSettings setting = new XmlWriterSettings ();
+                            setting.Encoding = Encoding.UTF8;
+
+                            using (StreamWriter sw = new StreamWriter (filePath, false, Encoding.UTF8))
+                            {
+                                xmlDocument.Save (sw);
+                                sw.Close ();
+                            }
                         }
-                        package.Dispose ();
+                        ++current;
                     }
-                    process = (float)(i + 1) / total;
+                    package.Dispose ();
                 }
+                Debug.Log($"成功导入表{Path.GetFileNameWithoutExtension(file)}");
+                process = (float)(i + 1) / total;
+            }
         }
 
         public override void Deserialize ()

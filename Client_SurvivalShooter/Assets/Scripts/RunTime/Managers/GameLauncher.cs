@@ -21,7 +21,9 @@ public class GameLauncher : MonoSingleton<GameLauncher>
             yield return StartCoroutine(ScenesManager.Instance.LoadScene(name.ToString()));
         }
         ScenesManager.Instance.MoveObjectToScene(SceneName.UI.ToString(), CameraManager.Instance.uiCamera.gameObject);
-        CameraController.Instance.SetBorder(ScenesManager.Instance.Border);
+        Vector3[] border = ScenesManager.Instance.Border;
+        CameraController.Instance.SetBorder(border);
+        CameraController.Instance.UpdatePosition((border[0] + border[1]) / 2f);
         StartGame();
     }
 
