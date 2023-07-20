@@ -29,6 +29,6 @@ public class GameLauncher : MonoSingleton<GameLauncher>
 
     public void StartGame()
     {
-        CharacterManager.Instance.CreateCharacter(ConstParam.PLAYER_ID);
+        //CharacterManager.Instance.CreateCharacter(ConstParam.PLAYER_ID);
     }
 }
