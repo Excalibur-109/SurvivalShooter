@@ -8,12 +8,12 @@ public class SpawnManager : Singleton<SpawnManager>
 {
     public enum SpawnType
     {
-        Character = 1,
+        AI = 1,
         Item = 2,
         Player = 3,
     }
 
-    public void SpawnCharacters(int spawnId)
+    public void SpawnUnit(int spawnId)
     {
 
     }
