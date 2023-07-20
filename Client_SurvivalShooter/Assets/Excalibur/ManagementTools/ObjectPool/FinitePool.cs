@@ -14,6 +14,8 @@ namespace Excalibur
         private readonly int r_maximum;
         private readonly Action<T> r_actionOnOutOfBound;
 
+        public int count => r_pool.countInactive;
+
         public FinitePool (int maximum, Action<T> actionOnOutOfBound, Action<T> actionOnGet, Action <T> actionOnRelease)
         {
             r_maximum = maximum > 0 ? maximum : COMMON_POOL_MAXIMUM;

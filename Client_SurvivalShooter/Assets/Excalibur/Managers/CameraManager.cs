@@ -19,7 +19,6 @@ namespace Excalibur
             _uiCamera.orthographic = true;
             _uiCamera.depth = 100;
             _uiCamera.cullingMask = 1 << 5;
-            //MonoExtension.InitializeObject(cameraGO);
             Object.DontDestroyOnLoad(_uiCamera);
         }
 
@@ -34,7 +33,6 @@ namespace Excalibur
             _mainCamera.backgroundColor = Color.black;
             _mainCamera.cullingMask &= ~(1 << 5);
             _mainCamera.orthographicSize = 5f;
-            //MonoExtension.InitializeObject(cameraGO);
             Object.DontDestroyOnLoad(_mainCamera);
         }
     }

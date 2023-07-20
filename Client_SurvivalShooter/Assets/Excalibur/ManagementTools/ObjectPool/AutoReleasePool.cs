@@ -10,6 +10,8 @@ namespace Excalibur
         private readonly Timing.TimerToken r_timerToken;
         private readonly Action<T> r_actionOnAutoRelease;
 
+        public int count => r_pool.countInactive;
+
         /// <summary> releaseInterval 秒 /// </summary>
         public AutoReleasePool (float releaseInterval, Action<T> actionOnAutoRelease, Action<T> actionOnGet, Action <T> actionOnRelease)
         {
