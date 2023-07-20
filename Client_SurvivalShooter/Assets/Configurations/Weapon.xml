@@ -5,7 +5,8 @@
     <weaponType>1</weaponType>
     <prefabName>DesertEagle</prefabName>
     <spawnPos>
-      <float>0</float>
+      <float>-0.115</float>
+      <float>-0.094</float>
     </spawnPos>
   </Weapon>
   <Weapon>
@@ -13,7 +14,8 @@
     <weaponType>1</weaponType>
     <prefabName>LaserPistol</prefabName>
     <spawnPos>
-      <float>0</float>
+      <float>-0.056</float>
+      <float>-0.07</float>
     </spawnPos>
   </Weapon>
   <Weapon>
@@ -22,6 +24,7 @@
     <prefabName>LaserRifle</prefabName>
     <spawnPos>
       <float>0</float>
+      <float>-0.098</float>
     </spawnPos>
   </Weapon>
   <Weapon>
@@ -29,7 +32,8 @@
     <weaponType>1</weaponType>
     <prefabName>Pistol</prefabName>
     <spawnPos>
-      <float>0</float>
+      <float>0.004</float>
+      <float>-0.118</float>
     </spawnPos>
   </Weapon>
   <Weapon>
@@ -37,7 +41,8 @@
     <weaponType>1</weaponType>
     <prefabName>Revolver</prefabName>
     <spawnPos>
-      <float>0</float>
+      <float>-0.161</float>
+      <float>-0.154</float>
     </spawnPos>
   </Weapon>
   <Weapon>
@@ -45,7 +50,8 @@
     <weaponType>1</weaponType>
     <prefabName>Rifle</prefabName>
     <spawnPos>
-      <float>0</float>
+      <float>-0.182</float>
+      <float>-0.14</float>
     </spawnPos>
   </Weapon>
   <Weapon>
@@ -53,7 +59,8 @@
     <weaponType>1</weaponType>
     <prefabName>RocketLauncher</prefabName>
     <spawnPos>
-      <float>0</float>
+      <float>-0.189</float>
+      <float>0.042</float>
     </spawnPos>
   </Weapon>
   <Weapon>
@@ -61,7 +68,8 @@
     <weaponType>1</weaponType>
     <prefabName>ShotGun</prefabName>
     <spawnPos>
-      <float>0</float>
+      <float>-0.21</float>
+      <float>-0.168</float>
     </spawnPos>
   </Weapon>
   <Weapon>
@@ -69,7 +77,8 @@
     <weaponType>1</weaponType>
     <prefabName>Snipe</prefabName>
     <spawnPos>
-      <float>0</float>
+      <float>-0.049</float>
+      <float>-0.105</float>
     </spawnPos>
   </Weapon>
   <Weapon>
@@ -77,7 +86,8 @@
     <weaponType>1</weaponType>
     <prefabName>SubmachineGun</prefabName>
     <spawnPos>
-      <float>0</float>
+      <float>0.035</float>
+      <float>-0.14</float>
     </spawnPos>
   </Weapon>
 </WeaponCfg>

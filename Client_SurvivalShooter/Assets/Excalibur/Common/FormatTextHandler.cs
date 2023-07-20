@@ -60,7 +60,7 @@ namespace Excalibur
 
         #region Serialize
 
-        public static int[] ParseToIntArray (string value, char identifier = '|')
+        public static int[] ParseToIntArray (string value, char identifier = ':')
         {
             if (string.IsNullOrEmpty (value) || string.IsNullOrWhiteSpace (value)) { return null; }
             string[] array = value.Split (identifier);
@@ -93,7 +93,7 @@ namespace Excalibur
             return ret;
         }
 
-        public static float[] ParseToFloatArray (string value, char identifier = '|')
+        public static float[] ParseToFloatArray (string value, char identifier = ':')
         {
             if (string.IsNullOrEmpty (value) || string.IsNullOrWhiteSpace (value)) { return null; }
             string[] array = value.Split (identifier);

@@ -5,12 +5,11 @@ using Excalibur;
 
 public class SpawnManager : Singleton<SpawnManager>
 {
-   
     public enum SpawnType
     {
-        AI = 1,
-        Item = 2,
-        Player = 3,
+        Player = 1,
+        AI = 2,
+        Item = 3,
     }
 
     public void SpawnUnit(int spawnId)
@@ -24,7 +23,7 @@ public class SpawnManager : Singleton<SpawnManager>
         }
         SpawnType spawnType = (SpawnType)cfg.spawnType;
         float radius = cfg.radius;
-        for (int i = 0; i  < cfg.targets.Length; i++)
+        for (int i = 0; i  < cfg.targets.Length; ++i)
         {
             int targetId = cfg.targets[i];
             if (spawnType != SpawnType.Item)
@@ -36,7 +35,7 @@ public class SpawnManager : Singleton<SpawnManager>
                 y *= sign;
                 x += center.x;
                 y += center.y;
-                character.position = new Vector3 (x, y,0f);
+                character.position = new Vector3 (x, y, 0f);
             }
 
         }
