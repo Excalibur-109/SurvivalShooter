@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Excalibur;
+using System;
 
 public enum CharacterType { Player = 1, AI = 2 }
 
@@ -25,23 +26,17 @@ public class Character : Unit
         _characterType = (CharacterType)cfg.type;
         _aiFlag = (AIFlag)cfg.flag;
         _characterData = new CharacterData();
-        AssetsManager.Instance.LoadAsset<GameObject>(cfg.prefab, gameObject =>
+        _fsm = new FinitStateMachine();
+        _fsm.Attach(this);
+        if (characterType == CharacterType.Player)
         {
-            GameObject go = MonoExtension.InitializeObject(gameObject);
-            Attach(go);
-            if (characterType == CharacterType.Player)
-            {
-                _InitInput();
-            }
-            else
-            {
-                _fsm = new FinitStateMachine();
-                _fsm.Attach(this);
-            }
-            _characterData.position.pos = new Vector3(-19.04f, 8.31f, 0f);
-            position = _characterData.position.pos;
-            ScenesManager.Instance.MoveObjectToGameScene(go);
-        });
+            _InitInput();
+            CameraController.Instance.SetTarget(transform);
+            CameraController.Instance.MoveTo(transform.position);
+        }
+        else
+        {
+        }
     }
 
     private void _InitInput()
@@ -105,32 +100,47 @@ public class Character : Unit
     {
         characterData.position.pos += Vector3.up * Timing.deltaTime * 10f;
         position = characterData.position.pos;
-        Debug.Log("MoveUp");
+        CameraController.Instance.UpdatePosition();
     }
 
     private void MoveDown()
     {
         characterData.position.pos += Vector3.down * Timing.deltaTime * 10f;
         position = characterData.position.pos;
-        Debug.Log("MoveDown");
+        CameraController.Instance.UpdatePosition();
     }
 
     private void MoveLeft()
     {
         characterData.position.pos += Vector3.left * Timing.deltaTime * 10f;
         position = characterData.position.pos;
-        Debug.Log("MoveLeft");
+        CameraController.Instance.UpdatePosition();
     }
 
     private void MoveRight()
     {
         characterData.position.pos += Vector3.right * Timing.deltaTime * 10f;
         position = characterData.position.pos;
-        Debug.Log("MoveRight");
+        CameraController.Instance.UpdatePosition();
     }
 
     private void Attack()
     {
         Debug.Log("Attack");
+    }
+
+    public void EnablePlayerInput()
+    {
+        if (characterType == CharacterType.Player)
+        {
+            _playerInput.Executable = true;
+        }
+    }
+    public void DisablePlayerInput()
+    {
+        if (characterType == CharacterType.Player)
+        {
+            _playerInput.Executable = false;
+        }
     }
 }

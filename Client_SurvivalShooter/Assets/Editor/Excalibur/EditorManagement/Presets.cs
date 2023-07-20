@@ -137,8 +137,8 @@ namespace Excalibur
         static string[] directories;
         static int selectedIndex, tempIndex;
 
-        FormatExcelClsHandler clsHandler;
-        FormatXMLHandler xmlHandler;
+        FormatExcelClsHandler clsHandler = new FormatExcelClsHandler();
+        FormatXMLHandler xmlHandler = new FormatXMLHandler();
 
         public void OnEditorGUI()
         {
@@ -188,32 +188,31 @@ namespace Excalibur
                     EditorUtility.DisplayDialog("Warning", "未选择输出路径", "OK");
                     return;
                 }
-                clsHandler = new FormatExcelClsHandler();
                 clsHandler.SetSrc(Path.Combine(EditorProjectPreset.GameAssetsPath, FOLDER, selectedDirectory));
                 clsHandler.SetDst(Path.Combine(Application.dataPath, classPath));
-                EditorUtility.ClearProgressBar();
+                //EditorUtility.ClearProgressBar();
                 clsHandler.Serialize();
             }
-            if (clsHandler != null)
-            {
-                try
-                {
-                    EditorUtility.DisplayProgressBar("Generating classes", "generate" + clsHandler.processInfo, clsHandler.process);
-                    if (clsHandler.process >= 1f)
-                    {
-                        clsHandler = null;
-                        EditorUtility.ClearProgressBar();
-                        AssetDatabase.Refresh();
-                    }
-                }
-                catch (ArgumentNullException e)
-                {
-                    clsHandler = null;
-                    EditorUtility.ClearProgressBar();
-                    AssetDatabase.Refresh();
-                    throw e;
-                }
-            }
+            //if (clsHandler != null)
+            //{
+            //    try
+            //    {
+            //        EditorUtility.DisplayProgressBar("Generating classes", "generate" + clsHandler.processInfo, clsHandler.process);
+            //        if (clsHandler.process >= 1f)
+            //        {
+            //            clsHandler = null;
+            //            EditorUtility.ClearProgressBar();
+            //            AssetDatabase.Refresh();
+            //        }
+            //    }
+            //    catch (ArgumentNullException e)
+            //    {
+            //        clsHandler = null;
+            //        EditorUtility.ClearProgressBar();
+            //        AssetDatabase.Refresh();
+            //        throw e;
+            //    }
+            //}
             if (GUILayout.Button("生成配置"))
             {
                 if (string.IsNullOrEmpty(selectedDirectory))
@@ -226,32 +225,31 @@ namespace Excalibur
                     EditorUtility.DisplayDialog("Warning", "未选择输出路径", "OK");
                     return;
                 }
-                xmlHandler = new FormatXMLHandler();
                 xmlHandler.SetSrc(Path.Combine(EditorProjectPreset.GameAssetsPath, FOLDER, selectedDirectory));
                 xmlHandler.SetDst(Path.Combine(Application.dataPath, destinationPath));
-                EditorUtility.ClearProgressBar();
+                //EditorUtility.ClearProgressBar();
                 xmlHandler.Serialize();
             }
-            if (xmlHandler != null)
-            {
-                try
-                {
-                    EditorUtility.DisplayProgressBar("Generating configs", "generate" + xmlHandler.processInfo, xmlHandler.process);
-                    if (xmlHandler.process >= 1f)
-                    {
-                        xmlHandler = null;
-                        EditorUtility.ClearProgressBar();
-                        AssetDatabase.Refresh();
-                    }
-                }
-                catch (ArgumentNullException e)
-                {
-                    xmlHandler = null;
-                    EditorUtility.ClearProgressBar();
-                    AssetDatabase.Refresh();
-                    throw e;
-                }
-            }
+            //if (xmlHandler != null)
+            //{
+            //    try
+            //    {
+            //        EditorUtility.DisplayProgressBar("Generating configs", "generate" + xmlHandler.processInfo, xmlHandler.process);
+            //        if (xmlHandler.process >= 1f)
+            //        {
+            //            xmlHandler = null;
+            //            EditorUtility.ClearProgressBar();
+            //            AssetDatabase.Refresh();
+            //        }
+            //    }
+            //    catch (ArgumentNullException e)
+            //    {
+            //        xmlHandler = null;
+            //        EditorUtility.ClearProgressBar();
+            //        AssetDatabase.Refresh();
+            //        throw e;
+            //    }
+            //}
             EditorGUILayout.EndHorizontal();
             if (GUILayout.Button("打开路径"))
             {
