@@ -2,7 +2,7 @@
 <SpawnCfg>
   <Spawn>
     <id>5000</id>
-    <spawnType>3</spawnType>
+    <spawnType>1</spawnType>
     <position>
       <float>-26.06</float>
       <float>2.51</float>
@@ -133,7 +133,7 @@
     <radius>6.44</radius>
     <targets>
       <int>10006</int>
-      <int>10007</int>
+      <int>10006</int>
     </targets>
   </Spawn>
   <Spawn>
