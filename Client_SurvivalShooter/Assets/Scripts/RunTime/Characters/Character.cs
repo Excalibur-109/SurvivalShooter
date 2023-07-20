@@ -12,7 +12,8 @@ public class Character : Unit
     private CharacterType _characterType;
     private AIFlag _aiFlag;
     private CharacterData _characterData;
-    private InputResponser playerInput;
+    private InputResponser _playerInput;
+    private FinitStateMachine _fsm;
 
     public CharacterType characterType => _characterType;
     public AIFlag aiFlag => _aiFlag;
@@ -31,6 +32,11 @@ public class Character : Unit
             if (characterType == CharacterType.Player)
             {
                 _InitInput();
+            }
+            else
+            {
+                _fsm = new FinitStateMachine();
+                _fsm.Attach(this);
             }
             _characterData.position.pos = new Vector3(-19.04f, 8.31f, 0f);
             position = _characterData.position.pos;
@@ -60,9 +66,9 @@ public class Character : Unit
                 }
             }
         }
-        playerInput = new InputResponser();
-        playerInput.AttachInputKeys(keys);
-        playerInput.AttachInputButtons(mouseButtons);
+        _playerInput = new InputResponser();
+        _playerInput.AttachInputKeys(keys);
+        _playerInput.AttachInputButtons(mouseButtons);
         for (int i = 0; i < inputList.Count; ++i)
         {
             PlayerInputCfg.PlayerInput input = inputList[i];
@@ -73,26 +79,26 @@ public class Character : Unit
                         switch ((InputActionType)input.inputAction)
                         {
                             case InputActionType.MovePlayerUp:
-                                playerInput.AttachKeyAction((KeyCode)input.key, MoveUp);
+                                _playerInput.AttachKeyAction((KeyCode)input.key, MoveUp);
                                 break;
                             case InputActionType.MovePlayerDown:
-                                playerInput.AttachKeyAction((KeyCode)input.key, MoveDown);
+                                _playerInput.AttachKeyAction((KeyCode)input.key, MoveDown);
                                 break;
                             case InputActionType.MovePlayerLeft:
-                                playerInput.AttachKeyAction((KeyCode)input.key, MoveLeft);
+                                _playerInput.AttachKeyAction((KeyCode)input.key, MoveLeft);
                                 break;
                             case InputActionType.MovePlayerRight:
-                                playerInput.AttachKeyAction((KeyCode)input.key, MoveRight);
+                                _playerInput.AttachKeyAction((KeyCode)input.key, MoveRight);
                                 break;
                         }
                     }
                     break;
                 case InputType.MouseButton:
-                    playerInput.AttachButtonAction((MouseButton)input.key, Attack);
+                    _playerInput.AttachButtonAction((MouseButton)input.key, Attack);
                     break;
             }
         }
-        playerInput.Activate();
+        _playerInput.Activate();
     }
 
     private void MoveUp()

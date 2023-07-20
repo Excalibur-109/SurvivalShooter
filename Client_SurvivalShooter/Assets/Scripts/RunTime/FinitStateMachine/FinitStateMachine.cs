@@ -9,10 +9,12 @@ public enum FinitState { Idle, Walk, Run, Chase, Attack, Hurt, Dead }
 
 public abstract class BaseFiniteState 
 {
+    private string _anim;
     protected FinitStateMachine fsm;
-    public string anim;
     public Action onEnter;
     public Action onExit;
+
+    public string anim => _anim;
 
     public BaseFiniteState(FinitStateMachine fsm) { this.fsm = fsm; }
 
@@ -36,7 +38,7 @@ public class FinitStateMachine
         _animater = _unit.GetComponent<Animator>();
     }
 
-    public void LinkState(FinitState stateType, BaseFiniteState state, string animName)
+    public void LinkState(FinitState stateType, BaseFiniteState state)
     {
         r_States.Add(stateType, state);
     }
@@ -50,6 +52,9 @@ public class FinitStateMachine
 
         _currentState = r_States[state];
         _currentState.OnEnter();
-        _animater.Play(_currentState.anim);
+        if (string.IsNullOrEmpty(_currentState.anim))
+        {
+            _animater.Play(_currentState.anim);
+        }
     }
 }

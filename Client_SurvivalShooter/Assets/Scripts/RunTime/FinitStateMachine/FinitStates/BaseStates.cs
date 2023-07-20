@@ -10,7 +10,6 @@ public class IdleState : BaseFiniteState
 
     public override void OnEnter()
     {
-
     }
 
     public override void OnExecute()
