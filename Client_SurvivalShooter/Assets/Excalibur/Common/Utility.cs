@@ -23,13 +23,12 @@ namespace Excalibur
 
         public static Vector3 Float3ArrayToVector3(this float[] array)
         {
-            if (array == null || array.Length < 3) { return Vector3.zero; }
+            if (array == null) { return Vector3.zero; }
             Vector3 ret = Vector3.zero;
             int i = 0;
             while (i < 3)
             {
-                ret[i] = array[i];
-                ++i;
+                ret[i++] = i < array.Length ? array[i] : ret[i];
             }
             return ret;
         }
