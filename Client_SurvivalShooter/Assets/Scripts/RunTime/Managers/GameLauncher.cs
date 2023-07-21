@@ -30,6 +30,11 @@ public class GameLauncher : MonoSingleton<GameLauncher>
     public void StartGame()
     {
         //CharacterManager.Instance.CreateCharacter(ConstParam.PLAYER_ID);
-        SpawnManager.Instance.SpawnUnit(5001);
+
+        foreach (int id in SpawnCfg.Config.Keys)
+        {
+            SpawnManager.Instance.SpawnUnit(id);
+        }
+
     }
 }
