@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Excalibur;
 using System;
+using Unity.IO.LowLevel.Unsafe;
 
 public enum CharacterType { Player = 1, AI = 2 }
 
@@ -16,9 +17,9 @@ public class Character : Unit
     private InputResponser _playerInput;
     private FinitStateMachine _fsm;
 
+    private CharacterData characterData => _characterData;
     public CharacterType characterType => _characterType;
     public AIFlag aiFlag => _aiFlag;
-    private CharacterData characterData => _characterData;
 
     public void InitData(int id)
     {
@@ -28,15 +29,21 @@ public class Character : Unit
         _characterData = new CharacterData();
         _fsm = new FinitStateMachine();
         _fsm.Attach(this);
+        _fsm.LinkState(FinitState.Idle, _GetState(FinitState.Idle));
+        _fsm.LinkState(FinitState.Run, _GetState(FinitState.Run));
+        _fsm.LinkState(FinitState.Attack, _GetState(FinitState.Attack));
+        _fsm.LinkState(FinitState.Dead, _GetState(FinitState.Dead));
         if (characterType == CharacterType.Player)
         {
             _InitInput();
-            CameraController.Instance.SetTarget(transform);
-            CameraController.Instance.MoveTo(transform.position);
+            CameraController.Instance.SetTarget(_characterData.position);
         }
         else
         {
+            _fsm.LinkState(FinitState.Chase, _GetState(FinitState.Chase));
         }
+        _fsm.TransitionState(FinitState.Idle);
+        _fsm.Start();
     }
 
     private void _InitInput()
@@ -74,55 +81,105 @@ public class Character : Unit
                         switch ((InputActionType)input.inputAction)
                         {
                             case InputActionType.MovePlayerUp:
-                                _playerInput.AttachKeyAction((KeyCode)input.key, MoveUp);
+                                _playerInput.AttachKeyAction((KeyCode)input.key, _MoveUp);
+                                _playerInput.AttachKeyUpAction((KeyCode)input.key, _OnMoveOver);
                                 break;
                             case InputActionType.MovePlayerDown:
-                                _playerInput.AttachKeyAction((KeyCode)input.key, MoveDown);
+                                _playerInput.AttachKeyAction((KeyCode)input.key, _MoveDown);
+                                _playerInput.AttachKeyUpAction((KeyCode)input.key, _OnMoveOver);
                                 break;
                             case InputActionType.MovePlayerLeft:
-                                _playerInput.AttachKeyAction((KeyCode)input.key, MoveLeft);
+                                _playerInput.AttachKeyAction((KeyCode)input.key, _MoveLeft);
+                                _playerInput.AttachKeyUpAction((KeyCode)input.key, _OnMoveOver);
                                 break;
                             case InputActionType.MovePlayerRight:
-                                _playerInput.AttachKeyAction((KeyCode)input.key, MoveRight);
+                                _playerInput.AttachKeyAction((KeyCode)input.key, _MoveRight);
+                                _playerInput.AttachKeyUpAction((KeyCode)input.key, _OnMoveOver);
                                 break;
                         }
                     }
                     break;
                 case InputType.MouseButton:
-                    _playerInput.AttachButtonAction((MouseButton)input.key, Attack);
+                    _playerInput.AttachButtonAction((MouseButton)input.key, _Attack);
                     break;
             }
         }
         _playerInput.Activate();
     }
 
-    private void MoveUp()
+    private void _MoveUp()
     {
-        position += Vector3.up * Timing.deltaTime * 10f;
+        SetPosition(_characterData.position.pos + Vector3.up * Timing.deltaTime * 10f);
         CameraController.Instance.UpdatePosition();
+        _characterData.isMoving.isMoving = true;
     }
 
-    private void MoveDown()
+    private void _MoveDown()
     {
-        position += Vector3.down * Timing.deltaTime * 10f;
+        SetPosition(_characterData.position.pos + Vector3.down * Timing.deltaTime * 10f);
         CameraController.Instance.UpdatePosition();
+        _characterData.isMoving.isMoving = true;
     }
 
-    private void MoveLeft()
+    private void _MoveLeft()
     {
-        position += Vector3.left * Timing.deltaTime * 10f;
+        SetPosition(_characterData.position.pos + Vector3.left * Timing.deltaTime * 10f);
         CameraController.Instance.UpdatePosition();
+        _characterData.isMoving.isMoving = true;
     }
 
-    private void MoveRight()
+    private void _MoveRight()
     {
-        position += Vector3.right * Timing.deltaTime * 10f;
+        _characterData.isMoving.isMoving = true;
+        SetPosition(_characterData.position.pos + Vector3.right * Timing.deltaTime * 10f);
         CameraController.Instance.UpdatePosition();
+        _characterData.isMoving.isMoving = true;
     }
 
-    private void Attack()
+    private void _OnMoveOver()
+    {
+        _characterData.isMoving.isMoving = false;
+    }
+
+    private void _Attack()
     {
         Debug.Log("Attack");
+    }
+
+    private BaseFiniteState _GetState(FinitState finitState)
+    {
+        switch (finitState)
+        {
+            case FinitState.Idle:
+                break;
+            case FinitState.Walk:
+                break;
+            case FinitState.Run:
+                {
+                    RunState runState = new RunState();
+                    runState.SetComponent(_characterData.isMoving);
+                    return runState;
+                }
+            case FinitState.Chase:
+                {
+                    ChaseState chaseState = new ChaseState();
+                    chaseState.SetComponent(_characterData.position);
+                }
+                break;
+            case FinitState.Attack:
+                {
+                    AttackState chaseState = new AttackState();
+                    chaseState.SetComponent(_characterData.position);
+                }
+                break;
+            case FinitState.Hurt:
+                break;
+            case FinitState.Dead:
+                break;
+        }
+        IdleState idleState = new IdleState();
+        idleState.SetComponent(_characterData.isMoving);
+        return idleState;
     }
 
     public void EnablePlayerInput()
@@ -138,5 +195,17 @@ public class Character : Unit
         {
             _playerInput.Executable = false;
         }
+    }
+
+    public void SetPosition(Vector3 position)
+    {
+        characterData.position.pos = position;
+        transform.position = characterData.position.pos;
+    }
+
+    protected override void OnDetached()
+    {
+        base.OnDetached();
+        _fsm.Dispose();
     }
 }

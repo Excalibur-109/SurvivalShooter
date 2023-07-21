@@ -11,49 +11,49 @@
   <Character>
     <id>10001</id>
     <type>2</type>
-    <prefab>Slime</prefab>
+    <prefab>BlackKid</prefab>
     <flag>2</flag>
     <level>1</level>
-    <weaponId>0</weaponId>
+    <weaponId>2007</weaponId>
   </Character>
   <Character>
     <id>10002</id>
     <type>2</type>
-    <prefab>FlyingEye</prefab>
+    <prefab>BlueKid</prefab>
     <flag>2</flag>
     <level>1</level>
-    <weaponId>0</weaponId>
+    <weaponId>2007</weaponId>
   </Character>
   <Character>
     <id>10003</id>
     <type>2</type>
-    <prefab>Goblin</prefab>
+    <prefab>GreenKid</prefab>
     <flag>2</flag>
     <level>1</level>
-    <weaponId>0</weaponId>
+    <weaponId>2007</weaponId>
   </Character>
   <Character>
     <id>10004</id>
     <type>2</type>
-    <prefab>Mushroom</prefab>
+    <prefab>PurpleKid</prefab>
     <flag>2</flag>
     <level>1</level>
-    <weaponId>0</weaponId>
+    <weaponId>2007</weaponId>
   </Character>
   <Character>
     <id>10005</id>
     <type>2</type>
-    <prefab>SkeletonBroadsword</prefab>
+    <prefab>YellowKid</prefab>
     <flag>2</flag>
     <level>1</level>
-    <weaponId>0</weaponId>
+    <weaponId>2007</weaponId>
   </Character>
   <Character>
     <id>10006</id>
     <type>2</type>
-    <prefab>SkeletonShield</prefab>
+    <prefab>BrightRedKid</prefab>
     <flag>2</flag>
     <level>1</level>
-    <weaponId>0</weaponId>
+    <weaponId>2007</weaponId>
   </Character>
 </CharacterCfg>

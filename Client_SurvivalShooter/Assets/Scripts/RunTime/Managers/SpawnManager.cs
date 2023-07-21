@@ -35,11 +35,8 @@ public class SpawnManager : Singleton<SpawnManager>
                 y *= sign;
                 x += center.x;
                 y += center.y;
-                character.position = new Vector3 (x, y, 0f);
+                character.SetPosition(new Vector3(x, y, 0f));
             }
-
         }
-        
     }
-    
 }

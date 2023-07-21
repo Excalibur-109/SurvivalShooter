@@ -150,4 +150,40 @@
     <prefab>SubmachienGun</prefab>
     <icon>icon</icon>
   </Item>
+  <Item>
+    <id>20025</id>
+    <type>0</type>
+    <prefab>BlackKid</prefab>
+    <icon>icon</icon>
+  </Item>
+  <Item>
+    <id>20026</id>
+    <type>0</type>
+    <prefab>YellowKid</prefab>
+    <icon>icon</icon>
+  </Item>
+  <Item>
+    <id>20027</id>
+    <type>0</type>
+    <prefab>BlueKid</prefab>
+    <icon>icon</icon>
+  </Item>
+  <Item>
+    <id>20028</id>
+    <type>0</type>
+    <prefab>PurpleKid</prefab>
+    <icon>icon</icon>
+  </Item>
+  <Item>
+    <id>20029</id>
+    <type>0</type>
+    <prefab>BrightRedKid</prefab>
+    <icon>icon</icon>
+  </Item>
+  <Item>
+    <id>20030</id>
+    <type>0</type>
+    <prefab>GreenKid</prefab>
+    <icon>icon</icon>
+  </Item>
 </ItemCfg>

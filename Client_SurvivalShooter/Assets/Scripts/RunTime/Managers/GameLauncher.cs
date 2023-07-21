@@ -29,12 +29,12 @@ public class GameLauncher : MonoSingleton<GameLauncher>
 
     public void StartGame()
     {
-        //CharacterManager.Instance.CreateCharacter(ConstParam.PLAYER_ID);
-
         foreach (int id in SpawnCfg.Config.Keys)
         {
             SpawnManager.Instance.SpawnUnit(id);
         }
 
+        CameraController.Instance.MoveTo(CharacterManager.Instance.Player.position);
+        CharacterManager.Instance.Executable = true;
     }
 }

@@ -8,11 +8,13 @@ public class CameraController : Singleton<CameraController>
 {
     private Vector3[] _border;
     private Transform _camTransfom;
-    private Transform _followTarget;
+    private PositionComponent _position;
 
-    public void SetTarget(Transform followTarget)
+    public bool UpdateToTarget { get; set; } = true;
+
+    public void SetTarget(PositionComponent followTarget)
     {
-        _followTarget = followTarget;
+        _position = followTarget;
     }
 
     public void SetCamera(Transform camera)
@@ -27,7 +29,10 @@ public class CameraController : Singleton<CameraController>
 
     public void UpdatePosition()
     {
-        _UpdatePositon(_followTarget.position);
+        if (UpdateToTarget)
+        {
+            _UpdatePositon(_position.pos);
+        }
     }
 
     public void UpdatePosition(Vector3 position)
@@ -43,7 +48,7 @@ public class CameraController : Singleton<CameraController>
             Vector3 startPosition = _camTransfom.position;
             Timing.Instance.Tick(1, (elapsed) =>
             {
-                float factor = (float)elapsed / time;
+                float factor = (float)elapsed / (time * 1000);
                 _UpdatePositon(Vector3.Lerp(startPosition, position, factor));
             }, () =>
             {

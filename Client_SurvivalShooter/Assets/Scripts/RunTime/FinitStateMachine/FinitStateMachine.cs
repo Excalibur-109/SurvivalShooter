@@ -4,57 +4,95 @@ using UnityEngine;
 using Excalibur;
 using System;
 using TMPro.EditorUtilities;
+using UnityEngine.UI;
 
-public enum FinitState { Idle, Walk, Run, Chase, Attack, Hurt, Dead }
+public enum FinitState { None, Idle, Walk, Run, Chase, Attack, Hurt, Dead }
+public enum AnimName { idle, run, fire, Nothing }
 
 public abstract class BaseFiniteState 
 {
-    private string _anim;
-    protected FinitStateMachine fsm;
+    private readonly string _anim;
+    protected FinitStateMachine _fsm;
     public Action onEnter;
     public Action onExit;
 
+    public abstract AnimName animName { get;}
     public string anim => _anim;
 
-    public BaseFiniteState(FinitStateMachine fsm) { this.fsm = fsm; }
+    public BaseFiniteState()
+    {
+        _anim = animName.ToString();
+    }
+
+    public void SetFSM(FinitStateMachine fsm) => _fsm = fsm;
+    public virtual void SetComponent(IComponent componentData) { }
 
     public abstract void OnEnter();
     public abstract void OnExecute();
     public abstract void OnExit();
 }
 
-public class FinitStateMachine
+public class FinitStateMachine : IExecutableBehaviour
 {
     private Unit _unit;
-    private BaseFiniteState _currentState;
+    private FinitState _currentState = FinitState.None;
     private readonly Dictionary<FinitState, BaseFiniteState> r_States = new Dictionary<FinitState, BaseFiniteState>();
-    private Animator _animater;
+    private Animator _animator;
 
     public Unit unit => _unit;
+
+    public bool Executable { get; set; }
+
+    public void Start()
+    {
+        Executable = true;
+        CharacterManager.Instance.fsmAssistant.Attach(this);
+    }
 
     public void Attach(Unit unit)
     {
         _unit = unit;
-        _animater = _unit.GetComponent<Animator>();
+        _animator = _unit.GetComponent<Animator>();
     }
 
     public void LinkState(FinitState stateType, BaseFiniteState state)
     {
         r_States.Add(stateType, state);
+        state.SetFSM(this);
     }
 
     public void TransitionState(FinitState state)
     {
-        if (_currentState != null)
+        if (_currentState > FinitState.None)
         {
-            _currentState.OnExit();
+            r_States[_currentState].OnExit();
         }
-
-        _currentState = r_States[state];
-        _currentState.OnEnter();
-        if (string.IsNullOrEmpty(_currentState.anim))
+        if (_currentState != state)
         {
-            _animater.Play(_currentState.anim);
+            _currentState = state;
+
+            r_States[_currentState].OnEnter();
+            if (r_States[_currentState].animName != AnimName.Nothing)
+            {
+                _animator.Play(r_States[_currentState].anim);
+            }
+        }
+    }
+
+    public void Dispose()
+    {
+        r_States.Clear();
+        _unit = null;
+        _animator = null;
+        Executable = false;
+        CharacterManager.Instance.fsmAssistant.Detach(this);
+    }
+
+    public void Execute()
+    {
+        if (Executable)
+        {
+            r_States[_currentState].OnExecute();
         }
     }
 }

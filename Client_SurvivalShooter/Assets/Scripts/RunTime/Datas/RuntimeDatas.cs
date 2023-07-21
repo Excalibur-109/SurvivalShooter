@@ -10,6 +10,7 @@ public class CharacterData
     public DefenceComponent defence;
     public AttackIntervalComponent attackInverval;
     public ExpComponent exp;
+    public IsMoveComponent isMoving;
 
     public CharacterData()
     {
@@ -23,6 +24,7 @@ public class CharacterData
         defence = new DefenceComponent();
         attackInverval = new AttackIntervalComponent();
         exp = new ExpComponent();
+        isMoving = new IsMoveComponent();
     }
 }
 

@@ -5,18 +5,20 @@ using Excalibur;
 using System;
 using UnityEngine.UIElements;
 
-public class CharacterManager : Singleton<CharacterManager>
+public class CharacterManager : Singleton<CharacterManager>, IExecutableBehaviour
 {
+    public readonly ExecutableBehaviourAssistant fsmAssistant = new ExecutableBehaviourAssistant();
     private Dictionary<CharacterType, List<Character>> _chracters;
-
     private ObjectPool<Character> _characterPool;
-
     public Character Player => _chracters[CharacterType.Player][0];
+
+    public bool Executable { get; set; } 
 
     protected override void OnConstructed()
     {
         _chracters = new Dictionary<CharacterType, List<Character>>();
         _characterPool = new ObjectPool<Character>(null, (target) => target.Detach());
+        GameManager.Instance.AttachExecutableUnit(this);
     }
 
     public Character CreateCharacter(int id)
@@ -41,5 +43,13 @@ public class CharacterManager : Singleton<CharacterManager>
             _chracters.Add(type, new List<Character>());
         }
         _chracters[type].Add(character);
+    }
+
+    public void Execute()
+    {
+        if (Executable)
+        {
+            fsmAssistant.Execute();
+        }
     }
 }

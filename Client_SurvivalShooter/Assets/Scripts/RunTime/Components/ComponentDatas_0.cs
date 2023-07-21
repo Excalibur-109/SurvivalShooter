@@ -61,3 +61,8 @@ public class AttackIntervalComponent : IComponent
 	public int interval;
 }
 
+public class IsMoveComponent : IComponent
+{
+	public bool isMoving;
+}
+
