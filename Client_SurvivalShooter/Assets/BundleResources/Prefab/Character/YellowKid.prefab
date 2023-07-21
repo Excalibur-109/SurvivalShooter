@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3195489299152596646}
   - component: {fileID: 3195489299152596644}
   m_Layer: 0
-  m_Name: BlueBoy
+  m_Name: YellowKid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -5265694415744563965, guid: 094fd6cc9e0d1b846957a2024f50db72, type: 3}
-  m_Color: {r: 0, g: 0.010046005, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.9903463, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
