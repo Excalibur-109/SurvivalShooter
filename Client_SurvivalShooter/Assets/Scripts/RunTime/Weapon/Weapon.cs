@@ -10,7 +10,6 @@ public class Weapon : Unit
     public void InitData(int weaponId)
     {
         WeaponCfg.Weapon cfg = WeaponCfg.TryGetValue(weaponId);
-        transform.localPosition = Utility.FloatArrToVector3(cfg.spawnPos);
     }
 
     public void Fire()

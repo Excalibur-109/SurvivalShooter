@@ -17,10 +17,18 @@ public class Character : Unit
     private InputResponser _playerInput;
     private FinitStateMachine _fsm;
     private Weapon _weapon;
+    private SpriteRenderer _spriteRenderer;
 
     private CharacterData characterData => _characterData;
     public CharacterType characterType => _characterType;
     public AIFlag aiFlag => _aiFlag;
+    public Transform weaponTrans => _weapon.transform;
+
+    protected override void OnAttached()
+    {
+        base.OnAttached();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     public void InitData(int id)
     {
@@ -31,6 +39,7 @@ public class Character : Unit
         _characterData.id.id = id;
         _weapon = new Weapon();
         _weapon.SetParent(transform);
+
         _fsm = new FinitStateMachine();
         _fsm.Attach(this);
         _fsm.LinkState(FinitState.Idle, _GetState(FinitState.Idle));

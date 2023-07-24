@@ -56,10 +56,10 @@ public class CharacterManager : Singleton<CharacterManager>, IExecutableBehaviou
 
     private void _PlayerControl()
     {
-        _UpdatePlayerDir();
+        _UpdatePlayerDirection();
     }
 
-    private void _UpdatePlayerDir()
+    private void _UpdatePlayerDirection()
     {
         Vector2 mousePosition = Input.mousePosition;
         Vector2 playerScreenPos = MonoExtension.WorldPos2ScreenPos(Player.position);
@@ -69,5 +69,7 @@ public class CharacterManager : Singleton<CharacterManager>, IExecutableBehaviou
         {
             Player.scale = playerScale;
         }
+
+
     }
 }
