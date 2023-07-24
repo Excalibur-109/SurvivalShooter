@@ -70,6 +70,10 @@ public class CharacterManager : Singleton<CharacterManager>, IExecutableBehaviou
             Player.scale = playerScale;
         }
 
-
+        Transform weaponTrans = Player.weaponTrans;
+        Vector2 weaponScreenPos = MonoExtension.WorldPos2ScreenPos(weaponTrans.position);
+        Vector2 direction = mousePosition - weaponScreenPos;
+        float angle = Vector2.Angle(Vector2.right, direction);
+        weaponTrans.localRotation = Quaternion.Euler(0f, 0f, angle);
     }
 }

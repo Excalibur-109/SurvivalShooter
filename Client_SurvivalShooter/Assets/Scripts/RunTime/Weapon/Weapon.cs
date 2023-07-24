@@ -10,6 +10,10 @@ public class Weapon : Unit
     public void InitData(int weaponId)
     {
         WeaponCfg.Weapon cfg = WeaponCfg.TryGetValue(weaponId);
+        AssetsManager.Instance.LoadAsset<GameObject>(cfg.prefabName, (gameObject) =>
+        {
+
+        });
     }
 
     public void Fire()

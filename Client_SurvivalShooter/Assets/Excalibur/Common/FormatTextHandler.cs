@@ -174,68 +174,63 @@ namespace Excalibur
         {
             StringBuilder desrilaizeSB = new StringBuilder();
             process = 0f;
-            try
+            string[] files = Directory.GetFiles (_srcPath);
+            int total = files.Length;
+            StringBuilder sb = new StringBuilder (GetConfigContainerString ());
+            for (int i = 0; i < files.Length; ++i)
             {
-                string[] files = Directory.GetFiles (_srcPath);
-                int total = files.Length;
-                StringBuilder sb = new StringBuilder (GetConfigContainerString ());
-                for (int i = 0; i < files.Length; ++i)
+                string file = files[i].Replace ("\\", "/");
+                processInfo = file;
+                using (ExcelPackage package = new ExcelPackage (File.OpenRead (file)))
                 {
-                    string file = files[i].Replace ("\\", "/");
-                    processInfo = file;
-                    using (ExcelPackage package = new ExcelPackage (File.OpenRead (file)))
+                    int sheetCount = package.Workbook.Worksheets.Count;
+                    int current = 1;
+                    while (current <= sheetCount)
                     {
-                        int sheetCount = package.Workbook.Worksheets.Count;
-                        int current = 1;
-                        while (current <= sheetCount)
+                        ExcelWorksheet sheet = package.Workbook.Worksheets[current];
+                        string name = sheet.Name;
+                        if (name.Contains ("&"))
                         {
-                            ExcelWorksheet sheet = package.Workbook.Worksheets[current];
-                            string name = sheet.Name;
-                            if (name.Contains ("&"))
+                            string[] ret = name.Split ('&');
+                            string type = ret[1];
+                            desrilaizeSB.AppendLine("\t\t" + type + "Cfg.Deserialize();");
+                            StringBuilder sb2 = new StringBuilder ();
+                            int column = 1;
+                            Debug.Log($"开始导入配置表类{ret[0]}");
+                            while (column <= sheet.Dimension.Columns)
                             {
-                                string[] ret = name.Split ('&');
-                                string type = ret[1];
-                                desrilaizeSB.AppendLine("\t\t" + type + "Cfg.Deserialize();");
-                                StringBuilder sb2 = new StringBuilder ();
-                                int column = 0;
-                                while (column < sheet.Dimension.Columns)
-                                {
-                                    ++column;
-                                    if (sheet.GetValue (2, column) == null) { continue; }
-                                    sb2.Append (GetFieldString (sheet.GetValue (2, column).ToString (), sheet.GetValue (3, column).ToString (), sheet.GetValue (1, column).ToString ()));
-                                    process += (float)(column + 1) / sheet.Dimension.Columns / total;
-                                }
-                                string clsStr = GetConfigClsString ();
-                                clsStr = clsStr.Replace ("#ANNOTATION#", ret[0]);
-                                clsStr = clsStr.Replace ("#FIELDS#", sb2.ToString ());
-                                sb.AppendLine (clsStr.Replace ("#TYPE#", type));
+                                if (sheet.GetValue (2, column) == null) { continue; }
+                                sb2.Append (GetFieldString (sheet.GetValue (2, column).ToString (), sheet.GetValue (3, column).ToString (), sheet.GetValue (1, column).ToString ()));
+                                process += (float)(column + 1) / sheet.Dimension.Columns / total;
+                                ++column;
                             }
-                            ++current;
+                            Debug.Log($"配置表类{ret[0]}导入完成");
+                            string clsStr = GetConfigClsString ();
+                            clsStr = clsStr.Replace ("#ANNOTATION#", ret[0]);
+                            clsStr = clsStr.Replace ("#FIELDS#", sb2.ToString ());
+                            sb.AppendLine (clsStr.Replace ("#TYPE#", type));
                         }
-
-                        process = (float)(i + 1) / total;
-                        package.Dispose ();
+                        ++current;
                     }
+
+                    process = (float)(i + 1) / total;
+                    package.Dispose ();
                 }
-                _result = sb.ToString ();
-                if (!Directory.Exists(_dstPath)) { Directory.CreateDirectory(_dstPath); };  
-                using (StreamWriter writer = new StreamWriter(File.Open(Path.Combine(_dstPath, GetConfigClsName()), FileMode.OpenOrCreate), _encoding))
+            }
+            _result = sb.ToString ();
+            if (!Directory.Exists(_dstPath)) { Directory.CreateDirectory(_dstPath); };  
+            using (StreamWriter writer = new StreamWriter(File.Open(Path.Combine(_dstPath, GetConfigClsName()), FileMode.OpenOrCreate), _encoding))
+            {
+                writer.Write(_result);
+            }
+                
+            _result = GetDeserializeConfigurationsStr().Replace("#READ#", desrilaizeSB.ToString());
+            if (!string.IsNullOrEmpty(_result))
+            {
+                using (StreamWriter writer = new StreamWriter(File.Open(Path.Combine(_dstPath, GetDesializeConfigClsName()), FileMode.OpenOrCreate), _encoding))
                 {
                     writer.Write(_result);
                 }
-                
-                _result = GetDeserializeConfigurationsStr().Replace("#READ#", desrilaizeSB.ToString());
-                if (!string.IsNullOrEmpty(_result))
-                {
-                    using (StreamWriter writer = new StreamWriter(File.Open(Path.Combine(_dstPath, GetDesializeConfigClsName()), FileMode.OpenOrCreate), _encoding))
-                    {
-                        writer.Write(_result);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
             }
         }
 

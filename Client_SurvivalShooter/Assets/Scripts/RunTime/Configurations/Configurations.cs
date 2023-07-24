@@ -3,6 +3,36 @@ using System;
 using UnityEngine;
 using Excalibur;
 
+///summary 子弹 /// summary
+public static class BulletCfg
+{
+    public static Dictionary<int, Bullet> Config = new Dictionary<int, Bullet> ();
+
+    public class Bullet
+    {
+        ///summary 主键 ///summary
+        public int id;
+    }
+
+    public static string GetName () => typeof (Bullet).Name;
+
+    public static void Deserialize () => Config = FormatXMLHandler.Deserialize<Bullet> (GetName ());
+
+    public static Bullet TryGetValue (int id)
+    {
+        Bullet value = default (Bullet);
+        try
+        {
+            value = Config[id];
+        }
+        catch (Exception e)
+        {
+            Debug.LogError ($"{GetName ()}配置表不存在id为 ({id})的数据");
+        }
+        return value;
+    }
+}
+
 ///summary 角色表 /// summary
 public static class CharacterCfg
 {
@@ -15,7 +45,7 @@ public static class CharacterCfg
         ///summary 类型 ///summary
         public int type;
         ///summary 预制体 ///summary
-        public string prefab;
+        public float[] color;
         ///summary 标记 ///summary
         public int flag;
         ///summary 等级 ///summary
@@ -170,6 +200,10 @@ public static class WeaponCfg
         public string prefabName;
         ///summary 生成位置 ///summary
         public float[] spawnPos;
+        ///summary 子弹 ///summary
+        public int[] bullets;
+        ///summary 战斗模式 ///summary
+        public int[] fireTypes;
     }
 
     public static string GetName () => typeof (Weapon).Name;
