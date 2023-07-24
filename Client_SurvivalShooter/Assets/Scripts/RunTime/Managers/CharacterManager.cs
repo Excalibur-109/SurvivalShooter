@@ -69,12 +69,11 @@ public class CharacterManager : Singleton<CharacterManager>, IExecutableBehaviou
         if (playerScale != Player.scale)
         {
             Player.scale = playerScale;
-            weapon.scale = playerScale;
         }
 
         Vector2 weaponScreenPos = MonoExtension.WorldPos2ScreenPos(weapon.position);
         Vector2 direction = mousePosition - weaponScreenPos;
-        float angle = Vector2.Angle(Vector2.right, direction);
-        weapon.rotation = Quaternion.Euler(0f, 0f, angle);
+        //float angle = Vector2.Angle(Vector2.right, direction);
+        //weapon.rotation = Quaternion.Euler(0f, 0f, angle);
     }
 }
