@@ -61,5 +61,10 @@ namespace Excalibur
             go.name = string.IsNullOrEmpty(name) ? src.name : name;
             return go;
         }
+
+        public static Vector2 WorldPos2ScreenPos(Vector3 worldPos)
+        {
+            return (Vector2)Camera.main.WorldToScreenPoint(worldPos);
+        }
     }
 }
