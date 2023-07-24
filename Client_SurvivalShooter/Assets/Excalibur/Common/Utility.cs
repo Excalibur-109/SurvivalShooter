@@ -21,7 +21,7 @@ namespace Excalibur
             }
         }
 
-        public static Vector3 FloatArrToVector3(this float[] array)
+        public static Vector3 FloatArrToVector3(float[] array)
         {
             if (array == null) { return Vector3.zero; }
             Vector3 ret = Vector3.zero;
@@ -33,7 +33,7 @@ namespace Excalibur
             return ret;
         }
 
-        public static Color FloatArrToColor(this float[] array)
+        public static Color FloatArrToColor(float[] array)
         {
             if (array == null) { return Color.white; }
             Color ret = Color.white;
