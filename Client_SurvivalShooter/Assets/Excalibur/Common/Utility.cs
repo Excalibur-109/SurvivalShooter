@@ -25,10 +25,10 @@ namespace Excalibur
         {
             if (array == null) { return Vector3.zero; }
             Vector3 ret = Vector3.zero;
-            int i = 0;
-            while (i < 3)
+            int i = -1;
+            while (++i < 3)
             {
-                ret[i++] = i < array.Length ? array[i] : ret[i];
+                ret[i] = i < array.Length ? array[i] : ret[i];
             }
             return ret;
         }

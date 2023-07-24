@@ -16,6 +16,7 @@ public class Character : Unit
     private CharacterData _characterData;
     private InputResponser _playerInput;
     private FinitStateMachine _fsm;
+    private Weapon _weapon;
 
     private CharacterData characterData => _characterData;
     public CharacterType characterType => _characterType;
@@ -27,6 +28,10 @@ public class Character : Unit
         _characterType = (CharacterType)cfg.type;
         _aiFlag = (AIFlag)cfg.flag;
         _characterData = new CharacterData();
+        _characterData.id.id = id;
+        _weapon = new Weapon();
+        _weapon.SetParent(transform);
+        _weapon.InitData()
         _fsm = new FinitStateMachine();
         _fsm.Attach(this);
         _fsm.LinkState(FinitState.Idle, _GetState(FinitState.Idle));
