@@ -3,74 +3,90 @@
   <Weapon>
     <id>2000</id>
     <weaponType>1</weaponType>
+    <prefabName>ShotGun</prefabName>
+    <spawnPos>
+      <float>-0.21</float>
+      <float>-0.168</float>
+    </spawnPos>
+    <bullets />
+    <fireTypes />
+  </Weapon>
+  <Weapon>
+    <id>2001</id>
+    <weaponType>1</weaponType>
     <prefabName>DesertEagle</prefabName>
     <spawnPos>
       <float>-0.115</float>
       <float>-0.094</float>
     </spawnPos>
+    <bullets />
+    <fireTypes />
   </Weapon>
   <Weapon>
-    <id>2001</id>
+    <id>2002</id>
     <weaponType>1</weaponType>
     <prefabName>LaserPistol</prefabName>
     <spawnPos>
       <float>-0.056</float>
       <float>-0.07</float>
     </spawnPos>
+    <bullets />
+    <fireTypes />
   </Weapon>
   <Weapon>
-    <id>2002</id>
+    <id>2003</id>
     <weaponType>1</weaponType>
     <prefabName>LaserRifle</prefabName>
     <spawnPos>
       <float>0</float>
       <float>-0.098</float>
     </spawnPos>
+    <bullets />
+    <fireTypes />
   </Weapon>
   <Weapon>
-    <id>2003</id>
+    <id>2004</id>
     <weaponType>1</weaponType>
     <prefabName>Pistol</prefabName>
     <spawnPos>
       <float>0.004</float>
       <float>-0.118</float>
     </spawnPos>
+    <bullets />
+    <fireTypes />
   </Weapon>
   <Weapon>
-    <id>2004</id>
+    <id>2005</id>
     <weaponType>1</weaponType>
     <prefabName>Revolver</prefabName>
     <spawnPos>
       <float>-0.161</float>
       <float>-0.154</float>
     </spawnPos>
+    <bullets />
+    <fireTypes />
   </Weapon>
   <Weapon>
-    <id>2005</id>
+    <id>2006</id>
     <weaponType>1</weaponType>
     <prefabName>Rifle</prefabName>
     <spawnPos>
       <float>-0.182</float>
       <float>-0.14</float>
     </spawnPos>
+    <bullets />
+    <fireTypes />
   </Weapon>
   <Weapon>
-    <id>2006</id>
+    <id>2007</id>
     <weaponType>1</weaponType>
     <prefabName>RocketLauncher</prefabName>
     <spawnPos>
       <float>-0.189</float>
       <float>0.042</float>
     </spawnPos>
-  </Weapon>
-  <Weapon>
-    <id>2007</id>
-    <weaponType>1</weaponType>
-    <prefabName>ShotGun</prefabName>
-    <spawnPos>
-      <float>-0.21</float>
-      <float>-0.168</float>
-    </spawnPos>
+    <bullets />
+    <fireTypes />
   </Weapon>
   <Weapon>
     <id>2008</id>
@@ -80,6 +96,8 @@
       <float>-0.049</float>
       <float>-0.105</float>
     </spawnPos>
+    <bullets />
+    <fireTypes />
   </Weapon>
   <Weapon>
     <id>2009</id>
@@ -89,5 +107,7 @@
       <float>0.035</float>
       <float>-0.14</float>
     </spawnPos>
+    <bullets />
+    <fireTypes />
   </Weapon>
 </WeaponCfg>

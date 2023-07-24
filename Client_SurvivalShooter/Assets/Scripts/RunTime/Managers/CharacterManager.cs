@@ -65,15 +65,16 @@ public class CharacterManager : Singleton<CharacterManager>, IExecutableBehaviou
         Vector2 playerScreenPos = MonoExtension.WorldPos2ScreenPos(Player.position);
         Vector3 playerScale = Player.scale;
         playerScale.x = mousePosition.x >= playerScreenPos.x ? 1f : -1f;
+        Weapon weapon = Player.weapon;
         if (playerScale != Player.scale)
         {
             Player.scale = playerScale;
+            weapon.scale = playerScale;
         }
 
-        Transform weaponTrans = Player.weaponTrans;
-        Vector2 weaponScreenPos = MonoExtension.WorldPos2ScreenPos(weaponTrans.position);
+        Vector2 weaponScreenPos = MonoExtension.WorldPos2ScreenPos(weapon.position);
         Vector2 direction = mousePosition - weaponScreenPos;
         float angle = Vector2.Angle(Vector2.right, direction);
-        weaponTrans.localRotation = Quaternion.Euler(0f, 0f, angle);
+        weapon.rotation = Quaternion.Euler(0f, 0f, angle);
     }
 }

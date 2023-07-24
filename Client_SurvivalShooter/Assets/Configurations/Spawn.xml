@@ -66,6 +66,7 @@
     <radius>7.92</radius>
     <targets>
       <int>10003</int>
+      <int>10005</int>
     </targets>
   </Spawn>
   <Spawn>
@@ -79,6 +80,7 @@
     <targets>
       <int>10004</int>
       <int>10005</int>
+      <int>10007</int>
     </targets>
   </Spawn>
   <Spawn>
@@ -121,6 +123,7 @@
       <int>10002</int>
       <int>10001</int>
       <int>10006</int>
+      <int>10007</int>
     </targets>
   </Spawn>
 </SpawnCfg>

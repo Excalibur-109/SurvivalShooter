@@ -3,57 +3,97 @@
   <Character>
     <id>10000</id>
     <type>1</type>
-    <prefab>Player</prefab>
+    <color>
+      <float>1</float>
+      <float>1</float>
+      <float>1</float>
+    </color>
     <flag>1</flag>
     <level>1</level>
-    <weaponId>2007</weaponId>
+    <weaponId>2004</weaponId>
   </Character>
   <Character>
     <id>10001</id>
     <type>2</type>
-    <prefab>BlackKid</prefab>
+    <color>
+      <float>0</float>
+      <float>0</float>
+      <float>0</float>
+    </color>
     <flag>2</flag>
     <level>1</level>
-    <weaponId>2007</weaponId>
+    <weaponId>2004</weaponId>
   </Character>
   <Character>
     <id>10002</id>
     <type>2</type>
-    <prefab>BlueKid</prefab>
+    <color>
+      <float>0</float>
+      <float>0.01</float>
+      <float>1</float>
+    </color>
     <flag>2</flag>
     <level>1</level>
-    <weaponId>2007</weaponId>
+    <weaponId>2004</weaponId>
   </Character>
   <Character>
     <id>10003</id>
     <type>2</type>
-    <prefab>GreenKid</prefab>
+    <color>
+      <float>1</float>
+      <float>0</float>
+      <float>0</float>
+    </color>
     <flag>2</flag>
     <level>1</level>
-    <weaponId>2007</weaponId>
+    <weaponId>2004</weaponId>
   </Character>
   <Character>
     <id>10004</id>
     <type>2</type>
-    <prefab>PurpleKid</prefab>
+    <color>
+      <float>0.3</float>
+      <float>0</float>
+      <float>1</float>
+    </color>
     <flag>2</flag>
     <level>1</level>
-    <weaponId>2007</weaponId>
+    <weaponId>2004</weaponId>
   </Character>
   <Character>
     <id>10005</id>
     <type>2</type>
-    <prefab>YellowKid</prefab>
+    <color>
+      <float>0.95</float>
+      <float>0</float>
+      <float>1</float>
+    </color>
     <flag>2</flag>
     <level>1</level>
-    <weaponId>2007</weaponId>
+    <weaponId>2004</weaponId>
   </Character>
   <Character>
     <id>10006</id>
     <type>2</type>
-    <prefab>BrightRedKid</prefab>
+    <color>
+      <float>0.98</float>
+      <float>0.48</float>
+      <float>0.48</float>
+    </color>
     <flag>2</flag>
     <level>1</level>
-    <weaponId>2007</weaponId>
+    <weaponId>2004</weaponId>
+  </Character>
+  <Character>
+    <id>10007</id>
+    <type>2</type>
+    <color>
+      <float>1</float>
+      <float>0.99</float>
+      <float>0</float>
+    </color>
+    <flag>2</flag>
+    <level>1</level>
+    <weaponId>2004</weaponId>
   </Character>
 </CharacterCfg>

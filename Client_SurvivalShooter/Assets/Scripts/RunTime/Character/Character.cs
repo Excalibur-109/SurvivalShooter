@@ -22,7 +22,7 @@ public class Character : Unit
     private CharacterData characterData => _characterData;
     public CharacterType characterType => _characterType;
     public AIFlag aiFlag => _aiFlag;
-    public Transform weaponTrans => _weapon.transform;
+    public Weapon weapon => _weapon;
 
     protected override void OnAttached()
     {
@@ -37,8 +37,10 @@ public class Character : Unit
         _aiFlag = (AIFlag)cfg.flag;
         _characterData = new CharacterData();
         _characterData.id.id = id;
+        Color color = Utility.FloatArrToColor(cfg.color);
+        _spriteRenderer.color = color;
         _weapon = new Weapon();
-        _weapon.SetParent(transform);
+        _weapon.bulletColor = color;
 
         _fsm = new FinitStateMachine();
         _fsm.Attach(this);
@@ -48,12 +50,14 @@ public class Character : Unit
         _fsm.LinkState(FinitState.Dead, _GetState(FinitState.Dead));
         if (characterType == CharacterType.Player)
         {
+            _weapon.InitData(cfg.weaponId, this);
             _InitInput();
             CameraController.Instance.SetTarget(_characterData.position);
         }
         else
         {
             _fsm.LinkState(FinitState.Chase, _GetState(FinitState.Chase));
+            gameObject.name = "AI-" + cfg.id.ToString();
         }
         _fsm.TransitionState(FinitState.Idle);
         _fsm.Start();
