@@ -31,7 +31,6 @@ public class Character : Unit
         _characterData.id.id = id;
         _weapon = new Weapon();
         _weapon.SetParent(transform);
-        _weapon.InitData()
         _fsm = new FinitStateMachine();
         _fsm.Attach(this);
         _fsm.LinkState(FinitState.Idle, _GetState(FinitState.Idle));
