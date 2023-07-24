@@ -41,6 +41,7 @@ public class Character : Unit
         _spriteRenderer.color = color;
         _weapon = new Weapon();
         _weapon.bulletColor = color;
+        _weapon.InitData(cfg.weaponId, this);
 
         _fsm = new FinitStateMachine();
         _fsm.Attach(this);
@@ -50,7 +51,6 @@ public class Character : Unit
         _fsm.LinkState(FinitState.Dead, _GetState(FinitState.Dead));
         if (characterType == CharacterType.Player)
         {
-            _weapon.InitData(cfg.weaponId, this);
             _InitInput();
             CameraController.Instance.SetTarget(_characterData.position);
         }
