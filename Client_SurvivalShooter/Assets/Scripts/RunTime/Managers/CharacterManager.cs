@@ -23,7 +23,7 @@ public class CharacterManager : Singleton<CharacterManager>, IExecutableBehaviou
         Character role = _characterPool.Get();
         CharacterCfg.Character cfg = CharacterCfg.TryGetValue(id);
         AddCharacter((CharacterType)cfg.type, role);
-        AssetsManager.Instance.LoadAsset<GameObject>(cfg.prefab, gameObject =>
+        AssetsManager.Instance.LoadAsset<GameObject>(ConstParam.CHARACTER_PREFAB, gameObject =>
         {
             GameObject go = MonoExtension.InitializeObject(gameObject);
             role.Attach(go);
