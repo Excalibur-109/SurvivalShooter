@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Excalibur;
-using System;
-using UnityEngine.UIElements;
 
 public class CharacterManager : Singleton<CharacterManager>, IExecutableBehaviour
 {
@@ -50,6 +47,29 @@ public class CharacterManager : Singleton<CharacterManager>, IExecutableBehaviou
         if (Executable)
         {
             fsmAssistant.Execute();
+            if (Player != null)
+            {
+                _PlayerControl();
+            }
         }
+    }
+
+    private void _PlayerControl()
+    {
+        _UpdatePlayerDirection();
+    }
+
+    private void _UpdatePlayerDirection()
+    {
+        Vector2 mousePosition = Input.mousePosition;
+        Vector2 playerScreenPos = MonoExtension.WorldPos2ScreenPos(Player.position);
+        Vector3 playerScale = Player.scale;
+        playerScale.x = mousePosition.x >= playerScreenPos.x ? 1f : -1f;
+        if (playerScale != Player.scale)
+        {
+            Player.scale = playerScale;
+        }
+
+
     }
 }

@@ -21,14 +21,26 @@ namespace Excalibur
             }
         }
 
-        public static Vector3 Float3ArrayToVector3(this float[] array)
+        public static Vector3 FloatArrToVector3(float[] array)
         {
             if (array == null) { return Vector3.zero; }
             Vector3 ret = Vector3.zero;
-            int i = 0;
-            while (i < 3)
+            int i = -1;
+            while (++i < 3)
             {
-                ret[i++] = i < array.Length ? array[i] : ret[i];
+                ret[i] = i < array.Length ? array[i] : ret[i];
+            }
+            return ret;
+        }
+
+        public static Color FloatArrToColor(float[] array)
+        {
+            if (array == null) { return Color.white; }
+            Color ret = Color.white;
+            int i = -1;
+            while (++i < 4)
+            {
+                ret[i] = i < array.Length ? array[i] : 1f;
             }
             return ret;
         }

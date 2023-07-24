@@ -11,6 +11,7 @@ public class CharacterData
     public AttackIntervalComponent attackInverval;
     public ExpComponent exp;
     public IsMoveComponent isMoving;
+    public IDComponent weaponId;
 
     public CharacterData()
     {
@@ -25,6 +26,7 @@ public class CharacterData
         attackInverval = new AttackIntervalComponent();
         exp = new ExpComponent();
         isMoving = new IsMoveComponent();
+        weaponId = new IDComponent();
     }
 }
 
@@ -34,6 +36,16 @@ public class WeaponData
     public AttackComponent attack;
     public SpeedComponent speedToBullet;
     public AttackIntervalComponent attackInverval;
+    public IDComponent bulletId;
+
+    public WeaponData()
+    {
+        id = new IDComponent();
+        attack = new AttackComponent();
+        speedToBullet = new SpeedComponent();
+        attackInverval = new AttackIntervalComponent();
+        bulletId = new IDComponent();
+    }
 }
 
 public class BulletData
@@ -41,6 +53,13 @@ public class BulletData
     public IDComponent id;
     public AttackComponent attack;
     public SpeedComponent speed;
+
+    public BulletData()
+    {
+        id = new IDComponent();
+        attack = new AttackComponent();
+        speed = new SpeedComponent();
+    }
 }
 
 public class ItemData
