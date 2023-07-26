@@ -9,9 +9,10 @@ public class Bullet : Unit
     private BulletData _bulletData;
     private Vector3 _flyDir;
     private SignFlag _signFlag;
-    
+
     public SignFlag flag => _signFlag;
     public int bulletId => _bulletData.id.id;
+    public int attackValue => _bulletData.attack.attack;
 
     public Color bulletColor
     {

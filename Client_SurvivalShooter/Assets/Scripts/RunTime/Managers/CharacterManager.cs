@@ -51,6 +51,7 @@ public class CharacterManager : Singleton<CharacterManager>, IExecutableBehaviou
             {
                 _PlayerControl();
             }
+            _JudgeCollision();
         }
     }
 
@@ -84,10 +85,32 @@ public class CharacterManager : Singleton<CharacterManager>, IExecutableBehaviou
 
     private void _JudgeCollision()
     {
-        SignFlag flag = SignFlag.Nothing;
+        SignFlag flag = SignFlag.Green;
         while (flag <= SignFlag.Red)
         {
-            
+            List<Bullet> bullets = BulletManager.Instance.GetSignBullets(flag);
+            foreach (CharacterType characterType in _chracters.Keys)
+            {
+                List<Character> characters = _chracters[characterType];
+                int i = -1;
+                while (++i < characters.Count)
+                {
+                    Character character = characters[i];
+                    SignFlag characterFlag = character.signFlag;
+                    if (characterFlag != flag)
+                    {
+                        int j = -1;
+                        while (++j < bullets.Count)
+                        {
+                            if (character.JudgeCollision(bullets[j].position))
+                            {
+                                character.TakeDamage(bullets[j].attackValue);
+                            }
+                        }
+                    }
+                }
+            }
+            ++flag;
         }
     }
 }
