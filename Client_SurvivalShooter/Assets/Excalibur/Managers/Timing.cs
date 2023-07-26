@@ -15,11 +15,11 @@ namespace Excalibur
         private readonly ExecutableBehaviourAssistant _timerExecuteAssistant = new ExecutableBehaviourAssistant();
         private ObjectPool<Timer> _pool;
 
-        private const int FRAME_COUNT_INTERVAL = 1; /// ֡ʱ()
+        private const int FRAME_COUNT_INTERVAL = 1;
 
         private int
-            _gameTime,          /// Ϸʱ(λ)
-            _persistentTime,    /// ʱ䣬Ӱ(λ)
+            _gameTime,         
+            _persistentTime,
             _frameCounter,
             _circularPersistentTime,
             _circularGameTime;
@@ -112,7 +112,6 @@ namespace Excalibur
         }
     }
 
-    /// <summary> Timer ȷΪ룺milliseconds /// </summary>
     public partial class Timing
     {
         public class TimerToken
@@ -280,7 +279,7 @@ namespace Excalibur
                 return true;
             }
 
-            [Obsolete("δ")]
+            [Obsolete("unfinished", true)]
             public async Task StartAsync()
             {
                 Debug.Log($"Timer첽߳ID:{Thread.CurrentThread.ManagedThreadId}");
@@ -315,7 +314,6 @@ namespace Excalibur
         }
     }
 
-    /// <summary> Methods, repeat < 0 Ϊ /// </summary>
     public partial class Timing
     {
         /// <summary> ûMillisecondsĶ /// </summary>
@@ -363,7 +361,7 @@ namespace Excalibur
             ScheduleMilliseconds((int)(time * MILLI_SECONDS), onComplete, onTick);
         }
 
-        [Obsolete("δ", true)]
+        [Obsolete("unfinished", true)]
         public void ScheduleOnNextFrame() { }
 
         public TimerToken ScheduleTokenMilliseconds (int time, Action onComplete, TickCallback onTick = default,
@@ -401,7 +399,7 @@ namespace Excalibur
             return ScheduleToken(time, onComplete, null, 1f, delay, -1);
         }
 
-        [Obsolete("δ", true)]
+        [Obsolete("unfinished", true)]
         public async void ScheduleMillisecondsAsync(int time, Action onComplete, TickCallback onTick = default,
             int interval = 1, int delay = 0, int repeat = 1)
         {
@@ -410,7 +408,7 @@ namespace Excalibur
             ReleaseTimer(timer);
         }
 
-        [Obsolete("δ", true)]
+        [Obsolete("unfinished", true)]
         public void ScheduleAsync(int time, Action onComplete, TickCallback onTick = default,
             int interval = 1, int delay = 0, int repeat = 1)
         {
@@ -418,7 +416,7 @@ namespace Excalibur
             ScheduleMillisecondsAsync(time * MILLI_SECONDS, onComplete, onTick, interval * MILLI_SECONDS, delay * MILLI_SECONDS, repeat);
         }
 
-        [Obsolete("δ", true)]
+        [Obsolete("unfinished", true)]
         public void ScheduleAsync (float time, Action onComplete, TickCallback onTick = default,
             float interval = 1f, float delay = 0f, int repeat = 1)
         {
@@ -428,13 +426,13 @@ namespace Excalibur
             ScheduleMillisecondsAsync(t, onComplete, onTick, i, d, repeat);
         }
 
-        [Obsolete("δ", true)]
+        [Obsolete("unfinished", true)]
         public void TickAsync (int time, TickCallback onTick, Action onComplete = default)
         {
             ScheduleMillisecondsAsync(time * MILLI_SECONDS, onComplete, onTick);
         }
 
-        [Obsolete("δ", true)]
+        [Obsolete("unfinished", true)]
         public void TickAsync (float time, TickCallback onTick, Action onComplete = default)
         {
             ScheduleMillisecondsAsync((int)(time * MILLI_SECONDS), onComplete, onTick);
