@@ -81,4 +81,13 @@ public class CharacterManager : Singleton<CharacterManager>, IExecutableBehaviou
         }
         weapon.rotation = Quaternion.Euler(0f, 0f, angle);
     }
+
+    private void _JudgeCollision()
+    {
+        SignFlag flag = SignFlag.Nothing;
+        while (flag <= SignFlag.Red)
+        {
+            
+        }
+    }
 }
