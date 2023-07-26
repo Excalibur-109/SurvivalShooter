@@ -7,12 +7,12 @@ using Unity.IO.LowLevel.Unsafe;
 
 public enum CharacterType { Player = 1, AI = 2 }
 
-public enum AIFlag { Green = 1, Red = 2 }
+public enum SignFlag { Green = 1, Red = 2 }
 
 public class Character : Unit
 {
     private CharacterType _characterType;
-    private AIFlag _aiFlag;
+    private SignFlag _signFlag;
     private CharacterData _characterData;
     private InputResponser _playerInput;
     private FinitStateMachine _fsm;
@@ -21,7 +21,7 @@ public class Character : Unit
 
     private CharacterData characterData => _characterData;
     public CharacterType characterType => _characterType;
-    public AIFlag aiFlag => _aiFlag;
+    public SignFlag aiFlag => _signFlag;
     public Weapon weapon => _weapon;
 
     protected override void OnAttached()
@@ -34,7 +34,7 @@ public class Character : Unit
     {
         CharacterCfg.Character cfg = CharacterCfg.TryGetValue(id);
         _characterType = (CharacterType)cfg.type;
-        _aiFlag = (AIFlag)cfg.flag;
+        _signFlag = (SignFlag)cfg.flag;
         _characterData = new CharacterData();
         _characterData.id.id = id;
         Color color = Utility.FloatArrToColor(cfg.color);
