@@ -8,7 +8,9 @@ public class Bullet : Unit
     private SpriteRenderer _spriteRenderer;
     private BulletData _bulletData;
     private Vector3 _flyDir;
-
+    private SignFlag _signFlag;
+    
+    public SignFlag flag => _signFlag;
     public int bulletId => _bulletData.id.id;
 
     public Color bulletColor
@@ -20,6 +22,11 @@ public class Bullet : Unit
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _bulletData = new BulletData();
+    }
+
+    public void SetSign(SignFlag signFlag)
+    {
+        _signFlag = signFlag;
     }
 
     public void SetAttackValue(int attackValue)
@@ -45,13 +52,8 @@ public class Bullet : Unit
         }
     }
 
-    private void _Fly()
-    {
-        GameManager.Instance.AttachExecutableUnit(this);
-    }
-
     private void _Boom()
     {
-        GameManager.Instance.DetachExecutableUnit(this);
+        
     }
 }
