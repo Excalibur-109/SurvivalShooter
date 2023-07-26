@@ -73,7 +73,12 @@ public class CharacterManager : Singleton<CharacterManager>, IExecutableBehaviou
 
         Vector2 weaponScreenPos = MonoExtension.WorldPos2ScreenPos(weapon.position);
         Vector2 direction = mousePosition - weaponScreenPos;
-        //float angle = Vector2.Angle(Vector2.right, direction);
-        //weapon.rotation = Quaternion.Euler(0f, 0f, angle);
+        float angle = Vector2.Angle(Vector2.right, direction);
+        angle = mousePosition.y >= weaponScreenPos.y ? angle : -angle;
+        if (playerScale.x < 0f)
+        {
+            angle -= 180f;
+        }
+        weapon.rotation = Quaternion.Euler(0f, 0f, angle);
     }
 }
