@@ -74,7 +74,7 @@ namespace Excalibur
 
         public GameObject InstantiateObjectToScene(string sceneName, GameObject gameObject, Action onInstantiate = default)
         {
-            GameObject go = MonoExtension.InitializeObject(gameObject);
+            GameObject go = MonoExtension.InstantiateObject(gameObject);
             MoveObjectToScene(sceneName, go);
             return go;
         }

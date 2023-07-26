@@ -8,7 +8,7 @@ namespace Excalibur
         void Detach ();
     }
 
-    public interface IUnitEntity : IEntity
+    public interface IUnitEntity : IEntity, IExecutableBehaviour
     {
         string name { get; }
         bool visible { get; set; }

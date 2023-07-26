@@ -126,21 +126,21 @@ public class Character : Unit
 
     private void _MoveUp()
     {
-        SetPosition(_characterData.position.pos + Vector3.up * Timing.deltaTime * 10f);
+        SetPosition(_characterData.position.pos + Vector3.up * Timing.deltaTime * _characterData.speed.speed);
         CameraController.Instance.UpdatePosition();
         _characterData.isMoving.isMoving = true;
     }
 
     private void _MoveDown()
     {
-        SetPosition(_characterData.position.pos + Vector3.down * Timing.deltaTime * 10f);
+        SetPosition(_characterData.position.pos + Vector3.down * Timing.deltaTime * _characterData.speed.speed);
         CameraController.Instance.UpdatePosition();
         _characterData.isMoving.isMoving = true;
     }
 
     private void _MoveLeft()
     {
-        SetPosition(_characterData.position.pos + Vector3.left * Timing.deltaTime * 10f);
+        SetPosition(_characterData.position.pos + Vector3.left * Timing.deltaTime * _characterData.speed.speed);
         CameraController.Instance.UpdatePosition();
         _characterData.isMoving.isMoving = true;
     }
@@ -148,7 +148,7 @@ public class Character : Unit
     private void _MoveRight()
     {
         _characterData.isMoving.isMoving = true;
-        SetPosition(_characterData.position.pos + Vector3.right * Timing.deltaTime * 10f);
+        SetPosition(_characterData.position.pos + Vector3.right * Timing.deltaTime * _characterData.speed.speed);
         CameraController.Instance.UpdatePosition();
         _characterData.isMoving.isMoving = true;
     }
@@ -160,7 +160,7 @@ public class Character : Unit
 
     private void _Attack()
     {
-        Debug.Log("Attack");
+        weapon.Fire();
     }
 
     private BaseFiniteState _GetState(FinitState finitState)

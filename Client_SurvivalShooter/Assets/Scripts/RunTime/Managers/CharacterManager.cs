@@ -25,7 +25,7 @@ public class CharacterManager : Singleton<CharacterManager>, IExecutableBehaviou
         AddCharacter((CharacterType)cfg.type, role);
         AssetsManager.Instance.LoadAsset<GameObject>(ConstParam.CHARACTER_PREFAB, gameObject =>
         {
-            GameObject go = MonoExtension.InitializeObject(gameObject);
+            GameObject go = MonoExtension.InstantiateObject(gameObject);
             role.Attach(go);
             ScenesManager.Instance.MoveObjectToGameScene(go);
             role.InitData(id);

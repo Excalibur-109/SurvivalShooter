@@ -48,14 +48,14 @@ namespace Excalibur
             return list;
         }
 
-        public static GameObject InitializeObject(GameObject src, Transform parent)
+        public static GameObject InstantiateObject(GameObject src, Transform parent)
         {
-            GameObject go = InitializeObject(src);
+            GameObject go = InstantiateObject(src);
             go.transform.SetParent(parent);
             return go;
         }
 
-        public static GameObject InitializeObject(GameObject src, string name = default)
+        public static GameObject InstantiateObject(GameObject src, string name = default)
         {
             GameObject go = UnityEngine.Object.Instantiate(src);
             go.name = string.IsNullOrEmpty(name) ? src.name : name;

@@ -12,6 +12,7 @@ public static class BulletCfg
     {
         ///summary 主键 ///summary
         public int id;
+        public string prefab;
     }
 
     public static string GetName () => typeof (Bullet).Name;
