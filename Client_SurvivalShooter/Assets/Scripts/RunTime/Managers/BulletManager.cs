@@ -7,7 +7,8 @@ using System;
 public class BulletManager : Singleton<BulletManager>, IExecutableBehaviour
 {
     private readonly Dictionary<int, ObjectPool<Bullet>> r_BulletPool = new Dictionary<int, ObjectPool<Bullet>>();
-
+    private readonly Dictionary<SignFlag, List<Bullet>> r_SignedBullets = new Dictionary<SignFlag, List<Bullet>>();
+    private readonly List<Bullet> r_SignedRemove = new List<Bullet>();
     private readonly ExecutableBehaviourAssistant r_BulletAssistant = new ExecutableBehaviourAssistant();
 
     public bool Executable { get; set; }
@@ -15,6 +16,11 @@ public class BulletManager : Singleton<BulletManager>, IExecutableBehaviour
     protected override void OnConstructed()
     {
         GameManager.Instance.AttachExecutableUnit(this);
+        SignFlag flag = SignFlag.Nothing;
+        while (flag <= SignFlag.Red)
+        {
+            r_SignedBullets.Add(flag++, new List<Bullet>());
+        }
     }
 
     public Bullet CreateBullet(int bulletId, Action onCreated)
@@ -65,11 +71,34 @@ public class BulletManager : Singleton<BulletManager>, IExecutableBehaviour
         }
     }
 
+    public List<Bullet> GetSignBullets(SignFlag signFlag)
+    {
+        if (signFlag == SignFlag.Nothing) { return null; }
+        if (r_SignedRemove.Count > 0)
+        {
+            int i = -1;
+            while (++i < r_SignedRemove.Count)
+            {
+                Bullet bullet = r_SignedRemove[i];
+                List<Bullet> list = r_SignedBullets[bullet.flag];
+                list[list.IndexOf(bullet)] = list[list.Count - 1];
+                list.RemoveAt(list.Count - 1);
+            }
+            r_SignedRemove.Clear();
+        }
+        return r_SignedBullets[signFlag];
+    }
+
     private ObjectPool<Bullet> _CreatePool()
     {
         ObjectPool<Bullet> pool = new ObjectPool<Bullet>(
             item => { r_BulletAssistant.Attach(item); item.SetActive(true); },
-            item => { r_BulletAssistant.Detach(item); item.SetActive(false); }
+            item => 
+            {
+                r_BulletAssistant.Detach(item); 
+                item.SetActive(false);
+                r_SignedRemove.Add(item);
+            }
         );
         return pool;
     }

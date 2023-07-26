@@ -7,7 +7,7 @@ using Unity.IO.LowLevel.Unsafe;
 
 public enum CharacterType { Player = 1, AI = 2 }
 
-public enum SignFlag { Green = 1, Red = 2 }
+public enum SignFlag { Nothing = 0, Green = 1, Red = 2 }
 
 public class Character : Unit
 {

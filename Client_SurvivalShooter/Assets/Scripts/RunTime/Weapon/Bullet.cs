@@ -8,8 +8,9 @@ public class Bullet : Unit
     private SpriteRenderer _spriteRenderer;
     private BulletData _bulletData;
     private Vector3 _flyDir;
-    private SignFlag _sighFlag;
-
+    private SignFlag _signFlag;
+    
+    public SignFlag flag => _signFlag;
     public int bulletId => _bulletData.id.id;
 
     public Color bulletColor
@@ -25,7 +26,7 @@ public class Bullet : Unit
 
     public void SetSign(SignFlag signFlag)
     {
-        _sighFlag = signFlag;
+        _signFlag = signFlag;
     }
 
     public void SetAttackValue(int attackValue)
