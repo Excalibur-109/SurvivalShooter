@@ -12,7 +12,12 @@ public static class BulletCfg
     {
         ///summary 主键 ///summary
         public int id;
+        ///summary 预制体 ///summary
         public string prefab;
+        ///summary 战斗数据 ///summary
+        public int attackValue;
+        ///summary 飞行速度 ///summary
+        public float speedValue;
     }
 
     public static string GetName () => typeof (Bullet).Name;
@@ -203,8 +208,6 @@ public static class WeaponCfg
         public float[] spawnPos;
         ///summary 子弹 ///summary
         public int[] bullets;
-        ///summary 战斗模式 ///summary
-        public int[] fireTypes;
     }
 
     public static string GetName () => typeof (Weapon).Name;

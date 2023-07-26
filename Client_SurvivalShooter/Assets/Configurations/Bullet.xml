@@ -2,5 +2,8 @@
 <BulletCfg>
   <Bullet>
     <id>20000</id>
+    <prefab>Bullet_Normal</prefab>
+    <attackValue>5</attackValue>
+    <speedValue>15</speedValue>
   </Bullet>
 </BulletCfg>

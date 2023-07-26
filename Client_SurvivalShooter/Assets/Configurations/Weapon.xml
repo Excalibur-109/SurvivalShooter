@@ -8,8 +8,9 @@
       <float>-0.21</float>
       <float>-0.168</float>
     </spawnPos>
-    <bullets />
-    <fireTypes />
+    <bullets>
+      <int>20000</int>
+    </bullets>
   </Weapon>
   <Weapon>
     <id>2001</id>
@@ -19,8 +20,9 @@
       <float>-0.115</float>
       <float>-0.094</float>
     </spawnPos>
-    <bullets />
-    <fireTypes />
+    <bullets>
+      <int>20000</int>
+    </bullets>
   </Weapon>
   <Weapon>
     <id>2002</id>
@@ -30,8 +32,9 @@
       <float>-0.056</float>
       <float>-0.07</float>
     </spawnPos>
-    <bullets />
-    <fireTypes />
+    <bullets>
+      <int>20000</int>
+    </bullets>
   </Weapon>
   <Weapon>
     <id>2003</id>
@@ -41,8 +44,9 @@
       <float>0</float>
       <float>-0.098</float>
     </spawnPos>
-    <bullets />
-    <fireTypes />
+    <bullets>
+      <int>20000</int>
+    </bullets>
   </Weapon>
   <Weapon>
     <id>2004</id>
@@ -52,8 +56,9 @@
       <float>0.004</float>
       <float>-0.118</float>
     </spawnPos>
-    <bullets />
-    <fireTypes />
+    <bullets>
+      <int>20000</int>
+    </bullets>
   </Weapon>
   <Weapon>
     <id>2005</id>
@@ -63,8 +68,9 @@
       <float>-0.161</float>
       <float>-0.154</float>
     </spawnPos>
-    <bullets />
-    <fireTypes />
+    <bullets>
+      <int>20000</int>
+    </bullets>
   </Weapon>
   <Weapon>
     <id>2006</id>
@@ -74,8 +80,9 @@
       <float>-0.182</float>
       <float>-0.14</float>
     </spawnPos>
-    <bullets />
-    <fireTypes />
+    <bullets>
+      <int>20000</int>
+    </bullets>
   </Weapon>
   <Weapon>
     <id>2007</id>
@@ -85,8 +92,9 @@
       <float>-0.189</float>
       <float>0.042</float>
     </spawnPos>
-    <bullets />
-    <fireTypes />
+    <bullets>
+      <int>20000</int>
+    </bullets>
   </Weapon>
   <Weapon>
     <id>2008</id>
@@ -96,8 +104,9 @@
       <float>-0.049</float>
       <float>-0.105</float>
     </spawnPos>
-    <bullets />
-    <fireTypes />
+    <bullets>
+      <int>20000</int>
+    </bullets>
   </Weapon>
   <Weapon>
     <id>2009</id>
@@ -107,7 +116,8 @@
       <float>0.035</float>
       <float>-0.14</float>
     </spawnPos>
-    <bullets />
-    <fireTypes />
+    <bullets>
+      <int>20000</int>
+    </bullets>
   </Weapon>
 </WeaponCfg>
