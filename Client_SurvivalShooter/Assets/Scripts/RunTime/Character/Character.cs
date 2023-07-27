@@ -18,16 +18,18 @@ public class Character : Unit
     private FinitStateMachine _fsm;
     private Weapon _weapon;
     private SpriteRenderer _spriteRenderer;
+    private BoxCollider2D _collider2D;
 
     private CharacterData characterData => _characterData;
     public CharacterType characterType => _characterType;
-    public SignFlag aiFlag => _signFlag;
+    public SignFlag signFlag => _signFlag;
     public Weapon weapon => _weapon;
 
     protected override void OnAttached()
     {
         base.OnAttached();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _collider2D = GetComponent<BoxCollider2D>();
     }
 
     public void InitData(int id)
@@ -163,6 +165,11 @@ public class Character : Unit
         weapon.Fire();
     }
 
+    public void TakeDamage(int damage)
+    {
+
+    }
+
     private BaseFiniteState _GetState(FinitState finitState)
     {
         switch (finitState)
@@ -224,5 +231,10 @@ public class Character : Unit
     {
         base.OnDetached();
         _fsm.Dispose();
+    }
+
+    public bool JudgeCollision(Vector3 position)
+    {
+        return _collider2D.bounds.Contains(position);
     }
 }
