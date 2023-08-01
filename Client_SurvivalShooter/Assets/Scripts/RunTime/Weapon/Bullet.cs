@@ -11,8 +11,8 @@ public class Bullet : Unit
     private SignFlag _signFlag;
 
     public SignFlag flag => _signFlag;
-    public int bulletId => _bulletData.id.id;
-    public int attackValue => _bulletData.attack.attack;
+    public int bulletId => _bulletData.idCom.id;
+    public int attackValue => _bulletData.attackCom.attack;
 
     public Color bulletColor
     {
@@ -32,12 +32,12 @@ public class Bullet : Unit
 
     public void SetAttackValue(int attackValue)
     {
-        _bulletData.attack.attack = attackValue;
+        _bulletData.attackCom.attack = attackValue;
     }
 
     public void SetSpeedValue(int speedValue)
     {
-        _bulletData.speed.speed = speedValue;
+        _bulletData.speedCom.speed = speedValue;
     }
     
     public void Fly(Vector3 direction)

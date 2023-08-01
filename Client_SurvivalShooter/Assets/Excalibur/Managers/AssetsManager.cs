@@ -70,13 +70,25 @@ namespace Excalibur
         {
             if (_editorAssetsConfig.TryGetValue(assetName, out string assetPath))
             {
-                T result = AssetDatabase.LoadAssetAtPath<T>(assetPath);
+                string path = assetPath.Replace("Assets/Resources/", string.Empty);
+                T result = Resources.Load<T>(path.Split('.')[0]);
                 onComplete?.Invoke(result);
             }
             else
             {
                 Debug.LogWarningFormat("Editor下不存在资源：{0}", assetName);
             }
+
+
+            // if (_editorAssetsConfig.TryGetValue(assetName, out string assetPath))
+            // {
+            //     T result = AssetDatabase.LoadAssetAtPath<T>(assetPath);
+            //     onComplete?.Invoke(result);
+            // }
+            // else
+            // {
+            //     Debug.LogWarningFormat("Editor下不存在资源：{0}", assetName);
+            // }
             return;
 #if UNITY_EDITOR && ASSET_BUNDLE_LOAD_DISENABLE
 #else

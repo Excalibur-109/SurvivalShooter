@@ -7,7 +7,7 @@ using System;
 public class Weapon : Unit
 {
     private Transform _fireHole;
-    private IDComponent _bullet;
+    private IDComponent _bullet = new IDComponent();
     protected WeaponData weaponData;
 
     private Color _bulletColor;
@@ -17,6 +17,8 @@ public class Weapon : Unit
     {
         WeaponCfg.Weapon cfg = WeaponCfg.TryGetValue(weaponId);
         weaponData = new WeaponData();
+        int index = UnityEngine.Random.Range(0, cfg.bullets.Length);
+        _bullet.id = cfg.bullets[index];
         AssetsManager.Instance.LoadAsset<GameObject>(cfg.prefabName, (gameObject) =>
         {
             GameObject weaponObj = MonoExtension.InstantiateObject(gameObject);
@@ -33,12 +35,11 @@ public class Weapon : Unit
 
     public void SetBullet(int bulletId)
     {
-        weaponData.bulletId.id = bulletId;
+        weaponData.bulletIdCom.id = bulletId;
     }
 
     public void Fire()
     {
-
     }
 
     public void UpdateRotation()

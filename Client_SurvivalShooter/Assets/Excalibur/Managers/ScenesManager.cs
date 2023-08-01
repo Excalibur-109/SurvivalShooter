@@ -26,30 +26,13 @@ namespace Excalibur
                 yield break;
             }
             AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-            operation.allowSceneActivation = false;
-            yield return operation.isDone;
             operation.allowSceneActivation = true;
+            while (!operation.isDone)
+            {
+                yield return null;
+            }
             r_Scenes.Add(sceneName, SceneManager.GetSceneByName(sceneName));
             onSceneLoaded?.Invoke();
-            if (sceneName == SceneName.Game.ToString())
-            {
-                GameObject[] rootObjects = r_Scenes[sceneName].GetRootGameObjects();
-                int borderCtn = 0;
-                for (int i = 0; i < rootObjects.Length; ++i)
-                {
-                    if (rootObjects[i].tag == "Border")
-                    {
-                        r_Border[borderCtn++] = rootObjects[i].transform.position;
-                        if (borderCtn == BORDER_COUNT) { break; }
-                    }
-                }
-                if (r_Border[0].x > r_Border[1].x)
-                {
-                    Vector3 tmp = r_Border[0];
-                    r_Border[0] = r_Border[1];
-                    r_Border[1] = tmp;
-                }
-            }
         }
 
         public GameObject[] GetSceneRootObjects(SceneName sceneName)
@@ -87,6 +70,28 @@ namespace Excalibur
         public GameObject InstantiateObjectToUIScene(GameObject gameObject, Action onInstantiate = default)
         {
             return InstantiateObjectToScene(SceneName.UI.ToString(), gameObject, onInstantiate);
+        }
+
+        public void GetBorder()
+        {
+            GameObject[] rootObjects = GameObject.FindGameObjectsWithTag("Border");
+            for (int i = 0; i < rootObjects.Length; ++i)
+            {
+                r_Border[i] = rootObjects[i].transform.position;
+            }
+            if (r_Border[0].x > r_Border[1].x)
+            {
+                Vector3 tmp = r_Border[0];
+                r_Border[0] = r_Border[1];
+                r_Border[1] = tmp;
+            }
+        }
+
+        public bool IsInBound(Vector3 position)
+        {
+            return
+                position.x >= Border[0].x && position.x <= Border[1].x &&
+                position.y <= Border[0].y && position.y >= Border[1].y;
         }
     }
 }

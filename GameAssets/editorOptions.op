@@ -1,6 +1,6 @@
 4
 1
-BundleResources
+Resources
 
 
 
@@ -72,3 +72,4 @@ False
 0
 4
 Scripts/RunTime/Components
+ents

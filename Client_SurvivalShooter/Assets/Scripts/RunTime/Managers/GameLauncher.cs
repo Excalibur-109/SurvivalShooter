@@ -20,6 +20,7 @@ public class GameLauncher : MonoSingleton<GameLauncher>
         {
             yield return StartCoroutine(ScenesManager.Instance.LoadScene(name.ToString()));
         }
+        ScenesManager.Instance.GetBorder();
         ScenesManager.Instance.MoveObjectToScene(SceneName.UI.ToString(), CameraManager.Instance.uiCamera.gameObject);
         Vector3[] border = ScenesManager.Instance.Border;
         CameraController.Instance.SetBorder(border);

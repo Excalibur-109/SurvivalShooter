@@ -1,70 +1,74 @@
 public class CharacterData
 {
-    public IDComponent id;
-    public HealthComponent hp;
-    public MagicPowerComponent mp;
-    public LevelComponent level;
-    public PositionComponent position;
-    public SpeedComponent speed;
-    public AttackComponent attack;
-    public DefenceComponent defence;
-    public AttackIntervalComponent attackInverval;
-    public ExpComponent exp;
-    public IsMoveComponent isMoving;
-    public IDComponent weaponId;
+    public IDComponent idCom;
+    public HealthComponent hpCom;
+    public MagicPowerComponent mpCom;
+    public LevelComponent levelCom;
+    public PositionComponent positionCom;
+    public AttackComponent attackCom;
+    public DefenceComponent defenceCom;
+    public AttackIntervalComponent attackInvervalCom;
+    public ExpComponent expCom;
+    public IsMoveComponent isMovingCom;
+    public IDComponent weaponIdCom;
 
     public CharacterData()
     {
-        id = new IDComponent();
-        hp = new HealthComponent();
-        mp = new MagicPowerComponent();
-        level = new LevelComponent();
-        position = new PositionComponent();
-        speed = new SpeedComponent();
-        attack = new AttackComponent();
-        defence = new DefenceComponent();
-        attackInverval = new AttackIntervalComponent();
-        exp = new ExpComponent();
-        isMoving = new IsMoveComponent();
-        weaponId = new IDComponent();
+        idCom = new IDComponent();
+        hpCom = new HealthComponent();
+        mpCom = new MagicPowerComponent();
+        levelCom = new LevelComponent();
+        positionCom = new PositionComponent();
+        attackCom = new AttackComponent();
+        defenceCom = new DefenceComponent();
+        attackInvervalCom = new AttackIntervalComponent();
+        expCom = new ExpComponent();
+        isMovingCom = new IsMoveComponent();
+        weaponIdCom = new IDComponent();
     }
 }
 
 public class WeaponData
 {
-    public IDComponent id;
-    public AttackComponent attack;
-    public SpeedComponent speedToBullet;
-    public AttackIntervalComponent attackInverval;
-    public IDComponent bulletId;
+    public IDComponent idCom;
+    public AttackComponent attackCom;
+    public SpeedComponent speedToBulletCom;
+    public AttackIntervalComponent attackInvervalCom;
+    public IDComponent bulletIdCom;
 
     public WeaponData()
     {
-        id = new IDComponent();
-        attack = new AttackComponent();
-        speedToBullet = new SpeedComponent();
-        attackInverval = new AttackIntervalComponent();
-        bulletId = new IDComponent();
+        idCom = new IDComponent();
+        attackCom = new AttackComponent();
+        speedToBulletCom = new SpeedComponent();
+        attackInvervalCom = new AttackIntervalComponent();
+        bulletIdCom = new IDComponent();
     }
 }
 
 public class BulletData
 {
-    public IDComponent id;
-    public AttackComponent attack;
-    public SpeedComponent speed;
+    public IDComponent idCom;
+    public AttackComponent attackCom;
+    public SpeedComponent speedCom;
 
     public BulletData()
     {
-        id = new IDComponent();
-        attack = new AttackComponent();
-        speed = new SpeedComponent();
+        idCom = new IDComponent();
+        attackCom = new AttackComponent();
+        speedCom = new SpeedComponent();
     }
 }
 
 public class ItemData
 {
-    public IDComponent id;
-    public AmountComponent amount;
+    public IDComponent idCom;
+    public AmountComponent amountCom;
+
+    public ItemData()
+    {
+        idCom = new IDComponent();
+        amountCom = new AmountComponent();
+    }
 }
 

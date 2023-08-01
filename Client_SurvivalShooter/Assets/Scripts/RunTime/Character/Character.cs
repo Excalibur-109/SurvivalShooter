@@ -38,7 +38,7 @@ public class Character : Unit
         _characterType = (CharacterType)cfg.type;
         _signFlag = (SignFlag)cfg.flag;
         _characterData = new CharacterData();
-        _characterData.id.id = id;
+        _characterData.idCom.id = id;
         Color color = Utility.FloatArrToColor(cfg.color);
         _spriteRenderer.color = color;
         _weapon = new Weapon();
@@ -54,7 +54,7 @@ public class Character : Unit
         if (characterType == CharacterType.Player)
         {
             _InitInput();
-            CameraController.Instance.SetTarget(_characterData.position);
+            CameraController.Instance.SetTarget(_characterData.positionCom);
         }
         else
         {
@@ -128,36 +128,51 @@ public class Character : Unit
 
     private void _MoveUp()
     {
-        SetPosition(_characterData.position.pos + Vector3.up * Timing.deltaTime * _characterData.speed.speed);
-        CameraController.Instance.UpdatePosition();
-        _characterData.isMoving.isMoving = true;
+        Vector3 nextPos = _characterData.positionCom.pos + Vector3.up * Timing.deltaTime * 7f;
+        if (ScenesManager.Instance.IsInBound(nextPos))
+        {
+            SetPosition(nextPos);
+            CameraController.Instance.UpdatePosition();
+        }
+        _characterData.isMovingCom.isMoving = true;
     }
 
     private void _MoveDown()
     {
-        SetPosition(_characterData.position.pos + Vector3.down * Timing.deltaTime * _characterData.speed.speed);
-        CameraController.Instance.UpdatePosition();
-        _characterData.isMoving.isMoving = true;
+        Vector3 nextPos = _characterData.positionCom.pos + Vector3.down * Timing.deltaTime * 7f;
+        if (ScenesManager.Instance.IsInBound(nextPos))
+        {
+            SetPosition(nextPos);
+            CameraController.Instance.UpdatePosition();
+        }
+        _characterData.isMovingCom.isMoving = true;
     }
 
     private void _MoveLeft()
     {
-        SetPosition(_characterData.position.pos + Vector3.left * Timing.deltaTime * _characterData.speed.speed);
-        CameraController.Instance.UpdatePosition();
-        _characterData.isMoving.isMoving = true;
+        Vector3 nextPos = _characterData.positionCom.pos + Vector3.left * Timing.deltaTime * 7f;
+        if (ScenesManager.Instance.IsInBound(nextPos))
+        {
+            SetPosition(nextPos);
+            CameraController.Instance.UpdatePosition();
+        }
+        _characterData.isMovingCom.isMoving = true;
     }
 
     private void _MoveRight()
     {
-        _characterData.isMoving.isMoving = true;
-        SetPosition(_characterData.position.pos + Vector3.right * Timing.deltaTime * _characterData.speed.speed);
-        CameraController.Instance.UpdatePosition();
-        _characterData.isMoving.isMoving = true;
+        Vector3 nextPos = _characterData.positionCom.pos + Vector3.right * Timing.deltaTime * 7f;
+        if (ScenesManager.Instance.IsInBound(nextPos))
+        {
+            SetPosition(nextPos);
+            CameraController.Instance.UpdatePosition();
+        }
+        _characterData.isMovingCom.isMoving = true;
     }
 
     private void _OnMoveOver()
     {
-        _characterData.isMoving.isMoving = false;
+        _characterData.isMovingCom.isMoving = false;
     }
 
     private void _Attack()
@@ -181,19 +196,19 @@ public class Character : Unit
             case FinitState.Run:
                 {
                     RunState runState = new RunState();
-                    runState.SetComponent(_characterData.isMoving);
+                    runState.SetComponent(_characterData.isMovingCom);
                     return runState;
                 }
             case FinitState.Chase:
                 {
                     ChaseState chaseState = new ChaseState();
-                    chaseState.SetComponent(_characterData.position);
+                    chaseState.SetComponent(_characterData.positionCom);
                 }
                 break;
             case FinitState.Attack:
                 {
                     AttackState chaseState = new AttackState();
-                    chaseState.SetComponent(_characterData.position);
+                    chaseState.SetComponent(_characterData.positionCom);
                 }
                 break;
             case FinitState.Hurt:
@@ -202,7 +217,7 @@ public class Character : Unit
                 break;
         }
         IdleState idleState = new IdleState();
-        idleState.SetComponent(_characterData.isMoving);
+        idleState.SetComponent(_characterData.isMovingCom);
         return idleState;
     }
 
@@ -223,8 +238,8 @@ public class Character : Unit
 
     public void SetPosition(Vector3 position)
     {
-        characterData.position.pos = position;
-        transform.position = characterData.position.pos;
+        characterData.positionCom.pos = position;
+        transform.position = characterData.positionCom.pos;
     }
 
     protected override void OnDetached()
